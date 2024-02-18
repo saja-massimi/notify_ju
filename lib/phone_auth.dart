@@ -10,8 +10,8 @@ class phone_auth extends StatefulWidget {
 
 class _phone_authState extends State<phone_auth> {
   
-   final _phone_controller = TextEditingController();
-   final _username_controller = TextEditingController();
+  final _phone_controller = TextEditingController();
+  final _username_controller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
   @override
@@ -27,9 +27,12 @@ class _phone_authState extends State<phone_auth> {
             //Form Feild
               Form(  
               key: _formkey,
+
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextFormField(
+                    //style:InputDecoration(),
                     controller: _username_controller,
                     validator: (value){
 
