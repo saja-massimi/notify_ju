@@ -1,6 +1,10 @@
 import 'package:contactus/contactus.dart';
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -22,6 +26,11 @@ class MyApp extends StatelessWidget {
           textColor: Colors.black87,
           cardColor: Colors.white,
           taglineColor: Colors.white38,
+          image: Image.asset(
+            'images/uniLogo.png',
+            scale: 2.0,
+            alignment: AlignmentDirectional(12.2, 13.1),
+          ),
         ),
       ),
     );
