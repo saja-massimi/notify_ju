@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notify_ju/sign_in.dart';
+import 'package:notify_ju/verification.dart';
 
 void main() {
   runApp(const MyApp());
