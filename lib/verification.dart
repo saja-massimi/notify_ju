@@ -1,13 +1,26 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 
 class verficationCode extends StatefulWidget {
-  const verficationCode({super.key});
+
+  verficationCode({super.key});
 
   @override
   State<verficationCode> createState() => _verficationCodeState();
 }
 
+
+
+
 class _verficationCodeState extends State<verficationCode> {
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(

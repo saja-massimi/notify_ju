@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:notify_ju/phone_auth.dart';
 import 'package:notify_ju/verification.dart';
+import 'package:email_auth/email_auth.dart';
 
 class email_auth extends StatefulWidget {
+
   const email_auth({super.key});
 
   @override
@@ -13,6 +15,17 @@ class _email_auth extends State<email_auth> {
   final  _username_controller = TextEditingController();
   final _email_controller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+
+void sendOTP() async {
+
+  EmailAuth emailAuth = EmailAuth(sessionName: 'Test Session');
+
+ var res = await emailAuth.sendOtp(recipientMail: _email_controller.text);
+ if(res){
+    print('OTP sent');
+ }
+  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +51,6 @@ class _email_auth extends State<email_auth> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Row(
-                 // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image(
                       image: AssetImage('images/uniLogo.png'),
@@ -137,16 +149,20 @@ class _email_auth extends State<email_auth> {
                            Row(
                             children: [
                               ElevatedButton(
-                              style:const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,foregroundColor: MaterialStatePropertyAll(Colors.white)),
+                              style:const 
+                              ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,
+                              foregroundColor: MaterialStatePropertyAll(Colors.white)),
                                   onPressed: () {
-                                    if (_formkey.currentState!.validate()) {
-                                       MaterialPageRoute(
-                                            builder: (context) =>
-                                                const verficationCode());
 
+
+
+                                    if (_formkey.currentState!.validate()) {
+                                        Navigator.push(context,MaterialPageRoute(
+                                            builder: (context) =>
+                                                 verficationCode()));
                                       ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content: Text('Signing in')));
+                                          const SnackBar( content: Text('Signing in'))                                        
+                                          );
                                     }
                                   },
                                   child: const Text('Submit')),

@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:notify_ju/email_auth.dart';
 import 'package:notify_ju/verification.dart';
-
+import 'package:http/http.dart' as http;
 class phone_auth extends StatefulWidget {
   const phone_auth({super.key});
 
@@ -10,10 +12,14 @@ class phone_auth extends StatefulWidget {
 }
 
 class _phone_authState extends State<phone_auth> {
-  final _phone_controller = TextEditingController();
-  final _username_controller = TextEditingController();
-  final _formkey = GlobalKey<FormState>();
-
+  bool _isLoading = false;
+    final Uri url = Uri.parse("https://notifyju-dc3fd-default-rtdb.firebaseio.com/users.json");
+    // ignore: non_constant_identifier_names
+    final _phone_controller = TextEditingController();
+    // ignore: non_constant_identifier_names
+    final _username_controller = TextEditingController();
+    final _formkey = GlobalKey<FormState>();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +45,7 @@ class _phone_authState extends State<phone_auth> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Row(
-             //     mainAxisAlignment: MainAxisAlignment.center,
+          
                   children: [
                     Image(
                       image: AssetImage('images/uniLogo.png'),
@@ -95,6 +101,7 @@ class _phone_authState extends State<phone_auth> {
                             ],
                           ),
                           TextFormField(
+                            keyboardType: TextInputType.phone,
                             decoration: const InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
@@ -116,6 +123,8 @@ class _phone_authState extends State<phone_auth> {
                             children: [
                               TextButton(
                                   onPressed: () {
+
+
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -137,17 +146,34 @@ class _phone_authState extends State<phone_auth> {
                            Row(
                             children: [
                               ElevatedButton(
+                                
                               style:const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,foregroundColor: MaterialStatePropertyAll(Colors.white)),
-                                  onPressed: () {
+                                  onPressed:  () {
+
+
+                                    http.post(url,
+                                    headers: {
+                                      'content-type': 'application/json'
+                                    },
+                                        body: json.encode({
+                                          "username": _username_controller.text,
+                                          "phone": _phone_controller.text
+                                        }));
+                                        
+                                    _isLoading = true;
+
                                     if (_formkey.currentState!.validate()) {
-                                       MaterialPageRoute(
+
+                                      _formkey.currentState!.save();
+                                      Navigator.push(context,MaterialPageRoute(
                                             builder: (context) =>
-                                                const verficationCode());
+                                                 verficationCode()));
                                       ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content: Text('Signing in')));
+                                          const SnackBar( content: Text('Signing in'))                                        
+                                          );
                                     }
-                                  },
+                                  }
+                                  ,
                                   child: const Text('Submit')),
                             ],
                           )

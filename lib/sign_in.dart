@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notify_ju/email_auth.dart';
 import 'package:notify_ju/phone_auth.dart';
 
+
 class sign_inPage extends StatefulWidget {
   const sign_inPage({super.key});
 
@@ -10,6 +11,8 @@ class sign_inPage extends StatefulWidget {
 }
 
 class _sign_inPageState extends State<sign_inPage> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +34,7 @@ class _sign_inPageState extends State<sign_inPage> {
             padding: const EdgeInsets.fromLTRB(0,40,0,40),
             child: Container(
               decoration: BoxDecoration(
-                color:const Color(0xFF3A652B).withOpacity(0.4), // Change the color and opacity as needed
+                color:const Color(0xFF3A652B).withOpacity(0.4), 
               ),
               child: Center(
                 child: Padding(
