@@ -12,7 +12,7 @@ class phone_auth extends StatefulWidget {
 }
 
 class _phone_authState extends State<phone_auth> {
-  bool _isLoading = false;
+    bool _isLoading = false;
     final Uri url = Uri.parse("https://notifyju-dc3fd-default-rtdb.firebaseio.com/users.json");
     // ignore: non_constant_identifier_names
     final _phone_controller = TextEditingController();
@@ -167,7 +167,7 @@ class _phone_authState extends State<phone_auth> {
                                       _formkey.currentState!.save();
                                       Navigator.push(context,MaterialPageRoute(
                                             builder: (context) =>
-                                                 verficationCode()));
+                                      verficationCode(userEmail: _phone_controller.hashCode,)));
                                       ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar( content: Text('Signing in'))                                        
                                           );

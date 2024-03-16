@@ -1,10 +1,14 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:email_auth/email_auth.dart';
 
 class verficationCode extends StatefulWidget {
+  final  userEmail ;
 
-  verficationCode({super.key});
+   verficationCode({super.key, this.userEmail });
 
   @override
   State<verficationCode> createState() => _verficationCodeState();
@@ -15,8 +19,32 @@ class verficationCode extends StatefulWidget {
 
 class _verficationCodeState extends State<verficationCode> {
 
+  final _codeController = TextEditingController();
 
 
+void sendOTP() async {
+
+  EmailAuth emailAuth = EmailAuth(sessionName: 'Test Session');
+
+ var res = await emailAuth.sendOtp(recipientMail: widget.userEmail);
+ if(res){
+    log('OTP sent');
+ }
+  
+  }
+
+
+void validateOTP()  {
+
+  EmailAuth emailAuth = EmailAuth(sessionName: 'Test Session');
+
+  var res =  emailAuth.validateOtp(userOtp: _codeController.text, recipientMail: widget.userEmail);
+  if(res){
+  
+    log('OTP verified');
+    
+    }
+}
 
 
 

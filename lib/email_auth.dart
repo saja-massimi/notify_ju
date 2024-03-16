@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notify_ju/phone_auth.dart';
 import 'package:notify_ju/verification.dart';
-import 'package:email_auth/email_auth.dart';
 
 class email_auth extends StatefulWidget {
 
@@ -16,16 +15,6 @@ class _email_auth extends State<email_auth> {
   final _email_controller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
-void sendOTP() async {
-
-  EmailAuth emailAuth = EmailAuth(sessionName: 'Test Session');
-
- var res = await emailAuth.sendOtp(recipientMail: _email_controller.text);
- if(res){
-    print('OTP sent');
- }
-  
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +148,7 @@ void sendOTP() async {
                                     if (_formkey.currentState!.validate()) {
                                         Navigator.push(context,MaterialPageRoute(
                                             builder: (context) =>
-                                                 verficationCode()));
+                                                 verficationCode(userEmail: _email_controller.text,)));
                                       ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar( content: Text('Signing in'))                                        
                                           );
