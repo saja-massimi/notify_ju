@@ -30,9 +30,10 @@ class Categories extends StatelessWidget {
               ),
             ),
             GridView.count(
-              crossAxisCount: 2, // Number of columns in the grid
+              crossAxisCount: 2,
               crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0, shrinkWrap: true,
+              mainAxisSpacing: 4.0,
+              shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: List.generate(
                 image.length,
