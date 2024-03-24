@@ -18,20 +18,13 @@ class verficationCode extends StatefulWidget {
 
 
 class _verficationCodeState extends State<verficationCode> {
+  late EmailAuth email_Auth;
+
 
   final _codeController = TextEditingController();
 
 
-void sendOTP() async {
 
-  EmailAuth emailAuth = EmailAuth(sessionName: 'Test Session');
-
- var res = await emailAuth.sendOtp(recipientMail: widget.userEmail);
- if(res){
-    log('OTP sent');
- }
-  
-  }
 
 
 void validateOTP()  {
@@ -69,10 +62,10 @@ void validateOTP()  {
             decoration: BoxDecoration(
               color: const Color(0xFF3A652B).withOpacity(0.6),
             ),
-            child: const Column(
+            child:  Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
+              const Row(
                   children: [
                     Image(
                       image: AssetImage('images/uniLogo.png'),
@@ -93,7 +86,7 @@ void validateOTP()  {
                     child: Column(
                       children: [
                     
-                        Row(
+                      const  Row(
                           children: [
                             Text("Enter the Verification Code",
                                 style: TextStyle(
@@ -102,7 +95,7 @@ void validateOTP()  {
                           ],
                         ),
 
-                                   TextField(
+                                const   TextField(
                                decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white,
@@ -112,7 +105,7 @@ void validateOTP()  {
                               ),
                             ),
                             
-                          Row(
+                       const   Row(
                             children: [
                               TextButton(
                                   onPressed:null,
@@ -128,15 +121,15 @@ void validateOTP()  {
                             ],
                           ),
 
-                          SizedBox(height: 10), 
+                       const SizedBox(height: 10), 
 
                            Row(
                             children: [
                               ElevatedButton(
-                              style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,foregroundColor: MaterialStatePropertyAll(Colors.white)),
-                                  onPressed: null,
+                              style:const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,foregroundColor: MaterialStatePropertyAll(Colors.white)),
+                                  onPressed: () => validateOTP,
                                     
-                                  child:  Text('Submit')),
+                                  child: const Text('Submit')),
                             ],
                           )
                       ],

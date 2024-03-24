@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:notify_ju/email_auth.dart';
-import 'package:notify_ju/phone_auth.dart';
+import 'package:notify_ju/Screens/email_auth.dart';
+import 'package:notify_ju/Screens/phone_auth.dart';
 
 
 class sign_inPage extends StatefulWidget {
   const sign_inPage({super.key});
+ static const routeName  = '/sign_inPage';
 
   @override
   State<sign_inPage> createState() => _sign_inPageState();
 }
 
 class _sign_inPageState extends State<sign_inPage> {
-
 
   @override
   Widget build(BuildContext context) {

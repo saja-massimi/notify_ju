@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:notify_ju/phone_auth.dart';
-import 'package:notify_ju/verification.dart';
-
-class email_auth extends StatefulWidget {
-
-  const email_auth({super.key});
+import 'package:notify_ju/Screens/email_auth.dart';
+import 'package:notify_ju/Screens/verification.dart';
+class phone_auth extends StatefulWidget {
+  const phone_auth({super.key});
 
   @override
-  State<email_auth> createState() => _email_auth();
+  State<phone_auth> createState() => _phone_authState();
 }
 
-class _email_auth extends State<email_auth> {
-  final  _username_controller = TextEditingController();
-  final _email_controller = TextEditingController();
-  final _formkey = GlobalKey<FormState>();
+class _phone_authState extends State<phone_auth> {
+   bool _isLoading = false;
+    
+    final _phone_controller = TextEditingController();
+    final _username_controller = TextEditingController();
+    final _formkey = GlobalKey<FormState>();
 
 
   @override
   Widget build(BuildContext context) {
-    return   Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(fit: StackFit.expand, children: [
+      body: Stack(
+        fit: StackFit.expand, children: [
         Opacity(
           opacity: 0.6,
           child: Image.asset(
@@ -40,6 +41,7 @@ class _email_auth extends State<email_auth> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Row(
+          
                   children: [
                     Image(
                       image: AssetImage('images/uniLogo.png'),
@@ -74,8 +76,7 @@ class _email_auth extends State<email_auth> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
+                              borderRadius: BorderRadius.all(Radius.circular(15))),
                               hintText: 'Username',
                             ),
                             controller: _username_controller,
@@ -84,30 +85,32 @@ class _email_auth extends State<email_auth> {
                                 return 'Enter your Username';
                               }
                               return null;
+                              
                             },
                           ),
                           const SizedBox(height: 10),
                           const Row(
                             children: [
                               Text(
-                                "Enter your email",
+                                "Enter your phone number",
                                 style: TextStyle(color: Colors.white),
                               ),
                             ],
                           ),
                           TextFormField(
+                            keyboardType: TextInputType.phone,
                             decoration: const InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15))),
-                              hintText: 'Email',
+                              hintText: 'Phone Number',
                             ),
-                            controller: _email_controller,
+                            controller: _phone_controller,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter your Email';
+                                return 'Enter your Phone Number';
                               }
                               return null;
                             },
@@ -117,11 +120,13 @@ class _email_auth extends State<email_auth> {
                             children: [
                               TextButton(
                                   onPressed: () {
+
+
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const phone_auth()));
+                                                const email_auth()));
                                   },
                                   child: const Text(
                                     'Sign in another way',
@@ -138,22 +143,25 @@ class _email_auth extends State<email_auth> {
                            Row(
                             children: [
                               ElevatedButton(
-                              style:const 
-                              ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,
-                              foregroundColor: MaterialStatePropertyAll(Colors.white)),
-                                  onPressed: () {
+                                
+                              style:const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,foregroundColor: MaterialStatePropertyAll(Colors.white)),
+                                  onPressed:  () {
 
-
+                                        
+                                    _isLoading = true;
 
                                     if (_formkey.currentState!.validate()) {
-                                        Navigator.push(context,MaterialPageRoute(
+
+                                      _formkey.currentState!.save();
+                                      Navigator.push(context,MaterialPageRoute(
                                             builder: (context) =>
-                                                 verficationCode(userEmail: _email_controller.text,)));
+                                      verficationCode(userEmail: _phone_controller.hashCode,)));
                                       ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar( content: Text('Signing in'))                                        
                                           );
                                     }
-                                  },
+                                  }
+                                  ,
                                   child: const Text('Submit')),
                             ],
                           )
@@ -166,7 +174,5 @@ class _email_auth extends State<email_auth> {
         ),
       ]),
     );
-
-  
   }
 }

@@ -1,31 +1,34 @@
-import 'dart:convert';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notify_ju/email_auth.dart';
-import 'package:notify_ju/verification.dart';
-import 'package:http/http.dart' as http;
-class phone_auth extends StatefulWidget {
-  const phone_auth({super.key});
+import 'package:notify_ju/Screens/phone_auth.dart';
+import 'package:notify_ju/Screens/verification.dart';
+
+
+final _firebase = FirebaseAuth.instance;
+
+class email_auth extends StatefulWidget {
+
+  const email_auth({super.key});
 
   @override
-  State<phone_auth> createState() => _phone_authState();
+  State<email_auth> createState() => _email_auth();
 }
 
-class _phone_authState extends State<phone_auth> {
-    bool _isLoading = false;
-    final Uri url = Uri.parse("https://notifyju-dc3fd-default-rtdb.firebaseio.com/users.json");
-    // ignore: non_constant_identifier_names
-    final _phone_controller = TextEditingController();
-    // ignore: non_constant_identifier_names
-    final _username_controller = TextEditingController();
-    final _formkey = GlobalKey<FormState>();
-  
+class _email_auth extends State<email_auth> {
+
+
+
+  final  _username_controller = TextEditingController();
+  final _email_controller = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return   Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        fit: StackFit.expand, children: [
+      body: Stack(fit: StackFit.expand, children: [
         Opacity(
           opacity: 0.6,
           child: Image.asset(
@@ -45,7 +48,6 @@ class _phone_authState extends State<phone_auth> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Row(
-          
                   children: [
                     Image(
                       image: AssetImage('images/uniLogo.png'),
@@ -80,12 +82,13 @@ class _phone_authState extends State<phone_auth> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(15))),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
                               hintText: 'Username',
                             ),
                             controller: _username_controller,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value == null || value.trim().isEmpty) {
                                 return 'Enter your Username';
                               }
                               return null;
@@ -95,25 +98,27 @@ class _phone_authState extends State<phone_auth> {
                           const Row(
                             children: [
                               Text(
-                                "Enter your phone number",
+                                "Enter your email",
                                 style: TextStyle(color: Colors.white),
                               ),
                             ],
                           ),
-                          TextFormField(
-                            keyboardType: TextInputType.phone,
+                          TextFormField( 
+                            textCapitalization: TextCapitalization.none,
+                            autocorrect: false,
+                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15))),
-                              hintText: 'Phone Number',
+                              hintText: 'Email',
                             ),
-                            controller: _phone_controller,
+                            controller: _email_controller,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter your Phone Number';
+                              if (value == null || value.isEmpty || !value.contains('@')) {
+                                return 'Enter your Email';
                               }
                               return null;
                             },
@@ -123,13 +128,11 @@ class _phone_authState extends State<phone_auth> {
                             children: [
                               TextButton(
                                   onPressed: () {
-
-
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const email_auth()));
+                                                const phone_auth()));
                                   },
                                   child: const Text(
                                     'Sign in another way',
@@ -146,34 +149,27 @@ class _phone_authState extends State<phone_auth> {
                            Row(
                             children: [
                               ElevatedButton(
-                                
-                              style:const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,foregroundColor: MaterialStatePropertyAll(Colors.white)),
-                                  onPressed:  () {
+                              style:const 
+                              ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(Colors.black) ,
+                              foregroundColor: MaterialStatePropertyAll(Colors.white) ,
+                              elevation: MaterialStatePropertyAll(4)
+                              ),
+                                  onPressed: () async{
 
-
-                                    http.post(url,
-                                    headers: {
-                                      'content-type': 'application/json'
-                                    },
-                                        body: json.encode({
-                                          "username": _username_controller.text,
-                                          "phone": _phone_controller.text
-                                        }));
-                                        
-                                    _isLoading = true;
+/******************************************************************************************************************/
 
                                     if (_formkey.currentState!.validate()) {
 
-                                      _formkey.currentState!.save();
-                                      Navigator.push(context,MaterialPageRoute(
+
+                                        Navigator.push(context,MaterialPageRoute(
                                             builder: (context) =>
-                                      verficationCode(userEmail: _phone_controller.hashCode,)));
+                                                 verficationCode(userEmail: _email_controller.text,)));
                                       ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar( content: Text('Signing in'))                                        
                                           );
                                     }
-                                  }
-                                  ,
+                                  },
                                   child: const Text('Submit')),
                             ],
                           )
@@ -186,5 +182,7 @@ class _phone_authState extends State<phone_auth> {
         ),
       ]),
     );
+
+  
   }
 }

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 175, 210, 134),
+    return Scaffold(
+        backgroundColor:const Color.fromARGB(255, 175, 210, 134),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 58, 132, 60),
         ),
@@ -16,7 +14,7 @@ class MyApp extends StatelessWidget {
           companyName: 'Contact Us',
           phoneNumber: '+96265355000',
           dividerThickness: 0,
-          dividerColor: Color.fromARGB(255, 175, 210, 134),
+          dividerColor:const Color.fromARGB(255, 175, 210, 134),
           website: 'https://www.ju.edu.jo/ar/arabic/Home.aspx',
           companyColor: Colors.white,
           textColor: Colors.black87,
@@ -25,10 +23,14 @@ class MyApp extends StatelessWidget {
           image: Image.asset(
             'images/uniLogo.png',
             scale: 2.0,
-            alignment: AlignmentDirectional(12.2, 13.1),
+            alignment: const AlignmentDirectional(12.2, 13.1),
           ),
         ),
-      ),
-    );
+      );
+    
+
+
+
+
   }
 }
