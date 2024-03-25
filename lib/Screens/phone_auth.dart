@@ -9,7 +9,7 @@ class phone_auth extends StatefulWidget {
 }
 
 class _phone_authState extends State<phone_auth> {
-   bool _isLoading = false;
+  bool _isLoading = false;
     
     final _phone_controller = TextEditingController();
     final _username_controller = TextEditingController();

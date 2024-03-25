@@ -7,7 +7,7 @@ class addReport extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 175, 210, 134),
+        backgroundColor: const Color.fromARGB(255, 175, 210, 134),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 58, 132, 60),
         ),

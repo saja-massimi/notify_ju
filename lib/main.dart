@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Screens/reportNotification.dart';
 import 'package:notify_ju/Screens/sign_in.dart';
+import 'package:notify_ju/add_report.dart';
+import 'package:notify_ju/categories.dart';
 import 'package:notify_ju/firebase_options.dart';
+import 'package:notify_ju/image_input.dart';
 
 
 void main()async {
-   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );
@@ -22,7 +25,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -30,8 +32,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home:const sign_inPage() ,
-     
+      home:Categories() ,
+  
     );
     
   }

@@ -106,7 +106,7 @@ class _email_auth extends State<email_auth> {
                           TextFormField( 
                             textCapitalization: TextCapitalization.none,
                             autocorrect: false,
-                             keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
@@ -146,7 +146,7 @@ class _email_auth extends State<email_auth> {
                           ),
 
                           const SizedBox(height: 10), 
-                           Row(
+                            Row(
                             children: [
                               ElevatedButton(
                               style:const 
@@ -164,7 +164,7 @@ class _email_auth extends State<email_auth> {
 
                                         Navigator.push(context,MaterialPageRoute(
                                             builder: (context) =>
-                                                 verficationCode(userEmail: _email_controller.text,)));
+                                              verficationCode(userEmail: _email_controller.text,)));
                                       ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar( content: Text('Signing in'))                                        
                                           );
