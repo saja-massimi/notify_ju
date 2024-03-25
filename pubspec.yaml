@@ -39,12 +39,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.2.1
   email_auth: ^1.1.1
-  mailer: ^6.1.0
-  get: ^4.6.6
-  firebase_core: ^2.27.1
-  firebase_auth: ^4.17.9
-  firebase_storage: ^11.6.10
-  cloud_firestore: ^4.15.9
 
 dev_dependencies:
   flutter_test:
