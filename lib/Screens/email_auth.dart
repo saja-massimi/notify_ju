@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/phone_auth.dart';
-import 'package:notify_ju/Screens/verification.dart';
+import 'package:notify_ju/Screens/email_OTP.dart';
+import 'package:notify_ju/Screens/sign_in.dart';
 
 
+//this will be the first page where the user enters password and email
+//the system then redircts to choosing otp page (sign_in.dart)
 final _firebase = FirebaseAuth.instance;
 
 class email_auth extends StatefulWidget {
@@ -18,8 +22,9 @@ class _email_auth extends State<email_auth> {
 
 
 
-  final  _username_controller = TextEditingController();
   final _email_controller = TextEditingController();
+  final  _password_controller = TextEditingController();
+
   final _formkey = GlobalKey<FormState>();
 
 
@@ -58,43 +63,18 @@ class _email_auth extends State<email_auth> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 25,
-                            fontWeight: FontWeight.bold)),
+                            fontWeight: FontWeight.bold
+                            )
+                            ),
                   ],
                 ),
 
-                //Form Feild
                 Form(
                     key: _formkey,
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Column(
                         children: [
-                          const Row(
-                            children: [
-                              Text(
-                                "Enter your username",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
-                              hintText: 'Username',
-                            ),
-                            controller: _username_controller,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Enter your Username';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
                           const Row(
                             children: [
                               Text(
@@ -123,27 +103,36 @@ class _email_auth extends State<email_auth> {
                               return null;
                             },
                           ),
+                          const SizedBox(height: 10),
 
-                          Row(
+                          const Row(
                             children: [
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const phone_auth()));
-                                  },
-                                  child: const Text(
-                                    'Sign in another way',
-                                    style: TextStyle(
-                                        color: Color.fromARGB(255, 158, 217, 244),
-                                        decoration: TextDecoration.underline,
-                                        decorationColor:  Color.fromARGB(255, 158, 217, 244)
-                                        ),
-                                  )),
+                              Text(
+                                "Enter your Password",
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ],
                           ),
+                          TextFormField( 
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              filled: true,
+                            
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
+                              hintText: 'Password',
+                            ),
+                            controller: _password_controller,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Enter your password';
+                              }
+                              return null;
+                            },
+                          ),
+                          
 
                           const SizedBox(height: 10), 
                             Row(
@@ -158,13 +147,13 @@ class _email_auth extends State<email_auth> {
                                   onPressed: () async{
 
 /******************************************************************************************************************/
+                                    Navigator.push(context,MaterialPageRoute(
+                                    builder: (context) =>
+                                    const sign_inPage()));
 
                                     if (_formkey.currentState!.validate()) {
 
 
-                                        Navigator.push(context,MaterialPageRoute(
-                                            builder: (context) =>
-                                              verficationCode(userEmail: _email_controller.text,)));
                                       ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar( content: Text('Signing in'))                                        
                                           );

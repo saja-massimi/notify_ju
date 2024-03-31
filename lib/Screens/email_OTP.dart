@@ -1,45 +1,25 @@
 // ignore_for_file: camel_case_types
 
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:email_auth/email_auth.dart';
+import 'package:notify_ju/Screens/landingPage.dart';
 
-class verficationCode extends StatefulWidget {
+class EmailOTP extends StatefulWidget {
   final  userEmail ;
 
-   verficationCode({super.key, this.userEmail });
+  const  EmailOTP({super.key, this.userEmail });
 
   @override
-  State<verficationCode> createState() => _verficationCodeState();
+  State<EmailOTP> createState() => _verficationCodeState();
 }
 
 
 
 
-class _verficationCodeState extends State<verficationCode> {
-  late EmailAuth email_Auth;
+class _verficationCodeState extends State<EmailOTP> {
 
 
   final _codeController = TextEditingController();
-
-
-
-
-
-void validateOTP()  {
-
-  EmailAuth emailAuth = EmailAuth(sessionName: 'Test Session');
-
-  var res =  emailAuth.validateOtp(userOtp: _codeController.text, recipientMail: widget.userEmail);
-  if(res){
-  
-    log('OTP verified');
-    
-    }
-}
-
-
 
 
   @override
@@ -82,7 +62,7 @@ void validateOTP()  {
                 ),
 
                   Padding(
-                    padding: EdgeInsets.all(20.0),
+                    padding:const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
                     
@@ -96,7 +76,7 @@ void validateOTP()  {
                         ),
 
                                 const   TextField(
-                               decoration: InputDecoration(
+                                decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
@@ -105,7 +85,7 @@ void validateOTP()  {
                               ),
                             ),
                             
-                       const   Row(
+                            const   Row(
                             children: [
                               TextButton(
                                   onPressed:null,
@@ -120,23 +100,27 @@ void validateOTP()  {
                                   )),
                             ],
                           ),
-
-                       const SizedBox(height: 10), 
-
-                           Row(
+                        const SizedBox(height: 10), 
+                          Row(
                             children: [
                               ElevatedButton(
                               style:const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,foregroundColor: MaterialStatePropertyAll(Colors.white)),
-                                  onPressed: () => validateOTP,
+                                  onPressed: () => {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>const LandingPage(),
+                                      ),
+                                    ),
+                                  },
+                              child:  const Text('Submit')
                                     
-                                  child: const Text('Submit')),
+                                    ),
                             ],
                           )
                       ],
                     ),
-                  )
-            
-            
+                  )        
               ],
             ),
           ),

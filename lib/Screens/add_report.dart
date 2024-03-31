@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'image_input.dart';
+import '../Widgets/image_input.dart';
 
 class addReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: const Color.fromARGB(255, 175, 210, 134),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 58, 132, 60),
@@ -66,7 +64,7 @@ class addReport extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }

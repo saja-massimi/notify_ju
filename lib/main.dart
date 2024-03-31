@@ -1,12 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Screens/reportNotification.dart';
+import 'package:notify_ju/Screens/email_auth.dart';
 import 'package:notify_ju/Screens/sign_in.dart';
-import 'package:notify_ju/add_report.dart';
-import 'package:notify_ju/categories.dart';
 import 'package:notify_ju/firebase_options.dart';
-import 'package:notify_ju/image_input.dart';
 
 
 void main()async {
@@ -32,8 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home:Categories() ,
-  
+      home: const email_auth(),
     );
     
   }

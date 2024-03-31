@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notify_ju/Screens/add_report.dart';
 
 class Categories extends StatelessWidget {
   final List<String> image = [
@@ -8,16 +9,14 @@ class Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
         backgroundColor:const Color.fromARGB(255, 175, 210, 134),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 58, 132, 60),
         ),
         body: ListView(
           children: [
-            SizedBox(height: 30.0),
+          const  SizedBox(height: 30.0),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -38,11 +37,25 @@ class Categories extends StatelessWidget {
               children: List.generate(
                 image.length,
                 (index) => Container(
+              
                   padding: const EdgeInsets.all(8.0),
-                  child: ClipOval(
-                    child: Image.asset(
-                      image[index],
-                      fit: BoxFit.cover,
+                  child: ElevatedButton(
+                    onPressed: () {
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => addReport()),
+                    );
+
+                
+                    },
+                    child: ClipOval(
+                      child: Image.asset(
+                        
+                        image[index],
+                        fit: BoxFit.cover,
+                        
+                      ),
                     ),
                   ),
                 ),
@@ -50,7 +63,6 @@ class Categories extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

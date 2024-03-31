@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/email_auth.dart';
-import 'package:notify_ju/Screens/phone_auth.dart';
+import 'package:notify_ju/Screens/email_OTP.dart';
+import 'package:notify_ju/Screens/phone_OTP.dart';
 
-
+//changed it to choose otp send method
+// the user could choose sending an email
+// or a phomne number to +962 XXXXX last two digits
 class sign_inPage extends StatefulWidget {
   const sign_inPage({super.key});
- static const routeName  = '/sign_inPage';
 
   @override
   State<sign_inPage> createState() => _sign_inPageState();
 }
+
 
 class _sign_inPageState extends State<sign_inPage> {
 
@@ -55,7 +57,7 @@ class _sign_inPageState extends State<sign_inPage> {
                       const SizedBox(height: 15),
                       const Padding(
                         padding: EdgeInsets.all(15.0),
-                        child: Text("Choose Your Sign-In Method",
+                        child: Text("Send Code Via",
                             style: TextStyle(
                                 decorationThickness: 50,
                                 color: Colors.white,
@@ -67,12 +69,12 @@ class _sign_inPageState extends State<sign_inPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const phone_auth()));
+                                  builder: (context) => const phoneOTP()));
                         },
                         
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(
-                           const EdgeInsets.all(25)),
+                          const EdgeInsets.all(25)),
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                         ),
@@ -84,11 +86,11 @@ class _sign_inPageState extends State<sign_inPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const email_auth()));
+                                  builder: (context) => const EmailOTP()));
                         },
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(
-                           const EdgeInsets.fromLTRB(47,25,47,25)),
+                          const EdgeInsets.fromLTRB(47,25,47,25)),
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                         ),
@@ -105,4 +107,3 @@ class _sign_inPageState extends State<sign_inPage> {
     );
   }
 }
-       
