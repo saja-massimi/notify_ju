@@ -2,7 +2,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/landingPage.dart';
+import 'package:notify_ju/Screens/categories.dart';
 
 class EmailOTP extends StatefulWidget {
   final  userEmail ;
@@ -19,7 +19,7 @@ class EmailOTP extends StatefulWidget {
 class _verficationCodeState extends State<EmailOTP> {
 
 
-  final _codeController = TextEditingController();
+ // final _codeController = TextEditingController();
 
 
   @override
@@ -109,7 +109,7 @@ class _verficationCodeState extends State<EmailOTP> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>const LandingPage(),
+                                        builder: (context) =>Categories(),
                                       ),
                                     ),
                                   },

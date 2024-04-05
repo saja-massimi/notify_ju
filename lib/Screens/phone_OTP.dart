@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/landingPage.dart';
+import 'package:notify_ju/Screens/categories.dart';
 
 class phoneOTP extends StatelessWidget {
   const phoneOTP
@@ -8,7 +8,7 @@ class phoneOTP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final _codeController = TextEditingController();
+   // final _codeController = TextEditingController();
     
     return Scaffold(
       backgroundColor: Colors.white,
@@ -95,7 +95,7 @@ class phoneOTP extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>const LandingPage(),
+                                      builder: (context) => Categories(),
                                       ),
                                     ),
                                   },
