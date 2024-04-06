@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:notify_ju/Screens/categories.dart';
+import 'package:notify_ju/Widgets/mic.dart';
 import '../Widgets/image_input.dart';
+import 'ReportNotification.dart';
+import 'package:intl/intl.dart';
 
 class addReport extends StatelessWidget {
+  final String reportType;
+
+  addReport({required this.reportType});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,13 +16,13 @@ class addReport extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 58, 132, 60),
         ),
-        body: const SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Column(
               children: [
                 SizedBox(height: 30.0),
-                Text(
+                const Text(
                   'new Report',
                   style: TextStyle(
                     fontSize: 30,
@@ -25,21 +32,23 @@ class addReport extends StatelessWidget {
                 ),
                 TextField(
                   enabled: false,
-                  decoration:
-                      InputDecoration(hintText: 'Report Type :', filled: true),
+                  readOnly: true,
+                  decoration: const InputDecoration(
+                      hintText: 'Report Type : ', filled: true),
+                  controller: TextEditingController(text: reportType),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.2,
                 ),
-                TextField(
-                  enabled: false,
+                const TextField(
+                  enabled: true,
                   decoration:
                       InputDecoration(hintText: 'Address :', filled: true),
                 ),
                 SizedBox(
                   height: 20.2,
                 ),
-                TextField(
+                const TextField(
                   keyboardType: TextInputType.multiline,
                   maxLines: 5,
                   enabled: true,
@@ -58,13 +67,44 @@ class addReport extends StatelessWidget {
                     hintText: 'date : ',
                     filled: true,
                   ),
+                  controller: TextEditingController(
+                    text:
+                        DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
+                  ),
                 ),
                 ImageInput(),
+                MicInput(),
               ],
             ),
           ),
         ),
-      );
-    
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.green,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'notifications',
+                backgroundColor: Colors.white),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+                backgroundColor: Colors.white),
+          ],
+          selectedItemColor: Color.fromARGB(255, 255, 255, 255),
+          onTap: (int index) {
+            if (index == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ReportNotification()),
+              );
+            } else if (index == 1) {
+              // Replace `HomePage` with the desired home page widget
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Categories()),
+              );
+            }
+          },
+        ));
   }
 }
