@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:notify_ju/Screens/sign_in.dart';
 
 
@@ -142,10 +143,8 @@ class _email_auth extends State<email_auth> {
                                   onPressed: () async{
 
 /******************************************************************************************************************/
-                                    Navigator.push(context,MaterialPageRoute(
-                                    builder: (context) =>
-                                    const sign_inPage()));
-
+                      
+                                    Get.to(sign_inPage());
                                     if (_formkey.currentState!.validate()) {
 
 
