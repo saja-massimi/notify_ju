@@ -43,7 +43,7 @@ dependencies:
   email_auth: ^1.1.1
   image_picker: ^1.0.7
   get: ^4.6.6
-  
+  sqflite: ^2.0.0+3
 dev_dependencies:
   flutter_test:
     sdk: flutter
