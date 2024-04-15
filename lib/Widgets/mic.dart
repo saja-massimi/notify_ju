@@ -7,7 +7,7 @@ class MicInput extends StatefulWidget {
 }
 
 class _MicInputState extends State<MicInput> {
-  FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _MicInputState extends State<MicInput> {
           icon: Icon(Icons.mic),
           onPressed: _startRecording,
         ),
-        SizedBox(width: 20), // Add some space between the buttons
+      const SizedBox(width: 20), 
         IconButton(
           icon: Icon(Icons.stop),
           onPressed: _stopRecording,

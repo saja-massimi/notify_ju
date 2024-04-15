@@ -142,9 +142,8 @@ class _email_auth extends State<email_auth> {
                               ),
                                   onPressed: () async{
 
-/******************************************************************************************************************/
-                      
-                                    Get.to(sign_inPage());
+                                  //add logic                      
+                                    Get.to(const sign_inPage());
                                     if (_formkey.currentState!.validate()) {
 
 

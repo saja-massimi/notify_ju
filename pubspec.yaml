@@ -73,6 +73,7 @@ flutter:
     - images/uniPic.jpeg
     - images/tree.png
     - images/fight.webp
+    - images\fight1.webp
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Screens/reportsHistory.dart';
+// import 'Screens/reportsHistory.dart';
 
 class DrawerWidget extends StatelessWidget {
   @override
@@ -8,7 +8,7 @@ class DrawerWidget extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
+        const DrawerHeader(
             decoration: BoxDecoration(
               color: Color(0xFF69BE49), // Set the drawer header color
             ),
@@ -18,28 +18,28 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('My Profile'),
+            title:const Text('My Profile'),
             onTap: () {
               // Handle My Profile tap
             },
           ),
           ListTile(
-            title: Text('Report History'),
+            title:const Text('Report History'),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ReportsHistoryPage()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ReportsHistoryPage()),
+              // );
             },
           ),
           ListTile(
-            title: Text('Contact Us'),
+            title: const Text('Contact Us'),
             onTap: () {
               // Handle Contact Us tap
             },
           ),
           ListTile(
-            title: Text('Sign out'),
+            title: const Text('Sign out'),
             onTap: () {
               // Handle Sign out tap
             },
