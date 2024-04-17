@@ -33,7 +33,7 @@ class _sign_inPageState extends State<sign_inPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0,40,0,40),
+            padding: const EdgeInsets.fromLTRB(0,0,0,0),
             child: Container(
               decoration: BoxDecoration(
                 color:const Color(0xFF3A652B).withOpacity(0.4), 
