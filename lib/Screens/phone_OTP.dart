@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/categories.dart';
-
+//increase black button size
+// lift up the button
 class phoneOTP extends StatelessWidget {
   const phoneOTP
 ({super.key});
@@ -23,7 +24,7 @@ class phoneOTP extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Container(
             decoration: BoxDecoration(
               color: const Color(0xFF3A652B).withOpacity(0.6),

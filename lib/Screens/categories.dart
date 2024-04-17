@@ -12,13 +12,11 @@ class Categories extends StatelessWidget {
   ];
 
   final List<String> names = [
-    'Fight - شجار',
-    'Weather Catastrophies - كوارث جوية',
-    'Fire - حريق',
-    'Theft - سرقة',
+    'Fight ',
+    'Fire ',
+    'Theft ',
     'Car Accident - حادث سيارة',
-    'Maintenance accidents - حوادث صيانة',
-    'Stray Animals - حيوانات برية',
+    'Stray Animals - حيوانات ضالة',
     'Injury - إصابة'
         'Infrastructure Damage - تلف البنية التحتية',
   ];
@@ -27,11 +25,11 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: DrawerWidget(),
-        backgroundColor: Color.fromARGB(255, 225, 230, 205),
+        backgroundColor: const Color(0xFFEFF5EA),
         appBar: AppBar(
           centerTitle: true,
           title: const Text('Choose A Category'),
-          backgroundColor: const Color.fromARGB(255, 175, 210, 134),
+          backgroundColor: Color(0xFF69BE49),
         ),
         body: Column(
           children: [
@@ -65,6 +63,26 @@ class Categories extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBarWidget());
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: const Color(0xFF69BE49),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'Notifications',
+                backgroundColor: Colors.white),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+                backgroundColor: Colors.white),
+          ],
+          selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+          onTap: (int index) {
+            if (index == 0) {
+              Get.to(const ReportNotification());
+            } else if (index == 1) {
+              Get.to(Categories());
+            }
+          },
+        ));
   }
 }

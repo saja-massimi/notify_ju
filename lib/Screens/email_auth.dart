@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Screens/sign_in.dart';
@@ -17,7 +18,7 @@ class email_auth extends StatefulWidget {
 class _email_auth extends State<email_auth> {
 
 
-
+  final firebase_inst = FirebaseAuth.instance;
   final _email_controller = TextEditingController();
   final  _password_controller = TextEditingController();
 
@@ -27,6 +28,21 @@ class _email_auth extends State<email_auth> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    
+void checkUser() {
+FirebaseAuth.instance
+  .authStateChanges()
+  .listen((User? user) {
+    if (user == null) {      
+    print('User is currently signed out!');
+    } else {
+    Get.to(const email_auth());
+    }
+  });
+
+}
     return   Scaffold(
       backgroundColor: Colors.white,
       body: Stack(fit: StackFit.expand, children: [
@@ -39,8 +55,9 @@ class _email_auth extends State<email_auth> {
             colorBlendMode: BlendMode.modulate,
           ),
         ),
+
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Container(
             decoration: BoxDecoration(
               color: const Color(0xFF3A652B).withOpacity(0.6),
@@ -89,12 +106,12 @@ class _email_auth extends State<email_auth> {
                               border: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15))),
-                              hintText: 'Email',
+                              hintText: 'example@ju.edu.jo',
                             ),
                             controller: _email_controller,
                             validator: (value) {
                               if (value == null || value.isEmpty || !value.contains('@')) {
-                                return 'Enter your Email';
+                                return 'Enter your university email';
                               }
                               return null;
                             },
@@ -141,7 +158,7 @@ class _email_auth extends State<email_auth> {
                               elevation: MaterialStatePropertyAll(4)
                               ),
                                   onPressed: () async{
-
+                                    
                                   //add logic                      
                                     Get.to(const sign_inPage());
                                     if (_formkey.currentState!.validate()) {
