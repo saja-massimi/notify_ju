@@ -34,6 +34,7 @@ dependencies:
   contactus: ^1.2.3
   intl: ^0.17.0
   flutter_sound: ^8.1.4
+  flutter_svg: ^2.0.5
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -46,6 +47,7 @@ dependencies:
   sqflite: ^2.0.0+3
   firebase_core: ^2.29.0
   firebase_auth: ^4.19.1
+  font_awesome_flutter: ^10.7.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,9 +75,16 @@ flutter:
 
     - images/uniLogo.png
     - images/uniPic.jpeg
-    - images/tree.png
     - images/fight.webp
     - images\fight1.webp
+    - images/tree-1559.png
+    - images\fire.png
+    - images/Theft.png
+    - images\car.png
+    - images/animal.png
+    - images\injury.png
+    - images\damage.webp
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
