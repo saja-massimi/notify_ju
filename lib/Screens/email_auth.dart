@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Screens/sign_in.dart';
@@ -18,7 +17,7 @@ class email_auth extends StatefulWidget {
 class _email_auth extends State<email_auth> {
 
 
-  final firebase_inst = FirebaseAuth.instance;
+  
   final _email_controller = TextEditingController();
   final  _password_controller = TextEditingController();
 
@@ -31,18 +30,7 @@ class _email_auth extends State<email_auth> {
 
 
     
-void checkUser() {
-FirebaseAuth.instance
-  .authStateChanges()
-  .listen((User? user) {
-    if (user == null) {      
-    print('User is currently signed out!');
-    } else {
-    Get.to(const email_auth());
-    }
-  });
 
-}
     return   Scaffold(
       backgroundColor: Colors.white,
       body: Stack(fit: StackFit.expand, children: [

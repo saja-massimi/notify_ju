@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/add_report.dart';
-import 'package:notify_ju/Screens/reportNotification.dart';
-import 'package:get/get.dart';
 import 'package:notify_ju/bottomNavBar.dart';
 import 'package:notify_ju/drawer.dart';
 
