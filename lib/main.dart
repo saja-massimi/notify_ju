@@ -7,26 +7,16 @@ import 'package:notify_ju/firebase_options.dart';
 
 void main() async {
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
-
-
-
-
-
-
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -34,7 +24,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const email_auth(),
-    
     );
   }
 }
