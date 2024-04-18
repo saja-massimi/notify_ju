@@ -25,8 +25,8 @@ class ProfileWidget extends StatelessWidget {
       create: (context) => ProfileModel(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Profile'),
-          backgroundColor: Color(0xFF69BE49),
+          title: const Text('Profile'),
+          backgroundColor: const Color(0xFF69BE49),
         ),
         drawer: DrawerWidget(), // Use the DrawerWidget here
         body: Consumer<ProfileModel>(
@@ -37,23 +37,23 @@ class ProfileWidget extends StatelessWidget {
               children: [
                 TextField(
                   controller: model.nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextField(
                   controller: model.emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(labelText: 'Email'),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextField(
                   controller: model.studentIdController,
-                  decoration: InputDecoration(labelText: 'Student ID'),
+                  decoration:const InputDecoration(labelText: 'Student ID'),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextField(
                   controller: model.phoneNumberController,
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(labelText: 'Phone number'),
+                  decoration: const InputDecoration(labelText: 'Phone number'),
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
@@ -61,7 +61,7 @@ class ProfileWidget extends StatelessWidget {
                     // Handle save action
                     print('Save button pressed');
                   },
-                  child: Text('Save'),
+                  child: const Text('Save'),
                 ),
               ],
             ),

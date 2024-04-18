@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:notify_ju/Screens/profile.dart';
 // import 'Screens/reportsHistory.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -21,7 +23,7 @@ class DrawerWidget extends StatelessWidget {
             title:const Text('My Profile'),
             onTap: () {
               // Handle My Profile tap
-            },
+              },
           ),
           ListTile(
             title:const Text('Report History'),

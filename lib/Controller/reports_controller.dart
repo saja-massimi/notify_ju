@@ -26,4 +26,6 @@ class ReportsControllrt extends GetxController{
   void setImage(String value) {
     image.value = value;
   }
+
+  
 }

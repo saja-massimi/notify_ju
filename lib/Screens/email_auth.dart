@@ -6,7 +6,7 @@ import 'package:notify_ju/Screens/sign_in.dart';
 
 //this will be the first page where the user enters password and email
 //the system then redircts to choosing otp page (sign_in.dart)
-
+//
 class email_auth extends StatefulWidget {
 
   const email_auth({super.key});
