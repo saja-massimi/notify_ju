@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "871782868497",
+    "project_id": "notifyju2",
+    "storage_bucket": "notifyju2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871782868497:android:d6662a09fb3d2b0126b3b0",
+        "android_client_info": {
+          "package_name": "com.example.notify_ju"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZoqS2kDJd1_ot7MDUHFbuZZ3p0Cj_avs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

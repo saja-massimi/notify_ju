@@ -47,6 +47,7 @@ dependencies:
   sqflite: ^2.0.0+3
 
   font_awesome_flutter: ^10.7.0
+  firebase_core: ^2.30.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
