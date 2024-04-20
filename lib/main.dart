@@ -6,9 +6,7 @@ import 'package:notify_ju/Screens/email_auth.dart';
 import 'package:notify_ju/Screens/profile.dart';
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 
