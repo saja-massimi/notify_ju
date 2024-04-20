@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:notify_ju/Screens/categories.dart';
+import 'package:notify_ju/bottomNavBar.dart';
 
 class ReportNotification extends StatelessWidget {
   const ReportNotification({super.key});
@@ -7,19 +9,24 @@ class ReportNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 175, 210, 134),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: const Center(child: Text('Report Notification')),
-        backgroundColor: const Color.fromARGB(255, 175, 210, 134),
+        centerTitle: true,
+        title:
+            const Text('Report History', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF69BE49),
       ),
       body: const Column(
         children: [
           SizedBox(
+            height: 20.0,
+          ),
+          SizedBox(
             width: 500,
-            height: 200.0,
+            height: 100.0,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 203, 203, 203),
               ),
               child: Text(
                 'Report 1. Car Accident at Faculaty of Medicine',
@@ -28,48 +35,24 @@ class ReportNotification extends StatelessWidget {
             ),
           ),
           SizedBox(
+            height: 20.0,
+          ),
+          SizedBox(
             width: 500,
-            height: 200.0,
+            height: 100.0,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 203, 203, 203),
               ),
               child: Text(
-                'Report 1. Car Accident at Faculaty of Medicine',
+                'Report 2. Car Accident at Faculaty of Medicine',
                 style: TextStyle(fontSize: 17.0),
               ),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.green,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'notifications',
-              backgroundColor: Colors.white),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.white),
-        ],
-        selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-        onTap: (int index) {
-          if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ReportNotification()),
-            );
-          } else if (index == 1) {
-            // Replace `HomePage` with the desired home page widget
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Categories()),
-            );
-          }
-        },
-      ),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }

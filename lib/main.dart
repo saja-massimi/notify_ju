@@ -5,10 +5,7 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();  
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -23,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: const email_auth(),
+      home: email_auth(),
     );
   }
 }

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Screens/contact.dart';
+import 'package:notify_ju/Screens/email_auth.dart';
 import 'package:notify_ju/Screens/profile.dart';
+import 'package:notify_ju/Screens/reportNotification.dart';
+// import 'Screens/reportsHistory.dart';
 
 class DrawerWidget extends StatelessWidget {
   @override
@@ -9,7 +13,7 @@ class DrawerWidget extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-        const DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Color(0xFF69BE49), // Set the drawer header color
             ),
@@ -19,27 +23,29 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            title:const Text('My Profile'),
+            title: const Text('My Profile'),
             onTap: () {
               Get.to(ProfileWidget());
               },
+              Get.to(() => ProfileWidget());
+            },
           ),
           ListTile(
-            title:const Text('Report History'),
+            title: const Text('Report History'),
             onTap: () {
-            
+              Get.to(() => ReportNotification());
             },
           ),
           ListTile(
             title: const Text('Contact Us'),
             onTap: () {
-              // Handle Contact Us tap
+              Get.to(() => contact_us());
             },
           ),
           ListTile(
             title: const Text('Sign out'),
             onTap: () {
-              // Handle Sign out tap
+              Get.to(() => email_auth());
             },
           ),
         ],

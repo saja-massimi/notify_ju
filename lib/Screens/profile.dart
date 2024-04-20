@@ -25,7 +25,11 @@ class ProfileWidget extends StatelessWidget {
       create: (context) => ProfileModel(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Profile'),
+          centerTitle: true,
+          title: const Text(
+            'Profile',
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: const Color(0xFF69BE49),
         ),
         drawer: DrawerWidget(), // Use the DrawerWidget here
@@ -47,7 +51,7 @@ class ProfileWidget extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextField(
                   controller: model.studentIdController,
-                  decoration:const InputDecoration(labelText: 'Student ID'),
+                  decoration: const InputDecoration(labelText: 'Student ID'),
                 ),
                 const SizedBox(height: 16),
                 TextField(
