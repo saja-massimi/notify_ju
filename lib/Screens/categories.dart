@@ -42,12 +42,13 @@ class Categories extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 5.0,
               mainAxisSpacing: 5.0,
+              clipBehavior: Clip.antiAlias,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: List.generate(
                 image.length,
                 (index) => Container(
-                  padding: const EdgeInsets.all(6.0),
+                  padding: const EdgeInsets.all(3),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -59,12 +60,27 @@ class Categories extends StatelessWidget {
                         ),
                       );
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
                     child: Column(
                       children: [
+                        SizedBox(height: 15),
                         Container(
-                          child: Image.asset(image[index], fit: BoxFit.cover),
+                          height: 100,
+                          // Adjust height to desired size
+                          child: Image.asset(image[index],
+                              fit: BoxFit.fitHeight,
+                              scale: 1.0,
+                              alignment: Alignment.center),
                         ),
-                        Text(names[index]),
+                        SizedBox(height: 15),
+                        Text(names[index],
+                            style: TextStyle(fontSize: 16),
+                            textAlign: TextAlign.center),
                       ],
                     ),
                   ),
