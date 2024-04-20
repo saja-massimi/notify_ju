@@ -31,7 +31,8 @@ class Categories extends StatelessWidget {
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Choose A Category'),
+        title: const Text('Choose A Category',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF69BE49),
       ),
       body: SingleChildScrollView(
