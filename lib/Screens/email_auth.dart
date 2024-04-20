@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Screens/sign_in.dart';
-
+import 'package:notify_ju/Controller/signupController.dart';
+import 'package:notify_ju/Screens/categories.dart';
 
 //this will be the first page where the user enters password and email
 //the system then redircts to choosing otp page (sign_in.dart)
-//
+
 class email_auth extends StatefulWidget {
 
   const email_auth({super.key});
@@ -16,10 +17,8 @@ class email_auth extends StatefulWidget {
 
 class _email_auth extends State<email_auth> {
 
-
-  
-  final _email_controller = TextEditingController();
-  final  _password_controller = TextEditingController();
+  final controller = Get.put(SignupController());
+ 
 
   final _formkey = GlobalKey<FormState>();
 
@@ -96,7 +95,7 @@ class _email_auth extends State<email_auth> {
                                       BorderRadius.all(Radius.circular(15))),
                               hintText: 'example@ju.edu.jo',
                             ),
-                            controller: _email_controller,
+                            controller: controller.email,
                             validator: (value) {
                               if (value == null || value.isEmpty || !value.contains('@')) {
                                 return 'Enter your university email';
@@ -125,7 +124,7 @@ class _email_auth extends State<email_auth> {
                                       BorderRadius.all(Radius.circular(15))),
                               hintText: 'Password',
                             ),
-                            controller: _password_controller,
+                            controller: controller.password,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Enter your password';
@@ -146,15 +145,24 @@ class _email_auth extends State<email_auth> {
                               elevation: MaterialStatePropertyAll(4)
                               ),
                                   onPressed: () async{
+                              
+                                    if(_formkey.currentState!.validate()){
+                                      try{
+                                        
+                                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                          email: controller.email.text,
+                                          password: controller.password.text,
+                                        );
+
+                                        await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+                                        Get.snackbar('Email Verification', 'An email with OTP has been sent to your email address');
+                                      if(FirebaseAuth.instance.currentUser!.emailVerified){
+                                        Get.to(Categories());
+                                      }
                                     
-                                  //add logic                      
-                                    Get.to(const sign_inPage());
-                                    if (_formkey.currentState!.validate()) {
-
-
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar( content: Text('Signing in'))                                        
-                                          );
+                                      }  catch (e) {
+                                        Get.snackbar('Error', 'Email or password is incorrect');
+                                      }
                                     }
                                   },
                                   child: const Text('Submit')),

@@ -20,7 +20,7 @@ class contact_us extends StatelessWidget {
           textColor: Colors.black87,
           cardColor: Colors.white,
           taglineColor: Colors.white38,
-          image: Image.asset(
+          image:Image.asset(
             'images/uniLogo.png',
             scale: 2.0,
             alignment: const AlignmentDirectional(12.2, 13.1),

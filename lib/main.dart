@@ -3,9 +3,9 @@ import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
-import 'package:notify_ju/Screens/profile.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: ProfileWidget(),
+      home: const email_auth(),
     );
   }
 }

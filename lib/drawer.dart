@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'Screens/reportsHistory.dart';
+import 'package:get/get.dart';
+import 'package:notify_ju/Screens/profile.dart';
 
 class DrawerWidget extends StatelessWidget {
   @override
@@ -20,16 +21,13 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             title:const Text('My Profile'),
             onTap: () {
-              // Handle My Profile tap
+              Get.to(ProfileWidget());
               },
           ),
           ListTile(
             title:const Text('Report History'),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ReportsHistoryPage()),
-              // );
+            
             },
           ),
           ListTile(
