@@ -7,7 +7,6 @@ class Categories extends StatelessWidget {
   final List<String> image = [
     'images/fight1.webp',
     'images/fire.png',
-    'images/Theft.png',
     'images/car.png',
     'images/animal.png',
     'images/injury.png',
@@ -17,7 +16,6 @@ class Categories extends StatelessWidget {
   final List<String> names = [
     'Fight',
     'Fire',
-    'Theft',
     'Car Accident',
     'Stray Animals',
     'Injury',
