@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/contact.dart';
-import 'package:notify_ju/Screens/email_auth.dart';
 import 'package:notify_ju/Screens/profile.dart';
 import 'package:notify_ju/Screens/reportNotification.dart';
-// import 'Screens/reportsHistory.dart';
+
 
 class DrawerWidget extends StatelessWidget {
+  const DrawerWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -15,7 +17,7 @@ class DrawerWidget extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Color(0xFF69BE49), // Set the drawer header color
+              color: Color(0xFF69BE49), 
             ),
             child: Text(
               'Menu',
@@ -26,14 +28,12 @@ class DrawerWidget extends StatelessWidget {
             title: const Text('My Profile'),
             onTap: () {
               Get.to(ProfileWidget());
-              },
-              Get.to(() => ProfileWidget());
-            },
+                  },
           ),
           ListTile(
             title: const Text('Report History'),
             onTap: () {
-              Get.to(() => ReportNotification());
+              Get.to(() => const ReportNotification());
             },
           ),
           ListTile(
@@ -45,7 +45,7 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             title: const Text('Sign out'),
             onTap: () {
-              Get.to(() => email_auth());
+              AuthenticationRepository.instance.logout();              
             },
           ),
         ],

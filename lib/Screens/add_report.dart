@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Widgets/mic.dart';
-import 'package:notify_ju/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import '../Widgets/image_input.dart';
-import 'ReportNotification.dart';
 import 'package:intl/intl.dart';
 
 class addReport extends StatelessWidget {
@@ -13,7 +11,7 @@ class addReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Add Report', style: TextStyle(color: Colors.white)),
@@ -42,7 +40,7 @@ class addReport extends StatelessWidget {
                 decoration:
                     InputDecoration(hintText: 'Address :', filled: true),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.2,
               ),
               const TextField(
@@ -54,13 +52,13 @@ class addReport extends StatelessWidget {
                   filled: true,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.2,
               ),
               TextField(
                 keyboardType: TextInputType.datetime,
                 enabled: false,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'date : ',
                   filled: true,
                 ),
@@ -68,7 +66,7 @@ class addReport extends StatelessWidget {
                   text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
                 ),
               ),
-              ImageInput(),
+              const ImageInput(),
               MicInput(),
             ],
           ),

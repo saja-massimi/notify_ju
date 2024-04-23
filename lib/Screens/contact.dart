@@ -1,6 +1,6 @@
 import 'package:contactus/contactus.dart';
 import 'package:flutter/material.dart';
-import 'package:notify_ju/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/bottomNavBar.dart';
 
 class contact_us extends StatelessWidget {
   @override

@@ -1,11 +1,10 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/signupController.dart';
-import 'package:notify_ju/Screens/categories.dart';
 
-//this will be the first page where the user enters password and email
-//the system then redircts to choosing otp page (sign_in.dart)
+
 
 class email_auth extends StatefulWidget {
 
@@ -15,21 +14,16 @@ class email_auth extends StatefulWidget {
   State<email_auth> createState() => _email_auth();
 }
 
+// ignore: camel_case_types
 class _email_auth extends State<email_auth> {
 
   final controller = Get.put(SignupController());
- 
-
   final _formkey = GlobalKey<FormState>();
 
 
 
   @override
   Widget build(BuildContext context) {
-
-
-    
-
     return   Scaffold(
       backgroundColor: Colors.white,
       body: Stack(fit: StackFit.expand, children: [
@@ -91,13 +85,13 @@ class _email_auth extends State<email_auth> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(15))),
                               hintText: 'example@ju.edu.jo',
                             ),
                             controller: controller.email,
                             validator: (value) {
-                              if (value == null || value.isEmpty || !value.contains('@')) {
+                              if (value == null || value.trim().isEmpty || !value.contains('@ju.edu.jo')) {
                                 return 'Enter your university email';
                               }
                               return null;
@@ -117,11 +111,10 @@ class _email_auth extends State<email_auth> {
                             obscureText: true,
                             decoration: const InputDecoration(
                               filled: true,
-                            
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(15))),
                               hintText: 'Password',
                             ),
                             controller: controller.password,
@@ -147,22 +140,9 @@ class _email_auth extends State<email_auth> {
                                   onPressed: () async{
                               
                                     if(_formkey.currentState!.validate()){
-                                      try{
-                                        
-                                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                          email: controller.email.text,
-                                          password: controller.password.text,
-                                        );
-
-                                        await FirebaseAuth.instance.currentUser!.sendEmailVerification();
-                                        Get.snackbar('Email Verification', 'An email with OTP has been sent to your email address');
-                                      if(FirebaseAuth.instance.currentUser!.emailVerified){
-                                        Get.to(Categories());
-                                      }
                                     
-                                      }  catch (e) {
-                                        Get.snackbar('Error', 'Email or password is incorrect');
-                                      }
+                                      controller.loginUser(controller.email.text, controller.password.text);
+                                      
                                     }
                                   },
                                   child: const Text('Submit')),

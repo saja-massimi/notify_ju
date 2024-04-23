@@ -1,12 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
+import 'package:notify_ju/firebase_options.dart';
 
 void main() async {
-  Firebase.initializeApp();
-  runApp(const MyApp());
+  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).
+  then((value) => Get.put(AuthenticationRepository()));
+
+  runApp(const MyApp()) ;
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: email_auth(),
+      home: const email_auth(),
     );
   }
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Screens/add_report.dart';
 import 'package:notify_ju/Screens/categories.dart';
-import 'package:notify_ju/Screens/reportNotification.dart';
 
+// ignore: use_key_in_widget_constructors
 class BottomNavigationBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
           Get.to(() => Categories());
         }
       },
-      backgroundColor: Color(0xFF69BE49),
+      backgroundColor: const Color(0xFF69BE49),
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white,
     );

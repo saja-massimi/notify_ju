@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../drawer.dart';
-import '../bottomNavBar.dart';
+import '../Widgets/drawer.dart';
+import '../Widgets/bottomNavBar.dart';
 
 class ProfileModel extends ChangeNotifier {
   TextEditingController nameController = TextEditingController();

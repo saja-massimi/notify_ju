@@ -1,131 +1,74 @@
-// ignore_for_file: camel_case_types
-
-
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/categories.dart';
+import 'package:get/get.dart';
+import 'package:notify_ju/Controller/mail_authenticationController.dart';
 
-class EmailOTP extends StatefulWidget {
-  final  userEmail ;
-
-  const  EmailOTP({super.key, this.userEmail });
+class email_otp extends StatefulWidget {
+  const email_otp({super.key});
 
   @override
-  State<EmailOTP> createState() => _verficationCodeState();
+  State<email_otp> createState() => _email_otpState();
 }
 
+class _email_otpState extends State<email_otp> {
 
-
-
-class _verficationCodeState extends State<EmailOTP> {
-
-
- // final _codeController = TextEditingController();
-
+    final controller = Get.put(MailAuthenticationController());
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(fit: StackFit.expand, children: [
-        Opacity(
-          opacity: 0.6,
-          child: Image.asset(
-            'images/uniPic.jpeg',
-            fit: BoxFit.cover,
-            color: const Color(0xFF96DE7C),
-            colorBlendMode: BlendMode.modulate,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-          child: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF3A652B).withOpacity(0.6),
-            ),
-            child:  Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-              const Row(
-                  children: [
-                    Image(
-                      image: AssetImage('images/uniLogo.png'),
-                      width: 150,
-                      height: 140,
-                    ),
-                    Text('Notify JU',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold)
-                            ),
-                  ],
-                ),
 
-                  Padding(
-                    padding:const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                    
-                      const  Row(
-                          children: [
-                            Text("Enter the Verification Code",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20)),
-                          ],
+      backgroundColor: const Color(0xFF96DE7C),
+
+      body: Stack(fit: StackFit.expand, children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+                  const Icon(
+                      Icons.email_outlined,
+                      size: 100,
+                    ),
+                
+                  const SizedBox(height: 20,),
+                  const  Text('Verify your email address',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                            )
+                            ),
+                      const  SizedBox(height: 20,),
+                      const Text('We have just sent an email verification link to \n your email address. Please click on the link to\n verify your email address.',
+                      textAlign:TextAlign.center ,
+                      style: TextStyle(color: Colors.white),),
+                      const SizedBox(height: 25,),
+                      const  Text('If you have not received the email, please check\n your spam folder or click on the button below to\n resend the email.',
+                      textAlign:TextAlign.center ,
+                      style: TextStyle(color: Colors.white),),
+                      const  SizedBox(height: 25,),
+                      
+                        ElevatedButton(
+                          onPressed: ()=>controller.sendVerficationEmail(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                            textStyle: const TextStyle(
+                            fontSize: 20,
+                            )
+                          ),
+                          child: const Text('Resend Email'),
                         ),
 
-                                const   TextField(
-                                decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(15))),
-                                hintText: 'Code',
-                              ),
-                            ),
-                            
-                            const   Row(
-                            children: [
-                              TextButton(
-                                  onPressed:null,
-        
-                                  child: Text(
-                                    'Resend Code',
-                                    style: TextStyle(
-                                        color: Color.fromARGB(255, 158, 217, 244),
-                                        decoration: TextDecoration.underline,
-                                        decorationColor:  Color.fromARGB(255, 158, 217, 244)
-                                        ),
-                                  )),
-                            ],
-                          ),
-                        const SizedBox(height: 10), 
-                          Row(
-                            children: [
-                              ElevatedButton(
-                              style:const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black) ,foregroundColor: MaterialStatePropertyAll(Colors.white)),
-                                  onPressed: () => {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>Categories(),
-                                      ),
-                                    ),
-                                  },
-                              child:  const Text('Submit')
-                                    
-                                    ),
-                            ],
-                          )
-                      ],
-                    ),
-                  )        
-              ],
-            ),
-          ),
-        ),
-      ]),
-    );
+      ],
+          )
+
+
+
+      
+    
+] ));
+
+
+
+
   }
 }

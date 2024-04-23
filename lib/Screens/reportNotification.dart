@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:notify_ju/Screens/categories.dart';
-import 'package:notify_ju/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/bottomNavBar.dart';
 
 class ReportNotification extends StatelessWidget {
   const ReportNotification({super.key});
@@ -9,7 +7,7 @@ class ReportNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         centerTitle: true,
         title:

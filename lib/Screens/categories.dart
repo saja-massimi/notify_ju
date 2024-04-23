@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/add_report.dart';
-import 'package:notify_ju/bottomNavBar.dart';
-import 'package:notify_ju/drawer.dart';
+import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/drawer.dart';
 
 class Categories extends StatelessWidget {
   final List<String> image = [
