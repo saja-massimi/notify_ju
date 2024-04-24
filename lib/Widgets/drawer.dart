@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Repository/authentication_repository.dart';
+import 'package:notify_ju/Controller/signupController.dart';
 import 'package:notify_ju/Screens/contact.dart';
 import 'package:notify_ju/Screens/profile.dart';
 import 'package:notify_ju/Screens/reportNotification.dart';
 
 
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({super.key});
+  DrawerWidget({super.key});
+
+  final controller = Get.put(SignupController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +46,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Sign out'),
-            onTap: () {
-              AuthenticationRepository.instance.logout();              
-            },
+            onTap: () => controller.logout(),
           ),
         ],
       ),

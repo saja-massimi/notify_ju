@@ -42,8 +42,7 @@ void  setInitialScreen(User? user){
 Future<void> login(String email, String password) async {
   try {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
-                                    
-
+              
   } catch (e) {
     Get.snackbar('Error', e.toString());
   }
@@ -51,7 +50,9 @@ Future<void> login(String email, String password) async {
 }
 
 Future<void> logout()async{
+  
   await _auth.signOut();
+  Get.snackbar('Logout', 'You have been logged out');
 }
 
 

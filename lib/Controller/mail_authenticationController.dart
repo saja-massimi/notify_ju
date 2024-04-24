@@ -23,7 +23,7 @@ await AuthenticationRepository.instance.sendVerfCode();
 
 void setTimerForAutoRedirect(){
 
-_timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+_timer = Timer.periodic(const Duration(seconds: 2), (timer) {
   FirebaseAuth.instance.currentUser?.reload();
 
   final user = FirebaseAuth.instance.currentUser;
