@@ -41,6 +41,8 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.notify_ju"
@@ -50,6 +52,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
+
     }
 
     buildTypes {
@@ -65,4 +69,7 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+        implementation 'androidx.multidex:multidex:2.0.1'
+
+}

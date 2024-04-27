@@ -6,6 +6,7 @@ import 'package:notify_ju/Screens/email_auth.dart';
 import 'package:notify_ju/firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).
   then((value) => Get.put(AuthenticationRepository()));
 

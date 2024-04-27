@@ -1,10 +1,11 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
 
   final String? user_id;
   final String username;
-  final String user_password;
   final String user_email;
   final String student_id;
   final int user_phone_num;
@@ -13,7 +14,6 @@ class UserModel {
   UserModel( {
     this.user_id,
     required this.username,
-    required this.user_password, 
     required this.user_email, 
     required this.student_id, 
     required this.user_phone_num,
@@ -22,7 +22,6 @@ class UserModel {
   toJson() {
     return {
       "username": username,
-      "user_password": user_password,
       "user_email": user_email,
       "student_id": student_id,
       "user_phone_num": user_phone_num,
@@ -37,7 +36,6 @@ class UserModel {
     return UserModel(
       user_id: doc.id,
       username: data!['username'],
-      user_password: data['user_password'],
       user_email: data['user_email'],
       student_id: data['student_id'],
       user_phone_num: data['user_phone_num'],

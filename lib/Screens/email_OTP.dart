@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/mail_authenticationController.dart';
+import 'package:notify_ju/Controller/MailController.dart';
 
 class email_otp extends StatefulWidget {
   const email_otp({super.key});
@@ -47,7 +47,7 @@ class _email_otpState extends State<email_otp> {
                       const  SizedBox(height: 25,),
                       
                         ElevatedButton(
-                          onPressed: ()=>controller.sendVerficationEmail(),
+                          onPressed: ()=>controller.sendVerificationEmail(),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),

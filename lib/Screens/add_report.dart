@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Widgets/mic.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
@@ -7,7 +9,7 @@ import 'package:intl/intl.dart';
 class addReport extends StatelessWidget {
   final String reportType;
 
-  addReport({required this.reportType});
+  const addReport({required this.reportType});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,7 @@ class addReport extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               const SizedBox(
@@ -67,7 +69,7 @@ class addReport extends StatelessWidget {
                 ),
               ),
               const ImageInput(),
-              MicInput(),
+              const MicInput(),
             ],
           ),
         ),

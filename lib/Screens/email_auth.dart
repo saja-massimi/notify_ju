@@ -91,7 +91,7 @@ class _email_auth extends State<email_auth> {
                             ),
                             controller: controller.email,
                             validator: (value) {
-                              if (value == null || value.trim().isEmpty || !value.contains('@ju.edu.jo')) {
+                              if (value == null || value.trim().isEmpty) {//removed the email validation || !value.contains('@ju.edu.jo')
                                 return 'Enter your university email';
                               }
                               return null;

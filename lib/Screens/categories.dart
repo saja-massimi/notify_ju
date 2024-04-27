@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/add_report.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
@@ -22,6 +24,8 @@ class Categories extends StatelessWidget {
     'Infrastructure Damage',
   ];
 
+  Categories({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +33,9 @@ class Categories extends StatelessWidget {
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Choose A Category',
+        title: const Text('Choose a Category',
             style: TextStyle(color: Colors.white)),
-        backgroundColor: Color(0xFF69BE49),
+        backgroundColor: const Color(0xFF69BE49),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -66,18 +70,17 @@ class Categories extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: 15),
+                      const SizedBox(height: 15),
                         Container(
-                          height: 100,
-                          // Adjust height to desired size
+                          height: 70,
                           child: Image.asset(image[index],
                               fit: BoxFit.fitHeight,
                               scale: 1.0,
                               alignment: Alignment.center),
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Text(names[index],
-                            style: TextStyle(fontSize: 16),
+                            style: const TextStyle(fontSize: 16),
                             textAlign: TextAlign.center),
                       ],
                     ),
