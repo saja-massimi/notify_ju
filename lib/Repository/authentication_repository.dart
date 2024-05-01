@@ -23,7 +23,6 @@ class AuthenticationRepository extends GetxController {
   if (user == null) {
     Get.to(() => const email_auth());
   } else if (user.emailVerified == true) {
-    //Get.offAll(() => const email_otp());
     Get.to(() => Categories());
   } else {
     Get.offAll(() => const email_otp());
@@ -41,6 +40,7 @@ class AuthenticationRepository extends GetxController {
   Future<void> logout() async {
     await _auth.signOut();
     Get.snackbar('Logout', 'You have been logged out');
+
   }
 
   Future<void> sendVerfCode() async {
