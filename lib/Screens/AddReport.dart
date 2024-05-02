@@ -9,7 +9,6 @@ import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Widgets/mic.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
-import '../Widgets/image_input.dart';
 import 'package:intl/intl.dart';
 
 class addReport extends StatelessWidget {
@@ -31,10 +30,8 @@ class addReport extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 100.2,
-              ),
               TextField(
                 enabled: false,
                 readOnly: true,
@@ -42,17 +39,12 @@ class addReport extends StatelessWidget {
                 hintText: 'Report Type : ', filled: true),
                 controller: TextEditingController(text: reportType),
               ),
-              const SizedBox(
-                height: 20.2,
-              ),
               const TextField(
                 enabled: true,
                 decoration:
                     InputDecoration(hintText: 'Address :', filled: true),
               ),
-              const SizedBox(
-                height: 20.2,
-              ),
+        
               TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
@@ -63,9 +55,7 @@ class addReport extends StatelessWidget {
                   filled: true,
                 ),
               ),
-              const SizedBox(
-                height: 20.2,
-              ),
+          
               TextField(
                 keyboardType: TextInputType.datetime,
                 enabled: false,
@@ -77,9 +67,8 @@ class addReport extends StatelessWidget {
                   text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
                 ),
               ),
-              const ImageInput(),
+              
               const MicInput(),
-              const SizedBox(height: 20.2),
               ElevatedButton(
                 onPressed: () {
 
@@ -89,8 +78,6 @@ class addReport extends StatelessWidget {
                   incident_description: description.text,
                   report_date: DateTime.now(),
                   report_status: 'History',
-
-                  
                   );
 
                 controller.createReport(report);
