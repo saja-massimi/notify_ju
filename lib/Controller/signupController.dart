@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
@@ -23,9 +22,15 @@ void loginUser (String email,String password)
 
 void logout() async{
   final auth = AuthenticationRepository.instance;
-  User? user = auth.firebaseUser.value;
   auth.logout();
   auth.setInitialScreen(auth.firebaseUser.value);
+
+
+
+
+
+
+  
 }
 
   }

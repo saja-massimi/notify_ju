@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/signupController.dart';
 import 'package:notify_ju/Screens/contact.dart';
 import 'package:notify_ju/Screens/profile.dart';
-import 'package:notify_ju/Screens/reportNotification.dart';
+import 'package:notify_ju/Screens/reportHistory.dart';
 
 
 class DrawerWidget extends StatelessWidget {
@@ -35,7 +35,7 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             title: const Text('Report History'),
             onTap: () {
-              Get.to(() => const ReportNotification());
+              Get.to(() => const HistoryReports());
             },
           ),
           ListTile(

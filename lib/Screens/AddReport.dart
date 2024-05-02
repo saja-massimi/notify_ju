@@ -1,3 +1,4 @@
+<<<<<<< HEAD:lib/Screens/add_report.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:notify_ju/Widgets/mic.dart';
@@ -198,17 +199,30 @@ class _AddReportPageState extends State<AddReportPage> {
 
 
 /*import 'package:flutter/material.dart';
+=======
+// ignore_for_file: camel_case_types
+
+
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:notify_ju/Controller/ReportsController.dart';
+import 'package:notify_ju/Models/reportModel.dart';
+>>>>>>> a7f691c10051f976a4553c9274ef12e2f7cd7173:lib/Screens/AddReport.dart
 import 'package:notify_ju/Widgets/mic.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:random_string/random_string.dart';
 import '../Widgets/image_input.dart';
 import 'package:intl/intl.dart';
 
 class addReport extends StatelessWidget {
   final String reportType;
+  final description = TextEditingController();
 
-  const addReport({required this.reportType});
+  addReport({super.key, required this.reportType});
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ReportsController());
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -228,7 +242,7 @@ class addReport extends StatelessWidget {
                 enabled: false,
                 readOnly: true,
                 decoration: const InputDecoration(
-                    hintText: 'Report Type : ', filled: true),
+                hintText: 'Report Type : ', filled: true),
                 controller: TextEditingController(text: reportType),
               ),
               const SizedBox(
@@ -256,12 +270,13 @@ class addReport extends StatelessWidget {
               const SizedBox(
                 height: 20.2,
               ),
-              const TextField(
+              TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
                 enabled: true,
-                decoration: InputDecoration(
-                  hintText: 'description : ',
+                controller: description,
+                decoration: const InputDecoration(
+                  hintText: 'Description : ',
                   filled: true,
                 ),
               ),
@@ -281,6 +296,24 @@ class addReport extends StatelessWidget {
               ),
               const ImageInput(),
               const MicInput(),
+              const SizedBox(height: 20.2),
+              ElevatedButton(
+                onPressed: () {
+
+                  final report = reportModel(
+                  report_id: randomAlphaNumeric(20),
+                  report_type: reportType, 
+                  incident_description: description.text,
+                  report_date: DateTime.now(),
+                  report_status: 'History',
+
+                  
+                  );
+
+                controller.createReport(report);
+                },
+                child: const Text('Submit'),
+              ),
             ],
           ),
         ),
