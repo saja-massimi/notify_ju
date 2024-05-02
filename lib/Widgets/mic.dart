@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:notify_ju/Widgets/image_input.dart';
 
 class MicInput extends StatefulWidget {
   const MicInput({super.key});
@@ -49,8 +48,7 @@ class _MicInputState extends State<MicInput> {
           onPressed: _stopRecording,
         ),
         const SizedBox(width: 20), 
-        const ImageInput(),
-      ],
+              ],
     );
   }
 }

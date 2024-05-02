@@ -56,7 +56,7 @@ class Categories extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddReportPage(
+                          builder: (context) => addReport(
                             reportType: names[index],
                           ),
                         ),
