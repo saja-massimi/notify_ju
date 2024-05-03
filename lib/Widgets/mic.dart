@@ -39,15 +39,16 @@ class _MicInputState extends State<MicInput> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.mic),
+          icon:const Icon(Icons.mic),
           onPressed: _startRecording,
         ),
       const SizedBox(width: 20), 
         IconButton(
-          icon: Icon(Icons.stop),
+          icon: const Icon(Icons.stop),
           onPressed: _stopRecording,
         ),
-      ],
+        const SizedBox(width: 20), 
+              ],
     );
   }
 }

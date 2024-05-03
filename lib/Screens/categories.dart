@@ -1,7 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/add_report.dart';
+import 'package:notify_ju/Screens/AddReport.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 

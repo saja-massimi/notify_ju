@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 class ImageInput extends StatefulWidget {
   const ImageInput({super.key});
 
+  @override
   State<ImageInput> createState() {
     return _ImageInputState();
   }
@@ -27,10 +28,11 @@ class _ImageInputState extends State<ImageInput> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     Widget content = TextButton.icon(
       onPressed: _takePicture,
-      icon: Icon(CupertinoIcons.camera),
+      icon: const Icon(CupertinoIcons.camera),
       label: const Text(''),
     );
     if (_selectedImage != null) {
