@@ -70,7 +70,7 @@ class Categories extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                      const SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Container(
                           height: 70,
                           child: Image.asset(image[index],
