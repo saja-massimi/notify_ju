@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/signupController.dart';
+import 'package:notify_ju/Controller/SignupController.dart';
 
 
 

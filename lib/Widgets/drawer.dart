@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/profileController.dart';
-import 'package:notify_ju/Controller/signupController.dart';
+import 'package:notify_ju/Controller/SignupController.dart';
 import 'package:notify_ju/Screens/contact.dart';
 import 'package:notify_ju/Screens/profile.dart';
 import 'package:notify_ju/Screens/reportHistory.dart';

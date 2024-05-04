@@ -33,9 +33,9 @@ else {
     return user.username;
   }
 
- Future<String> getAdminName ()async
+  Future<String> getAdminName ()async
   {
-   adminModel admin = await getAdminData();
+  adminModel admin = await getAdminData();
     return admin.admin_name;
   }
 

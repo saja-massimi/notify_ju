@@ -54,6 +54,7 @@ dependencies:
   flutter_map: ^5.0.0
   geocoding: ^3.0.0
   random_string: ^2.3.1
+  firebase_messaging: ^14.9.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

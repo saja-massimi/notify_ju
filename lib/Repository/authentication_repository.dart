@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Controller/AdminController.dart';
+import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/email_OTP.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
@@ -19,14 +21,25 @@ class AuthenticationRepository extends GetxController {
     });
   }
 
-  void setInitialScreen(User? user) {
+  Future<void> setInitialScreen(User? user) async{
+
+    final adminData = Get.put(AdminController());
+  final isAdmin = await adminData.isAdmin();
+
   if (user == null) {
     Get.to(() => const email_auth());
   } else if (user.emailVerified == true) {
-    Get.to(() => Categories());
+    if(isAdmin){
+      Get.to(() =>const AdminMain());
+    } else {
+      Get.to(() => Categories());
+    }
   } else {
     Get.offAll(() => const email_otp());
   }
+
+
+
 }
 
   Future<void> login(String email, String password) async {
