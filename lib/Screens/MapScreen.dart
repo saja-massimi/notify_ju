@@ -1,12 +1,16 @@
+// ignore_for_file: avoid_unnecessary_containers
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapScreen extends StatefulWidget {
-  LatLng selectedLocation;
+  final LatLng selectedLocation;
   final Function(LatLng) onLocationSelected;
 
-  MapScreen({
+  const MapScreen({
     Key? key,
     required this.selectedLocation,
     required this.onLocationSelected,
@@ -28,7 +32,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Map View'),
+        title: const Text('Map View'),
       ),
       body: FlutterMap(
         options: MapOptions(
@@ -43,7 +47,7 @@ class _MapScreenState extends State<MapScreen> {
         children: [
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            subdomains: ['a', 'b', 'c'],
+            subdomains: const ['a', 'b', 'c'],
           ),
           MarkerLayer(
             markers: [
@@ -52,7 +56,7 @@ class _MapScreenState extends State<MapScreen> {
                 height: 80.0,
                 point: mapSelectedLocation,
                 builder: (ctx) => Container(
-                  child: Icon(
+                  child: const Icon(
                     Icons.location_pin,
                     color: Colors.red,
                     size: 50.0,
@@ -66,11 +70,11 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pop(context); // Go back to the previous screen
-          print(mapSelectedLocation);
+          log(mapSelectedLocation.toString());
           widget.onLocationSelected(
               mapSelectedLocation); //bring the value to the etxt field
         },
-        child: Icon(Icons.check),
+        child: const Icon(Icons.check),
       ),
     );
   }

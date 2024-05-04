@@ -24,7 +24,7 @@ class _addReportState extends State<addReport> {
   final description = TextEditingController();
   final addressz = TextEditingController();
   String _locationMessage = '';
-  LatLng _selectedLocation = LatLng(32.0161, 35.8695);
+  LatLng _selectedLocation = const LatLng(32.0161, 35.8695);
   bool showMap = false;
 //********************************************************** */
 
@@ -88,12 +88,12 @@ class _addReportState extends State<addReport> {
                       keyboardType: TextInputType.multiline,
                       enabled: true,
                       decoration:
-                          InputDecoration(hintText: 'Address :', filled: true),
+                          const InputDecoration(hintText: 'Address :', filled: true),
                       controller: addressz..text = _locationMessage,
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.location_on),
+                    icon: const Icon(Icons.location_on),
                     onPressed: () async {
                       LatLng selectedLocation = await Navigator.push(
                         context,
@@ -123,12 +123,10 @@ class _addReportState extends State<addReport> {
                           ),
                         ),
                       );
-                      if (selectedLocation != null) {
-                        setState(() {
-                          _selectedLocation = selectedLocation;
-                        });
-                      }
-                    },
+                      setState(() {
+                        _selectedLocation = selectedLocation;
+                      });
+                                        },
                   ),
                 ],
               ),

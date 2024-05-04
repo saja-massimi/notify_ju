@@ -1,9 +1,11 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
-import 'package:notify_ju/Controller/ProfileController.dart';
 import 'package:notify_ju/Models/adminModel.dart';
 import 'package:notify_ju/Models/userModel.dart';
+import '../Controller/profileController.dart';
 import '../Widgets/drawer.dart';
 import '../Widgets/bottomNavBar.dart';
 
@@ -24,6 +26,8 @@ class ProfileModel extends ChangeNotifier {
 }
 
 final AdminController adminController = Get.put(AdminController());
+  final controller = Get.put(ProfileController());
+
 
 class ProfileWidget extends StatelessWidget {
   final Future<bool> isAdminFuture;
@@ -68,7 +72,8 @@ class ProfileWidget extends StatelessWidget {
 }
 
 class AdminPage extends StatelessWidget {
-  final controller = Get.put(ProfileController());
+
+  AdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +128,8 @@ class AdminPage extends StatelessWidget {
 }
 
 class UserPage extends StatelessWidget {
-  final controller = Get.put(ProfileController());
+
+  UserPage({super.key});
 
   @override
   Widget build(BuildContext context) {
