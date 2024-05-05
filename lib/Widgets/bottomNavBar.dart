@@ -5,10 +5,11 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
 
-// ignore: use_key_in_widget_constructors
 
 
 class BottomNavigationBarWidget extends StatelessWidget {
+  const BottomNavigationBarWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

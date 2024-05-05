@@ -97,7 +97,7 @@ class _AdminMainState extends State<AdminMain> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

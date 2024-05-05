@@ -105,7 +105,7 @@ class ReportDetails extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

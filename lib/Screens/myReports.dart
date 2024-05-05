@@ -84,7 +84,8 @@ class _MyReportsState extends State<MyReports> {
                             title: Text(items[index]['report_type']),
                             subtitle: Text(items[index]['incident_description']),
                             onTap: () {
-                              // Handle tapping on the card
+                        
+                    
                             },
                           ),
                         );

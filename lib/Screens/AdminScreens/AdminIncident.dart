@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportNotificationController.dart';
+import 'package:notify_ju/Screens/AdminScreens/AdminReportDetail.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
@@ -23,10 +24,10 @@ class _IncidentsState extends State<Incidents> {
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
         centerTitle: true,
-        title:  Text('$widget.reportType Reports'),
+        title:  Text('${widget.reportType} Reports'),
       ),
-      body: StreamBuilder<Object>(
-        stream: controller.getReports(widget.reportType),
+      body: StreamBuilder<dynamic>(
+        stream: Stream.fromFuture(controller.getReports(widget.reportType)),
         builder: (context, snapshot) {
 
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -39,21 +40,29 @@ class _IncidentsState extends State<Incidents> {
               } else{
             return ListView.builder(
               itemCount: (snapshot.data as List).length,
-              itemBuilder: (context, index) => 
-                  
-                          ListTile(
-                            title: const Text('Car Accident'),
+              itemBuilder: (context, index) {
+              final items = snapshot.data!; 
+
+                        return  ListTile(
+                          
+                            tileColor: const Color.fromARGB(255, 202, 253, 198),
+                            title: Text(items[index]['report_type']),
                             onTap: () {
-                            },
-                          ),
-              
+                                Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AdminReportDetails(report: items[index]),
+                                ),
+                              );},
+                          );
+              }
                       );
               }
             }
           
         }
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }
