@@ -1,15 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
-import 'package:notify_ju/Widgets/image_input.dart';
-import 'package:notify_ju/Widgets/mic.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:intl/intl.dart';
 
 class AdminReportDetails extends StatelessWidget {
-  final String report;
-  final description = TextEditingController();
+  final Map<String, dynamic> report;
 
 
   final controller = Get.put(ReportsController());
@@ -18,7 +14,6 @@ class AdminReportDetails extends StatelessWidget {
   AdminReportDetails({super.key, required this.report});
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ReportsController());
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -39,24 +34,27 @@ class AdminReportDetails extends StatelessWidget {
                 readOnly: true,
                 decoration: const InputDecoration(
                 hintText: 'Report Type : ', filled: true),
-                controller: TextEditingController(text: report.toString()),
+                controller: TextEditingController(text: report['report_type']),
               ),
               const SizedBox(
                 height: 20.2,
               ),
-              const TextField(
+              TextField(
+                readOnly: true,
                 enabled: true,
                 decoration:
-                    InputDecoration(hintText: 'Address :', filled: true),
+                    const InputDecoration(hintText: 'Address :', filled: true),
+                    controller: TextEditingController(text: report['incident_location']),
               ),
               const SizedBox(
                 height: 20.2,
               ),
               TextField(
                 keyboardType: TextInputType.multiline,
+                readOnly: true,
                 maxLines: 5,
                 enabled: true,
-                controller: description,
+                controller: TextEditingController(text: report['incident_description']),
                 decoration: const InputDecoration(
                   hintText: 'Description : ',
                   filled: true,
@@ -68,17 +66,40 @@ class AdminReportDetails extends StatelessWidget {
               TextField(
                 keyboardType: TextInputType.datetime,
                 enabled: false,
+                readOnly: true,
                 decoration: const InputDecoration(
                   hintText: 'date : ',
                   filled: true,
                 ),
                 controller: TextEditingController(
-                  text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
+                  text: report['incident_date'] != null
+                      ? DateFormat('yyyy-MM-dd').format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              report['incident_date'].seconds * 1000))
+                      : 'No date provided',
                 ),
               ),
-              const ImageInput(),
-              const MicInput(),
-              const SizedBox(height: 20.2),
+              const SizedBox(
+                height: 20.2,
+              ),
+              
+              //     File( 
+              //   keyboardType: TextInputType.datetime,
+              //   enabled: false,
+              //   readOnly: true,
+              //   decoration: const InputDecoration(
+              //     hintText: 'date : ',
+              //     filled: true,
+              //   ),
+              //   controller: TextEditingController(
+              //     text: report['incident_date'] != null
+              //         ? DateFormat('yyyy-MM-dd').format(
+              //             DateTime.fromMillisecondsSinceEpoch(
+              //                 report['incident_date'].seconds * 1000))
+              //         : 'No date provided',
+              //   ),
+              // ),
+              // const SizedBox(height: 20.2),
               ElevatedButton(
                 onPressed: () {
                       //change report status
