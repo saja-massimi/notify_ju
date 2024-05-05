@@ -11,9 +11,9 @@ class HistoryReports extends StatefulWidget {
   State<HistoryReports> createState() => _HistoryReportsState();
 }
 
-  final controller = Get.put(ReportsController());
-class _HistoryReportsState extends State<HistoryReports> {
+final controller = Get.put(ReportsController());
 
+class _HistoryReportsState extends State<HistoryReports> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +21,14 @@ class _HistoryReportsState extends State<HistoryReports> {
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('History Reports'),
+        title: const Text('Report History',
+            style: TextStyle(
+                color: Color.fromARGB(255, 0, 0, 0),
+                fontStyle: FontStyle.italic)),
+        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
       ),
       body: FutureBuilder(
-        future: controller.viewAllHistoryReports()  ,
+        future: controller.viewAllHistoryReports(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -33,28 +37,27 @@ class _HistoryReportsState extends State<HistoryReports> {
               return const Center(child: Text("Error fetching reports"));
             } else {
               if (snapshot.data == null || snapshot.data!.isEmpty) {
-                return const Center(child: Text("You don't have any reports yet"));
+                return const Center(
+                    child: Text("You don't have any reports yet"));
               } else {
                 return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final items = snapshot.data!;
 
-                        final items = snapshot.data!; 
-            
-                        return Container(
-                          key: Key(index.toString()) ,
-                          child: ListTile(
-                          
-                            tileColor: const Color.fromARGB(255, 202, 253, 198),
-                            title: Text(items[index]['report_type']),
-                            subtitle: Text(items[index]['incident_description']),
-                            onTap: () {
-                              // Handle tapping on the card
-                            },
-                          ),
-                        );
-                      },
+                    return Container(
+                      key: Key(index.toString()),
+                      child: ListTile(
+                        tileColor: const Color.fromARGB(255, 202, 253, 198),
+                        title: Text(items[index]['report_type']),
+                        subtitle: Text(items[index]['incident_description']),
+                        onTap: () {
+                          // Handle tapping on the card
+                        },
+                      ),
                     );
+                  },
+                );
               }
             }
           }

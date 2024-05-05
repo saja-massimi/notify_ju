@@ -26,8 +26,7 @@ class ProfileModel extends ChangeNotifier {
 }
 
 final AdminController adminController = Get.put(AdminController());
-  final controller = Get.put(ProfileController());
-
+final controller = Get.put(ProfileController());
 
 class ProfileWidget extends StatelessWidget {
   final Future<bool> isAdminFuture;
@@ -41,9 +40,10 @@ class ProfileWidget extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           'Profile',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0), fontStyle: FontStyle.italic),
         ),
-        backgroundColor: const Color(0xFF69BE49),
+        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
       ),
       drawer: DrawerWidget(),
       body: SingleChildScrollView(
@@ -72,7 +72,6 @@ class ProfileWidget extends StatelessWidget {
 }
 
 class AdminPage extends StatelessWidget {
-
   AdminPage({super.key});
 
   @override
@@ -106,7 +105,8 @@ class AdminPage extends StatelessWidget {
                         initialValue: admin.admin_phone_num.toString(),
                         readOnly: true,
                         keyboardType: TextInputType.phone,
-                        decoration: const InputDecoration(labelText: 'Phone number'),
+                        decoration:
+                            const InputDecoration(labelText: 'Phone number'),
                       ),
                       const SizedBox(height: 16),
                     ],
@@ -128,7 +128,6 @@ class AdminPage extends StatelessWidget {
 }
 
 class UserPage extends StatelessWidget {
-
   UserPage({super.key});
 
   @override
@@ -161,14 +160,16 @@ class UserPage extends StatelessWidget {
                       TextFormField(
                         initialValue: user.student_id,
                         readOnly: true,
-                        decoration: const InputDecoration(labelText: 'Student ID'),
+                        decoration:
+                            const InputDecoration(labelText: 'Student ID'),
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
                         initialValue: user.user_phone_num.toString(),
                         readOnly: true,
                         keyboardType: TextInputType.phone,
-                        decoration: const InputDecoration(labelText: 'Phone number'),
+                        decoration:
+                            const InputDecoration(labelText: 'Phone number'),
                       ),
                       const SizedBox(height: 16),
                     ],

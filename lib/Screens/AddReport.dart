@@ -64,10 +64,17 @@ class _addReportState extends State<addReport> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Add Report', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF69BE49),
-      ),
+          centerTitle: true,
+          title: const Text('Add Report',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontStyle: FontStyle.italic)),
+          backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_outlined),
+              onPressed: () {
+                Get.back();
+              })),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -87,8 +94,8 @@ class _addReportState extends State<addReport> {
                     child: TextField(
                       keyboardType: TextInputType.multiline,
                       enabled: true,
-                      decoration:
-                          const InputDecoration(hintText: 'Address :', filled: true),
+                      decoration: const InputDecoration(
+                          hintText: 'Address :', filled: true),
                       controller: addressz..text = _locationMessage,
                     ),
                   ),
@@ -126,7 +133,7 @@ class _addReportState extends State<addReport> {
                       setState(() {
                         _selectedLocation = selectedLocation;
                       });
-                                        },
+                    },
                   ),
                 ],
               ),
@@ -156,19 +163,31 @@ class _addReportState extends State<addReport> {
               ),
 
               const MicInput(),
-              ElevatedButton(
-                onPressed: () {
-                  Get.back();
-                  final report = reportModel(
-                    report_id: randomAlphaNumeric(20),
-                    report_type: widget.reportType,
-                    incident_description: description.text,
-                    report_date: DateTime.now(),
-                    report_status: 'Pending',
-                  );
-                  controller.createReport(report);
-                },
-                child: const Text('Submit'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                      final report = reportModel(
+                        report_id: randomAlphaNumeric(20),
+                        report_type: widget.reportType,
+                        incident_description: description.text,
+                        report_date: DateTime.now(),
+                        report_status: 'Pending',
+                      );
+                      controller.createReport(report);
+                    },
+                    child: const Text('Submit'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                ],
               ),
             ],
           ),

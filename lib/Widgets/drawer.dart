@@ -8,21 +8,19 @@ import 'package:notify_ju/Screens/contact.dart';
 import 'package:notify_ju/Screens/profile.dart';
 import 'package:notify_ju/Screens/reportHistory.dart';
 
-
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({super.key});
 
   Future<String> getName() async {
-  final profileData = Get.put(ProfileController());
-  final adminData = Get.put(AdminController());
-  final isAdmin = await adminData.isAdmin();
-  if (isAdmin) {
-    return await profileData.getAdminName();
-  } else {
-    return await profileData.getUserName();
+    final profileData = Get.put(ProfileController());
+    final adminData = Get.put(AdminController());
+    final isAdmin = await adminData.isAdmin();
+    if (isAdmin) {
+      return await profileData.getAdminName();
+    } else {
+      return await profileData.getUserName();
+    }
   }
-}
-
 
   final controller = Get.put(SignupController());
   final controllerprof = Get.put(ProfileController());
@@ -35,47 +33,46 @@ class DrawerWidget extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Color(0xFF69BE49), 
+              color: const Color.fromARGB(255, 195, 235, 197),
             ),
-        child: Row(
-  children: [
-    CircleAvatar(
-      radius: 40,
-      backgroundColor: Colors.white,
-      child: ClipOval(
-        child: Image.asset(
-          'images/logopng.png',
-          fit: BoxFit.cover, 
-          width: 80, 
-          height: 80, 
-        ),
-      ),
-    ),
-    const SizedBox(width: 10),
-    FutureBuilder<String>(
-      future: getName(),
-      builder: (context, snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return const CircularProgressIndicator();
-        }
-        if (snapshot.hasData) {
-            return Text(
-            snapshot.data!,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-            );
-            }
-            else {
-            return const Text(
-            'Unknown',
-            style: TextStyle(color: Colors.white, fontSize: 16),
-            );
-            }
-      },
-    ),
-    const SizedBox(height: 10),
-  ],
-),
-
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  child: ClipOval(
+                    child: Icon(
+                      Icons.person,
+                      size: 70,
+                      color: Color.fromARGB(255, 215, 212, 212),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                FutureBuilder<String>(
+                  future: getName(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (snapshot.hasData) {
+                      return Text(
+                        snapshot.data!,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
+                      );
+                    } else {
+                      return const Text(
+                        'Unknown',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 0, 0, 0), fontSize: 16),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
           ),
           ListTile(
             title: const Text('My Profile'),
@@ -83,7 +80,7 @@ class DrawerWidget extends StatelessWidget {
               final adminData = Get.put(AdminController());
               final isAdminFuture = adminData.isAdmin();
               Get.to(ProfileWidget(isAdminFuture: isAdminFuture));
-                  },
+            },
           ),
           ListTile(
             title: const Text('Report History'),

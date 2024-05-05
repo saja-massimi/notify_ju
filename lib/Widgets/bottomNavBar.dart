@@ -1,14 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:http/http.dart';
-import 'package:notify_ju/Screens/AddReport.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:notify_ju/main.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
   const BottomNavigationBarWidget({super.key});
@@ -47,7 +43,6 @@ class _BottomNavigationBarWidget extends State<BottomNavigationBarWidget> {
         setState(() {
           currentIndex = index;
           isTapped = true;
-          currentIndex == 0 ? screen[0] : screen[1];
         });
       },
     );

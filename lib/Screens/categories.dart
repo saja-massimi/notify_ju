@@ -7,12 +7,12 @@ import 'package:notify_ju/Widgets/drawer.dart';
 
 class Categories extends StatelessWidget {
   final List<String> image = [
-    'images/fight1.webp',
-    'images/fire.png',
-    'images/car.png',
-    'images/animal.png',
-    'images/injury.png',
-    'images/damage.webp',
+    'images/fight123.jpg',
+    'images/fiire.webp',
+    'images/carss.png',
+    'images/doggg.png',
+    'images/injuryy.png',
+    'images/infraa.png',
   ];
 
   final List<String> names = [
@@ -34,8 +34,10 @@ class Categories extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Choose a Category',
-            style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF69BE49),
+            style: TextStyle(
+                color: Color.fromARGB(255, 0, 0, 0),
+                fontStyle: FontStyle.italic)),
+        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -72,7 +74,7 @@ class Categories extends StatelessWidget {
                       children: [
                         const SizedBox(height: 15),
                         Container(
-                          height: 70,
+                          height: 110,
                           child: Image.asset(image[index],
                               fit: BoxFit.fitHeight,
                               scale: 1.0,
@@ -80,7 +82,8 @@ class Categories extends StatelessWidget {
                         ),
                         const SizedBox(height: 15),
                         Text(names[index],
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.black),
                             textAlign: TextAlign.center),
                       ],
                     ),
