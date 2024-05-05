@@ -11,9 +11,9 @@ class MyReports extends StatefulWidget {
   State<MyReports> createState() => _MyReportsState();
 }
 
-  final controller = Get.put(ReportsController());
-class _MyReportsState extends State<MyReports> {
+final controller = Get.put(ReportsController());
 
+class _MyReportsState extends State<MyReports> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,7 @@ class _MyReportsState extends State<MyReports> {
         title: const Text('My Reports'),
       ),
       body: FutureBuilder(
-        future: controller.viewCurrentReports()  ,
+        future: controller.viewCurrentReports(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -33,64 +33,61 @@ class _MyReportsState extends State<MyReports> {
               return const Center(child: Text("Error fetching reports"));
             } else {
               if (snapshot.data == null || snapshot.data!.isEmpty) {
-                return const Center(child: Text("You don't have any reports yet"));
+                return const Center(
+                    child: Text("You don't have any reports yet"));
               } else {
                 return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-
-                        final items = snapshot.data!; 
-            
-                        return Dismissible(
-                          key: Key(index.toString()) ,
-                          background: Container(
-                            color: Colors.red,
-                            child: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 20.0),
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                ),
-                              ),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final items = snapshot.data!;
+                    return Dismissible(
+                      key: Key(index.toString()),
+                      background: Container(
+                        color: Colors.red,
+                        child: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 20.0),
+                            child: Icon(
+                              Icons.delete,
+                              color: Colors.white,
                             ),
                           ),
-                          secondaryBackground: Container(
-                            color: Colors.blue,
-                            child: const Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 20.0),
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                ),
-                              ),
+                        ),
+                      ),
+                      secondaryBackground: Container(
+                        color: Colors.blue,
+                        child: const Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 20.0),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
                             ),
                           ),
-                          onDismissed: (direction) {
-
-                            
-                            if (direction == DismissDirection.startToEnd) {
-                              controller.deleteReport(items[index]["report_id"]);
-                            } else if (direction == DismissDirection.endToStart) {
-                              //edit item stuff
-                            }
-                          },
-                          child: ListTile(
-                          
-                            tileColor: const Color.fromARGB(255, 202, 253, 198),
-                            title: Text(items[index]['report_type']),
-                            subtitle: Text(items[index]['incident_description']),
-                            onTap: () {
-                        
-                    
-                            },
-                          ),
-                        );
+                        ),
+                      ),
+                      onDismissed: (direction) {
+                        if (direction == DismissDirection.startToEnd) {
+                          controller.deleteReport(items[index]["report_id"]);
+                        } else if (direction == DismissDirection.endToStart) {
+                          //edit item stuff
+                        }
                       },
+                      child: Card(
+                        color: Color.fromARGB(184, 211, 207, 207),
+                        child: ListTile(
+                          title: Text(items[index]['report_type']),
+                          subtitle: Text(items[index]['incident_description']),
+                          onTap: () {
+                            // Handle tapping on the card
+                          },
+                        ),
+                      ),
                     );
+                  },
+                );
               }
             }
           }

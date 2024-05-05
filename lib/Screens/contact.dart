@@ -1,15 +1,25 @@
-import 'package:contactus/contactus.dart';
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:contactus/contactus.dart';
+import 'package:notify_ju/Widgets/drawer.dart';
 
 class contact_us extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 175, 210, 134),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 58, 132, 60),
+        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+        centerTitle: true,
+        title: const Text(
+          'Contact Us',
+          style: TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0),
+            fontStyle: FontStyle.italic,
+          ),
+        ),
       ),
+      drawer: DrawerWidget(),
       body: ContactUs(
         email: 'Admin@ju.edu.jo',
         companyName: 'Contact Us',

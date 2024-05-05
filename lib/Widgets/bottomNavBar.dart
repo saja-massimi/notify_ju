@@ -1,6 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
 
@@ -41,8 +40,6 @@ class _BottomNavigationBarWidget extends State<BottomNavigationBarWidget> {
         setState(() {
           currentIndex = index;
           isTapped = true;
-          currentIndex == 0 && isTapped? Get.to(screen[0]) : Get.to(screen[1]);
-
         });
       },
     );
