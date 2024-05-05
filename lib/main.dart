@@ -7,10 +7,10 @@ import 'package:notify_ju/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).
-  then((value) => Get.put(AuthenticationRepository()));
+  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+      .then((value) => Get.put(AuthenticationRepository()));
 
-  runApp(const MyApp()) ;
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
