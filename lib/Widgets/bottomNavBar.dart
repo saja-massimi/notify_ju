@@ -1,50 +1,70 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:get/get.dart';
+=======
+import 'package:flutter/widgets.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+>>>>>>> 14c74f53285a3f23a4fcada35110b1c2a7853d05
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
-  const BottomNavigationBarWidget({super.key});
+  const BottomNavigationBarWidget({Key? key}) : super(key: key);
 
   @override
   State<BottomNavigationBarWidget> createState() =>
-      _BottomNavigationBarWidget();
+      _BottomNavigationBarWidgetState();
 }
 
-class _BottomNavigationBarWidget extends State<BottomNavigationBarWidget> {
+class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   int currentIndex = 0;
-  bool isTapped = false;
   final screen = [Categories(), const MyReports()];
 
   @override
   Widget build(BuildContext context) {
-    return CurvedNavigationBar(
-      items: [
-        Icon(
-          Icons.home,
-          color: isTapped && currentIndex == 0
-              ? const Color.fromARGB(255, 255, 255, 255)
-              : Colors.black,
-        ),
-        Icon(
-          Icons.notifications,
-          color: isTapped && currentIndex == 1
-              ? const Color.fromARGB(255, 255, 255, 255)
-              : Colors.black,
-        ),
-      ],
-      backgroundColor: Colors.transparent,
-      index: currentIndex,
-      animationDuration: const Duration(milliseconds: 200),
-      color: const Color.fromARGB(255, 195, 235, 197),
-      onTap: (index) {
+    return GNav(
+      backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+      activeColor: Color.fromARGB(255, 136, 135, 135),
+      color: Colors.white,
+      gap: 3,
+      selectedIndex: currentIndex,
+      onTabChange: (index) {
         setState(() {
           currentIndex = index;
+<<<<<<< HEAD
           isTapped = true;
           currentIndex == 0 ? Get.to(screen[0]) : Get.to(screen[1]);
+=======
+>>>>>>> 14c74f53285a3f23a4fcada35110b1c2a7853d05
         });
       },
+      tabs: [
+        GButton(
+            icon: Icons.home,
+            text: 'Home',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Categories(),
+                ),
+              );
+            }),
+        GButton(
+          icon: Icons.notifications,
+          text: 'My Reports',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyReports(),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
