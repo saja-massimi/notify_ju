@@ -1,19 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/ReportsController.dart';
+import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:intl/intl.dart';
 
-class AdminReportDetails extends StatelessWidget {
+class AdminReportDetails extends StatefulWidget {
   final Map<String, dynamic> report;
 
 
-  final controller = Get.put(ReportsController());
-
 
   AdminReportDetails({super.key, required this.report});
+
+  @override
+  State<AdminReportDetails> createState() => _AdminReportDetailsState();
+}
+
+class _AdminReportDetailsState extends State<AdminReportDetails> {
+  final controller = Get.put(AdminController());
+final List<String> _dropdownItems = [
+    'Pending',
+    'Under Review',
+    'Resolved',
+    'On Hold',
+    'Rejected',
+  ];     
   @override
   Widget build(BuildContext context) {
+
+
+
+    String? _selectedItem;
+
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -34,17 +52,17 @@ class AdminReportDetails extends StatelessWidget {
                 readOnly: true,
                 decoration: const InputDecoration(
                 hintText: 'Report Type : ', filled: true),
-                controller: TextEditingController(text: report['report_type']),
+                controller: TextEditingController(text: widget.report['report_type']),
               ),
               const SizedBox(
                 height: 20.2,
               ),
               TextField(
                 readOnly: true,
-                enabled: true,
+                enabled: false,
                 decoration:
                     const InputDecoration(hintText: 'Address :', filled: true),
-                    controller: TextEditingController(text: report['incident_location']),
+                    controller: TextEditingController(text: widget.report['incident_location']),
               ),
               const SizedBox(
                 height: 20.2,
@@ -53,8 +71,8 @@ class AdminReportDetails extends StatelessWidget {
                 keyboardType: TextInputType.multiline,
                 readOnly: true,
                 maxLines: 5,
-                enabled: true,
-                controller: TextEditingController(text: report['incident_description']),
+                enabled: false,
+                controller: TextEditingController(text: widget.report['incident_description']),
                 decoration: const InputDecoration(
                   hintText: 'Description : ',
                   filled: true,
@@ -72,10 +90,10 @@ class AdminReportDetails extends StatelessWidget {
                   filled: true,
                 ),
                 controller: TextEditingController(
-                  text: report['incident_date'] != null
+                  text: widget.report['report_date'] != null
                       ? DateFormat('yyyy-MM-dd').format(
                           DateTime.fromMillisecondsSinceEpoch(
-                              report['incident_date'].seconds * 1000))
+                              widget.report['report_date'].seconds * 1000))
                       : 'No date provided',
                 ),
               ),
@@ -99,14 +117,37 @@ class AdminReportDetails extends StatelessWidget {
               //         : 'No date provided',
               //   ),
               // ),
-              // const SizedBox(height: 20.2),
-              ElevatedButton(
-                onPressed: () {
-                      //change report status
-                      // report.changreportStatus('resolved');
+              const SizedBox(height: 20.2),
 
-                },
-                child: const Text('Submit'),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DropdownButton(
+                    value: _selectedItem,
+                    items: _dropdownItems.map((String value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        _selectedItem = value!;
+                      });
+                    },
+                  ),  
+                  ElevatedButton(
+                    onPressed: () {
+                        
+                        controller.changeReportStatus(_selectedItem!, widget.report['report_id'], widget.report['user_email']);
+                  
+                    },
+                    child: const Text('Change Status'),
+                  ),
+
+                  
+                ],
               ),
             ],
           ),
