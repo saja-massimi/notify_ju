@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, non_constant_identifier_names
 
 import 'dart:async';
 

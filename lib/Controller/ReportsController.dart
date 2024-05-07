@@ -26,10 +26,8 @@ Future<String?> getDocumentIdByEmail(String email) async {
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
-      // Get the document ID of the first document found
       return querySnapshot.docs.first.id;
     } else {
-      // Document not found with the given email
       return null;
     }
   } catch (error) {
@@ -168,12 +166,8 @@ Future<int> viewCurrentReportsCount() async {
   }
 }
 
-Future<String> getReportStatus(String type)async{
 
 
-
-  return type ;
-}
 
 
 }

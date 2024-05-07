@@ -8,7 +8,7 @@ class UserModel {
   final String username;
   final String user_email;
   final String student_id;
-  final int user_phone_num;
+  final String user_phone_num;
   final String? role;
 
   UserModel( {

@@ -23,7 +23,6 @@ void loginUser (String email,String password)
 void logout() async{
   final auth = AuthenticationRepository.instance;
   auth.logout();
-  auth.setInitialScreen(auth.firebaseUser.value);
 
 
 

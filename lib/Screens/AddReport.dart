@@ -1,7 +1,11 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
+import 'package:notify_ju/Repository/authentication_repository.dart';
+import 'package:notify_ju/Widgets/image_input.dart';
 import 'package:notify_ju/Widgets/mic.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
@@ -13,6 +17,7 @@ import 'package:notify_ju/Screens/MapScreen.dart';
 
 class addReport extends StatefulWidget {
   final String reportType;
+  final _authRepo = Get.put(AuthenticationRepository());
 
   addReport({Key? key, required this.reportType}) : super(key: key);
 
@@ -26,7 +31,6 @@ class _addReportState extends State<addReport> {
   String _locationMessage = '';
   LatLng _selectedLocation = const LatLng(32.0161, 35.8695);
   bool showMap = false;
-//********************************************************** */
 
   @override
   void initState() {
@@ -138,7 +142,6 @@ class _addReportState extends State<addReport> {
                 ],
               ),
 
-              ////////////////////////////////////////////////////////////////////////
               TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
@@ -163,6 +166,7 @@ class _addReportState extends State<addReport> {
               ),
 
               const MicInput(),
+              const ImageInput(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -175,6 +179,9 @@ class _addReportState extends State<addReport> {
                         incident_description: description.text,
                         report_date: DateTime.now(),
                         report_status: 'Pending',
+                        incident_location: _selectedLocation.toString(),
+                        user_email: widget._authRepo.firebaseUser.value?.email,
+
                       );
                       controller.createReport(report);
                     },
@@ -193,7 +200,7 @@ class _addReportState extends State<addReport> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }
