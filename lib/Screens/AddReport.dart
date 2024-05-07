@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
+import 'package:notify_ju/Widgets/image_input.dart';
 import 'package:notify_ju/Widgets/mic.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
@@ -165,6 +166,7 @@ class _addReportState extends State<addReport> {
               ),
 
               const MicInput(),
+              const ImageInput(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

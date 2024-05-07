@@ -1,12 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:get/get.dart';
-=======
 import 'package:flutter/widgets.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
->>>>>>> 14c74f53285a3f23a4fcada35110b1c2a7853d05
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
 
@@ -33,11 +27,6 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       onTabChange: (index) {
         setState(() {
           currentIndex = index;
-<<<<<<< HEAD
-          isTapped = true;
-          currentIndex == 0 ? Get.to(screen[0]) : Get.to(screen[1]);
-=======
->>>>>>> 14c74f53285a3f23a4fcada35110b1c2a7853d05
         });
       },
       tabs: [

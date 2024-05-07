@@ -66,7 +66,7 @@ class ProfileWidget extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

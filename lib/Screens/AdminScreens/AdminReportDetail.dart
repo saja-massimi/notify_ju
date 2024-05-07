@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
+import 'package:notify_ju/Screens/AdminScreens/UserData.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:intl/intl.dart';
 
@@ -23,15 +24,13 @@ final List<String> _dropdownItems = [
     'Resolved',
     'On Hold',
     'Rejected',
-  ];     
+  ];    
+
+    String? _selectedItem = 'Pending';
+
   @override
   Widget build(BuildContext context) {
-
-
-
-    String? _selectedItem;
-
-
+    
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -109,45 +108,45 @@ final List<String> _dropdownItems = [
               //     hintText: 'date : ',
               //     filled: true,
               //   ),
-              //   controller: TextEditingController(
-              //     text: report['incident_date'] != null
-              //         ? DateFormat('yyyy-MM-dd').format(
-              //             DateTime.fromMillisecondsSinceEpoch(
-              //                 report['incident_date'].seconds * 1000))
-              //         : 'No date provided',
-              //   ),
+              //  
               // ),
               const SizedBox(height: 20.2),
-
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  DropdownButton(
-                    value: _selectedItem,
-                    items: _dropdownItems.map((String value) {
-                      return DropdownMenuItem(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        _selectedItem = value!;
-                      });
-                    },
-                  ),  
+                  DropdownButton( 
+                  value: _selectedItem, 
+                  icon: const Icon(Icons.keyboard_arrow_down),     
+                  items: _dropdownItems.map((String items) { 
+                return DropdownMenuItem( 
+                  value: items, 
+                  child: Text(items), 
+                ); 
+              }).toList(), 
+              
+              onChanged: (String? newValue) {  
+                setState(() { 
+                  _selectedItem = newValue!; 
+                }); 
+              }, 
+            ), 
                   ElevatedButton(
                     onPressed: () {
-                        
                         controller.changeReportStatus(_selectedItem!, widget.report['report_id'], widget.report['user_email']);
-                  
+
                     },
                     child: const Text('Change Status'),
                   ),
-
-                  
                 ],
+              ),
+              ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => userData(userEmail: widget.report['user_email']));
+                    },
+                    child: const Text('View User Data'),
+                  ),
+                  const SizedBox(
+                height: 20.2,
               ),
             ],
           ),
