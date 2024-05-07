@@ -7,9 +7,7 @@ import 'package:intl/intl.dart';
 class AdminReportDetails extends StatelessWidget {
   final Map<String, dynamic> report;
 
-
   final controller = Get.put(ReportsController());
-
 
   AdminReportDetails({super.key, required this.report});
   @override
@@ -18,7 +16,8 @@ class AdminReportDetails extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Report Details', style: TextStyle(color: Colors.white)),
+        title:
+            const Text('Report Details', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF69BE49),
       ),
       body: SingleChildScrollView(
@@ -33,7 +32,7 @@ class AdminReportDetails extends StatelessWidget {
                 enabled: false,
                 readOnly: true,
                 decoration: const InputDecoration(
-                hintText: 'Report Type : ', filled: true),
+                    hintText: 'Report Type : ', filled: true),
                 controller: TextEditingController(text: report['report_type']),
               ),
               const SizedBox(
@@ -44,7 +43,8 @@ class AdminReportDetails extends StatelessWidget {
                 enabled: true,
                 decoration:
                     const InputDecoration(hintText: 'Address :', filled: true),
-                    controller: TextEditingController(text: report['incident_location']),
+                controller:
+                    TextEditingController(text: report['incident_location']),
               ),
               const SizedBox(
                 height: 20.2,
@@ -54,7 +54,8 @@ class AdminReportDetails extends StatelessWidget {
                 readOnly: true,
                 maxLines: 5,
                 enabled: true,
-                controller: TextEditingController(text: report['incident_description']),
+                controller:
+                    TextEditingController(text: report['incident_description']),
                 decoration: const InputDecoration(
                   hintText: 'Description : ',
                   filled: true,
@@ -82,8 +83,8 @@ class AdminReportDetails extends StatelessWidget {
               const SizedBox(
                 height: 20.2,
               ),
-              
-              //     File( 
+
+              //     File(
               //   keyboardType: TextInputType.datetime,
               //   enabled: false,
               //   readOnly: true,
@@ -102,9 +103,8 @@ class AdminReportDetails extends StatelessWidget {
               // const SizedBox(height: 20.2),
               ElevatedButton(
                 onPressed: () {
-                      //change report status
-                      // report.changreportStatus('resolved');
-
+                  //change report status
+                  // report.changreportStatus('resolved');
                 },
                 child: const Text('Submit'),
               ),
@@ -112,8 +112,7 @@ class AdminReportDetails extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }
-

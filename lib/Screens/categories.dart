@@ -1,11 +1,25 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:notify_ju/Screens/AddReport.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
-class Categories extends StatelessWidget {
+class Categories extends StatefulWidget {
+  Categories({Key? key}) : super(key: key);
+  @override
+  _CategoriesState createState() => _CategoriesState();
+}
+
+class _CategoriesState extends State<Categories> {
+  late GlobalKey _myKey;
+  @override
+  void initState() {
+    super.initState();
+    _myKey = GlobalKey();
+  }
+
   final List<String> image = [
     'images/fight123.jpg',
     'images/fiire.webp',
@@ -24,11 +38,10 @@ class Categories extends StatelessWidget {
     'Infrastructure Damage',
   ];
 
-  Categories({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _myKey,
       drawer: DrawerWidget(),
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(

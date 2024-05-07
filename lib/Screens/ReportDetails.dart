@@ -1,7 +1,5 @@
 // ignore_for_file: camel_case_types
 
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
@@ -16,9 +14,7 @@ class ReportDetails extends StatelessWidget {
   final String reportType;
   final description = TextEditingController();
 
-
   final controller = Get.put(ReportsController());
-
 
   ReportDetails({super.key, required this.reportType});
   @override
@@ -28,7 +24,8 @@ class ReportDetails extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Report Details', style: TextStyle(color: Colors.white)),
+        title:
+            const Text('Report Details', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF69BE49),
       ),
       body: SingleChildScrollView(
@@ -43,7 +40,7 @@ class ReportDetails extends StatelessWidget {
                 enabled: false,
                 readOnly: true,
                 decoration: const InputDecoration(
-                hintText: 'Report Type : ', filled: true),
+                    hintText: 'Report Type : ', filled: true),
                 controller: TextEditingController(text: reportType),
               ),
               const SizedBox(
@@ -86,18 +83,15 @@ class ReportDetails extends StatelessWidget {
               const SizedBox(height: 20.2),
               ElevatedButton(
                 onPressed: () {
-
                   final report = reportModel(
-                  report_id: randomAlphaNumeric(20),
-                  report_type: reportType, 
-                  incident_description: description.text,
-                  report_date: DateTime.now(),
-                  report_status: 'History',
-
-                  
+                    report_id: randomAlphaNumeric(20),
+                    report_type: reportType,
+                    incident_description: description.text,
+                    report_date: DateTime.now(),
+                    report_status: 'History',
                   );
 
-                controller.createReport(report);
+                  controller.createReport(report);
                 },
                 child: const Text('Submit'),
               ),
@@ -105,7 +99,7 @@ class ReportDetails extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }

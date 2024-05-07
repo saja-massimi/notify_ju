@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
 class AdminMain extends StatefulWidget {
-
   const AdminMain({super.key});
 
   @override
@@ -62,11 +60,10 @@ class _AdminMainState extends State<AdminMain> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => Incidents(
-                          reportType: names[index],
+                            reportType: names[index],
                           ),
                         ),
                       );
-                      
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -97,7 +94,7 @@ class _AdminMainState extends State<AdminMain> {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }

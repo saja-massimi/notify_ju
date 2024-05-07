@@ -6,7 +6,6 @@ import 'package:notify_ju/Widgets/drawer.dart';
 
 class MyReports extends StatefulWidget {
   const MyReports({Key? key}) : super(key: key);
-
   @override
   State<MyReports> createState() => _MyReportsState();
 }
@@ -41,7 +40,7 @@ class _MyReportsState extends State<MyReports> {
                   itemBuilder: (context, index) {
                     final items = snapshot.data!;
                     return Dismissible(
-                      key: Key(index.toString()),
+                      key: UniqueKey(),
                       background: Container(
                         color: Colors.red,
                         child: const Align(

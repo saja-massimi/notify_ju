@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/SignupController.dart';
 
-
-
 class email_auth extends StatefulWidget {
-
-  const email_auth({super.key});
+  const email_auth({Key? key}) : super(key: key);
 
   @override
   State<email_auth> createState() => _email_auth();
@@ -16,15 +13,12 @@ class email_auth extends StatefulWidget {
 
 // ignore: camel_case_types
 class _email_auth extends State<email_auth> {
-
   final controller = Get.put(SignupController());
   final _formkey = GlobalKey<FormState>();
 
-
-
   @override
   Widget build(BuildContext context) {
-    return   Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(fit: StackFit.expand, children: [
         Opacity(
@@ -36,7 +30,6 @@ class _email_auth extends State<email_auth> {
             colorBlendMode: BlendMode.modulate,
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Container(
@@ -57,12 +50,9 @@ class _email_auth extends State<email_auth> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 25,
-                            fontWeight: FontWeight.bold
-                            )
-                            ),
+                            fontWeight: FontWeight.bold)),
                   ],
                 ),
-
                 Form(
                     key: _formkey,
                     child: Padding(
@@ -77,7 +67,7 @@ class _email_auth extends State<email_auth> {
                               ),
                             ],
                           ),
-                          TextFormField( 
+                          TextFormField(
                             textCapitalization: TextCapitalization.none,
                             autocorrect: false,
                             keyboardType: TextInputType.emailAddress,
@@ -85,20 +75,21 @@ class _email_auth extends State<email_auth> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(15))),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
                               hintText: 'example@ju.edu.jo',
                             ),
                             controller: controller.email,
                             validator: (value) {
-                              if (value == null || value.trim().isEmpty|| !value.contains('@ju.edu.jo')) {
+                              if (value == null ||
+                                  value.trim().isEmpty ||
+                                  !value.contains('@ju.edu.jo')) {
                                 return 'Enter your university email';
                               }
                               return null;
                             },
                           ),
                           const SizedBox(height: 10),
-
                           const Row(
                             children: [
                               Text(
@@ -107,14 +98,14 @@ class _email_auth extends State<email_auth> {
                               ),
                             ],
                           ),
-                          TextFormField( 
+                          TextFormField(
                             obscureText: true,
                             decoration: const InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(15))),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
                               hintText: 'Password',
                             ),
                             controller: controller.password,
@@ -125,24 +116,21 @@ class _email_auth extends State<email_auth> {
                               return null;
                             },
                           ),
-                          
-
-                          const SizedBox(height: 10), 
-                            Row(
+                          const SizedBox(height: 10),
+                          Row(
                             children: [
                               ElevatedButton(
-                              style:const 
-                              ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(Colors.black) ,
-                              foregroundColor: MaterialStatePropertyAll(Colors.white) ,
-                              elevation: MaterialStatePropertyAll(4)
-                              ),
-                                  onPressed: () async{
-                              
-                                    if(_formkey.currentState!.validate()){
-                                    
-                                      controller.loginUser(controller.email.text, controller.password.text);
-                                      
+                                  style: const ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.black),
+                                      foregroundColor: MaterialStatePropertyAll(
+                                          Colors.white),
+                                      elevation: MaterialStatePropertyAll(4)),
+                                  onPressed: () async {
+                                    if (_formkey.currentState!.validate()) {
+                                      controller.loginUser(
+                                          controller.email.text,
+                                          controller.password.text);
                                     }
                                   },
                                   child: const Text('Submit')),
@@ -157,7 +145,5 @@ class _email_auth extends State<email_auth> {
         ),
       ]),
     );
-
-  
   }
 }
