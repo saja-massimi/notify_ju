@@ -71,7 +71,7 @@ class userData extends StatelessWidget {
         ),
       ),
     ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar:  BottomNavigationBarWidget(),
     );
   }
 }

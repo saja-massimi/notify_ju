@@ -28,13 +28,43 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
     'Resolved',
     'On Hold',
     'Rejected',
-  ];    
+  ];
 
-    String? _selectedItem = 'Pending';
 
+    
+  String? _selectedItem = 'Pending';
+  String _locationMessage = '';
+
+@override
+  void initState() {
+    super.initState();
+    setLocationName();
+  }
+
+
+Future<void> setLocationName() async {
+  GeoPoint incidentLocation = widget.report['incident_location'];
+  
+  double latitude1 = incidentLocation.latitude;
+  double longitude1 = incidentLocation.longitude;
+
+  List<Placemark> placemarks = await placemarkFromCoordinates(latitude1, longitude1);
+  Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
+  String address = place != null
+      ? "${place.street}, ${place.locality}, ${place.country}"
+      : 'Unknown Location';
+  
+  setState(() {
+    _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
+  });
+}
+  
+
+
+
+      
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -62,13 +92,38 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
               const SizedBox(
                 height: 20.2,
               ),
-              TextField(
-                readOnly: true,
-                enabled: false,
-                decoration:
-                    const InputDecoration(hintText: 'Address :', filled: true),
-                    controller: TextEditingController(text: widget.report['incident_location']),
+            Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      enabled: false,
+                      decoration: const InputDecoration(
+                      hintText: 'Address :', filled: true),
+                      controller: TextEditingController(text: _locationMessage),
+
+                    ),
+                  ),
+
+                  IconButton(
+                    icon: const Icon(Icons.location_on),
+                    onPressed: () async {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MapScreenAdmin(
+                            selectedLocation:
+                                widget.report['incident_location'], // Pass your selected location here
+                      
+                          ),
+                        ),
+                      );
+                      
+                    },
+                  ),
+                ],
               ),
+
               const SizedBox(
                 height: 20.2,
               ),

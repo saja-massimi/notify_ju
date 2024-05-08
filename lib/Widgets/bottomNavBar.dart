@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
 import 'package:notify_ju/Screens/votes.dart';
@@ -25,22 +23,22 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Categories()));
               },
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyReports()));
+                      MaterialPageRoute(builder: (context) => const MyReports()));
                 },
-                icon: Icon(Icons.notifications)),
-            Spacer(),
+                icon: const Icon(Icons.notifications)),
+            const Spacer(),
             IconButton(
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => VotingPage()));
                 },
-                icon: Icon(Icons.people)),
+                icon: const Icon(Icons.people)),
           ],
         ));
   }
