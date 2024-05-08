@@ -30,47 +30,17 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
     'Rejected',
   ];    
 
+    String? _selectedItem = 'Pending';
 
-    
-  String? _selectedItem = 'Pending';
-  String _locationMessage = '';
-
-@override
-  void initState() {
-    super.initState();
-    setLocationName();
-  }
-
-
-Future<void> setLocationName() async {
-  GeoPoint incidentLocation = widget.report['incident_location'];
-  
-  double latitude1 = incidentLocation.latitude;
-  double longitude1 = incidentLocation.longitude;
-
-  List<Placemark> placemarks = await placemarkFromCoordinates(latitude1, longitude1);
-  Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
-  String address = place != null
-      ? "${place.street}, ${place.locality}, ${place.country}"
-      : 'Unknown Location';
-  
-  setState(() {
-    _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
-  });
-}
-  
-
-
-
-      
   @override
   Widget build(BuildContext context) {
-
+    
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Report Details', style: TextStyle(color: Colors.white)),
+        title:
+            const Text('Report Details', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF69BE49),
       ),
       body: SingleChildScrollView(
@@ -85,44 +55,20 @@ Future<void> setLocationName() async {
                 enabled: false,
                 readOnly: true,
                 decoration: const InputDecoration(
-                hintText: 'Report Type : ', filled: true),
-                controller: TextEditingController(text: widget.report['report_type']),
+                    hintText: 'Report Type : ', filled: true),
+                controller:
+                    TextEditingController(text: widget.report['report_type']),
               ),
               const SizedBox(
                 height: 20.2,
               ),
-            Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      enabled: false,
-                      decoration: const InputDecoration(
-                      hintText: 'Address :', filled: true),
-                      controller: TextEditingController(text: _locationMessage),
-
-                    ),
-                  ),
-
-                  IconButton(
-                    icon: const Icon(Icons.location_on),
-                    onPressed: () async {
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MapScreenAdmin(
-                            selectedLocation:
-                                widget.report['incident_location'], // Pass your selected location here
-                      
-                          ),
-                        ),
-                      );
-                      
-                    },
-                  ),
-                ],
+              TextField(
+                readOnly: true,
+                enabled: false,
+                decoration:
+                    const InputDecoration(hintText: 'Address :', filled: true),
+                    controller: TextEditingController(text: widget.report['incident_location']),
               ),
-
               const SizedBox(
                 height: 20.2,
               ),
@@ -131,7 +77,8 @@ Future<void> setLocationName() async {
                 readOnly: true,
                 maxLines: 5,
                 enabled: false,
-                controller: TextEditingController(text: widget.report['incident_description']),
+                controller: TextEditingController(
+                    text: widget.report['incident_description']),
                 decoration: const InputDecoration(
                   hintText: 'Description : ',
                   filled: true,
@@ -159,8 +106,8 @@ Future<void> setLocationName() async {
               const SizedBox(
                 height: 20.2,
               ),
-              
-              //     File( 
+
+              //     File(
               //   keyboardType: TextInputType.datetime,
               //   enabled: false,
               //   readOnly: true,
@@ -168,52 +115,53 @@ Future<void> setLocationName() async {
               //     hintText: 'date : ',
               //     filled: true,
               //   ),
-              //  
+              //
               // ),
               const SizedBox(height: 20.2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  DropdownButton( 
-                  value: _selectedItem, 
-                  icon: const Icon(Icons.keyboard_arrow_down),     
-                  items: _dropdownItems.map((String items) { 
-                return DropdownMenuItem( 
-                  value: items, 
-                  child: Text(items), 
-                ); 
-              }).toList(), 
-              
-              onChanged: (String? newValue) {  
-                setState(() { 
-                  _selectedItem = newValue!; 
-                }); 
-              }, 
-            ), 
+                  DropdownButton(
+                    value: _selectedItem,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    items: _dropdownItems.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedItem = newValue!;
+                      });
+                    },
+                  ),
                   ElevatedButton(
                     onPressed: () {
-                        controller.changeReportStatus(_selectedItem!, widget.report['report_id'], widget.report['user_email']);
-
+                      controller.changeReportStatus(
+                          _selectedItem!,
+                          widget.report['report_id'],
+                          widget.report['user_email']);
                     },
                     child: const Text('Change Status'),
                   ),
                 ],
               ),
               ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => userData(userEmail: widget.report['user_email']));
-                    },
-                    child: const Text('View User Data'),
-                  ),
-                  const SizedBox(
+                onPressed: () {
+                  Get.to(
+                      () => userData(userEmail: widget.report['user_email']));
+                },
+                child: const Text('View User Data'),
+              ),
+              const SizedBox(
                 height: 20.2,
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }
-

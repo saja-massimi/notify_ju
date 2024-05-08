@@ -1,59 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
+import 'package:notify_ju/Screens/votes.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
-  const BottomNavigationBarWidget({Key? key}) : super(key: key);
-
   @override
   State<BottomNavigationBarWidget> createState() =>
       _BottomNavigationBarWidgetState();
 }
 
 class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
-  int currentIndex = 0;
-  final screen = [Categories(), const MyReports()];
-
   @override
   Widget build(BuildContext context) {
-    return GNav(
-      backgroundColor: const Color.fromARGB(255, 195, 235, 197),
-      activeColor: const Color.fromARGB(255, 136, 135, 135),
-      color: Colors.white,
-      gap: 3,
-      selectedIndex: currentIndex,
-      onTabChange: (index) {
-        setState(() {
-          currentIndex = index;
-        });
-      },
-      tabs: [
-        GButton(
-            icon: Icons.home,
-            text: 'Home',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Categories(),
-                ),
-              );
-            }),
-        GButton(
-          icon: Icons.list_alt_outlined,
-          text: 'My Reports',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MyReports(),
-              ),
-            );
-          },
-        ),
-      ],
-    );
+    return BottomAppBar(
+        color: const Color.fromARGB(255, 195, 235, 197),
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 50,
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Categories()));
+              },
+              icon: Icon(Icons.home),
+            ),
+            Spacer(),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyReports()));
+                },
+                icon: Icon(Icons.notifications)),
+            Spacer(),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => VotingPage()));
+                },
+                icon: Icon(Icons.people)),
+          ],
+        ));
   }
 }
