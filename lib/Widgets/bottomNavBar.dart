@@ -20,7 +20,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   Widget build(BuildContext context) {
     return GNav(
       backgroundColor: const Color.fromARGB(255, 195, 235, 197),
-      activeColor: Color.fromARGB(255, 136, 135, 135),
+      activeColor: const Color.fromARGB(255, 136, 135, 135),
       color: Colors.white,
       gap: 3,
       selectedIndex: currentIndex,
@@ -42,7 +42,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
               );
             }),
         GButton(
-          icon: Icons.notifications,
+          icon: Icons.list_alt_outlined,
           text: 'My Reports',
           onPressed: () {
             Navigator.push(

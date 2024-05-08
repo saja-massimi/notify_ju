@@ -18,7 +18,6 @@ final email = _authRepo.firebaseUser.value?.email;
 if(email!=null){
 
   final snapshot = await _db.collection("users").where("user_email", isEqualTo: email).get();
-  log(snapshot.docs[0].data()["role"]);
   return snapshot.docs[0].data()["role"]=="admin";
   
 }

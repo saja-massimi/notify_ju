@@ -49,6 +49,7 @@ Future<void> createReport(reportModel report) async {
           .collection('reports')
           .doc(report.report_id)
           .set(report.toJson());
+          
       Get.snackbar("Success", "Report sent successfully");
     } else {
       Get.snackbar("Error", "User not found");
@@ -104,7 +105,7 @@ Future<List<Map<String, dynamic>>?> viewAllHistoryReports() async{
 
   try {
       final snapshot = await _db.collection('/users/$documentId/reports')
-      .where("report_status", isEqualTo: "History")
+      .where("report_status", isEqualTo: "Resolved")
       .get();
 
       return snapshot.docs.map((doc) => doc.data()).toList();

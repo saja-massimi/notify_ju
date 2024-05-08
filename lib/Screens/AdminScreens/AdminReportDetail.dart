@@ -1,24 +1,28 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
+import 'package:notify_ju/Screens/AdminScreens/AdminMap.dart';
 import 'package:notify_ju/Screens/AdminScreens/UserData.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:intl/intl.dart';
 
 class AdminReportDetails extends StatefulWidget {
   final Map<String, dynamic> report;
-
-
-
-  AdminReportDetails({super.key, required this.report});
+  const AdminReportDetails({super.key, required this.report});
 
   @override
   State<AdminReportDetails> createState() => _AdminReportDetailsState();
+
+
+
 }
 
 class _AdminReportDetailsState extends State<AdminReportDetails> {
   final controller = Get.put(AdminController());
-final List<String> _dropdownItems = [
+  final List<String> _dropdownItems = [
     'Pending',
     'Under Review',
     'Resolved',
@@ -26,11 +30,42 @@ final List<String> _dropdownItems = [
     'Rejected',
   ];    
 
-    String? _selectedItem = 'Pending';
 
+    
+  String? _selectedItem = 'Pending';
+  String _locationMessage = '';
+
+@override
+  void initState() {
+    super.initState();
+    setLocationName();
+  }
+
+
+Future<void> setLocationName() async {
+  GeoPoint incidentLocation = widget.report['incident_location'];
+  
+  double latitude1 = incidentLocation.latitude;
+  double longitude1 = incidentLocation.longitude;
+
+  List<Placemark> placemarks = await placemarkFromCoordinates(latitude1, longitude1);
+  Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
+  String address = place != null
+      ? "${place.street}, ${place.locality}, ${place.country}"
+      : 'Unknown Location';
+  
+  setState(() {
+    _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
+  });
+}
+  
+
+
+
+      
   @override
   Widget build(BuildContext context) {
-    
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -56,13 +91,38 @@ final List<String> _dropdownItems = [
               const SizedBox(
                 height: 20.2,
               ),
-              TextField(
-                readOnly: true,
-                enabled: false,
-                decoration:
-                    const InputDecoration(hintText: 'Address :', filled: true),
-                    controller: TextEditingController(text: widget.report['incident_location']),
+            Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      enabled: false,
+                      decoration: const InputDecoration(
+                      hintText: 'Address :', filled: true),
+                      controller: TextEditingController(text: _locationMessage),
+
+                    ),
+                  ),
+
+                  IconButton(
+                    icon: const Icon(Icons.location_on),
+                    onPressed: () async {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MapScreenAdmin(
+                            selectedLocation:
+                                widget.report['incident_location'], // Pass your selected location here
+                      
+                          ),
+                        ),
+                      );
+                      
+                    },
+                  ),
+                ],
               ),
+
               const SizedBox(
                 height: 20.2,
               ),

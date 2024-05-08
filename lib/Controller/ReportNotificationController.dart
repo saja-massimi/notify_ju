@@ -39,7 +39,6 @@ Future<List<Map<String, dynamic>>> getReports(String reportType) async {
       allReports.addAll(reportsSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>));
     }
 
-    print(allReports.toString()); 
 
     return allReports;
   } catch (e) {
@@ -63,8 +62,7 @@ Future<List<Map<String, dynamic>>> getReportsDetails(String reportType) async {
 
       allReports.addAll(reportsSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>));
     }
-
-    print(allReports.toString()); 
+      log(allReports.toString());
 
     return allReports;
   } catch (e) {

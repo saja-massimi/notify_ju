@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
-
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class reportModel{
@@ -10,7 +8,7 @@ String? report_id;
 String? user_email;
 final String report_type;
 final String? incident_description;
-final String? incident_location;
+final GeoPoint? incident_location;
 final DateTime report_date;
 final File? incident_video;
 final File? incident_picture;

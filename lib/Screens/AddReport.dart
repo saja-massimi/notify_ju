@@ -1,12 +1,12 @@
 // ignore_for_file: camel_case_types
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Widgets/image_input.dart';
-import 'package:notify_ju/Widgets/mic.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
 import 'package:intl/intl.dart';
@@ -35,24 +35,19 @@ class _addReportState extends State<addReport> {
   @override
   void initState() {
     super.initState();
-
+    getPermission();
     _getCurrentLocation();
     addressz.clear();
   }
 
   void _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,);
+      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks[0];
       String address = "${place.name}, ${place.locality}, ${place.country}";
       setState(() {
-        addressz.clear();
         _locationMessage = address;
-        addressz.clear();
       });
     } catch (e) {
       setState(() {
@@ -60,6 +55,53 @@ class _addReportState extends State<addReport> {
       });
     }
   }
+
+
+
+getPermission() async {
+
+    bool serviceEnabled;
+    LocationPermission permission;
+
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      Get.rawSnackbar(
+          title: "Warning",
+          messageText: const Text("you must enable location service "));
+      return;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied)
+    {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Get.rawSnackbar(
+            title: "Warning",
+            messageText:
+            const Text("You must allow Location Permission to use this feature "));
+        return;
+      }
+      else if (permission == LocationPermission.whileInUse) {
+        await getPermission();
+      
+      }
+    }
+    else if (permission == LocationPermission.whileInUse) {
+
+      Position position = await Geolocator.getCurrentPosition();
+      setState(() {
+
+        _selectedLocation = LatLng(position.latitude, position.longitude);
+      
+      });
+    }
+
+    }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +207,6 @@ class _addReportState extends State<addReport> {
                 ),
               ),
 
-              const MicInput(),
               const ImageInput(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -179,7 +220,7 @@ class _addReportState extends State<addReport> {
                         incident_description: description.text,
                         report_date: DateTime.now(),
                         report_status: 'Pending',
-                        incident_location: _selectedLocation.toString(),
+                        incident_location: GeoPoint(_selectedLocation.latitude, _selectedLocation.longitude),
                         user_email: widget._authRepo.firebaseUser.value?.email,
 
                       );

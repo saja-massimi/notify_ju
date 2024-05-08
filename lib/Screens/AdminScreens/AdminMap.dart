@@ -1,28 +1,25 @@
 // ignore_for_file: avoid_unnecessary_containers
 
-import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-class MapScreen extends StatefulWidget {
-  final LatLng selectedLocation;
-  final Function(LatLng) onLocationSelected;
+class MapScreenAdmin extends StatefulWidget {
+  final GeoPoint selectedLocation;
 
-  const MapScreen({
+  const MapScreenAdmin({
     Key? key,
     required this.selectedLocation,
-    required this.onLocationSelected,
   }) : super(key: key);
 
   @override
-  _MapScreenState createState() => _MapScreenState();
+  _MapScreenAdminState createState() => _MapScreenAdminState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapScreenAdminState extends State<MapScreenAdmin> {
   
-  late LatLng mapSelectedLocation;
+  late GeoPoint mapSelectedLocation;
   @override
   void initState() {
     mapSelectedLocation = widget.selectedLocation; 
@@ -37,13 +34,9 @@ class _MapScreenState extends State<MapScreen> {
       ),
       body: FlutterMap(
         options: MapOptions(
-          center: mapSelectedLocation,
+          center: LatLng(mapSelectedLocation.latitude, mapSelectedLocation.longitude),
           zoom: 15.0,
-          onTap: (TapPosition tapPosition, LatLng location) {
-            setState(() {
-              mapSelectedLocation = location;
-            });
-          },
+          
         ),
         children: [
           TileLayer(
@@ -55,7 +48,7 @@ class _MapScreenState extends State<MapScreen> {
               Marker(
                 width: 80.0,
                 height: 80.0,
-                point: mapSelectedLocation,
+                point: LatLng(mapSelectedLocation.latitude, mapSelectedLocation.longitude),
                 builder: (ctx) => Container(
                   child: const Icon(
                     Icons.location_pin,
@@ -70,10 +63,7 @@ class _MapScreenState extends State<MapScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pop(context); // Go back to the previous screen
-          log(mapSelectedLocation.toString());
-          widget.onLocationSelected(
-              mapSelectedLocation); //bring the value to the etxt field
+          Navigator.pop(context); 
         },
         child: const Icon(Icons.check),
       ),
