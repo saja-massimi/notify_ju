@@ -241,7 +241,7 @@ getPermission() async {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar:  BottomNavigationBarWidget(),
     );
   }
 }
