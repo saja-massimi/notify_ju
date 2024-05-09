@@ -1,5 +1,4 @@
 // ignore_for_file: non_constant_identifier_names
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class reportModel{
@@ -10,9 +9,7 @@ final String report_type;
 final String? incident_description;
 final GeoPoint? incident_location;
 final DateTime report_date;
-final File? incident_video;
-final File? incident_picture;
-final File? incident_voiceNote;
+final String? incident_picture;
 late final String report_status;
 
 
@@ -24,9 +21,7 @@ late final String report_status;
   this.incident_description, 
   this.incident_location, 
   required this.report_date, 
-  this.incident_video, 
-  this.incident_picture,
-  this.incident_voiceNote, 
+  this.incident_picture, 
   required this.report_status, 
 });
 
@@ -38,9 +33,7 @@ late final String report_status;
       'incident_description': incident_description,
       'incident_location': incident_location,
       'report_date': report_date,
-      'incident_video': incident_video,
       'incident_picture': incident_picture,
-      'incident_voiceNote': incident_voiceNote,
       'report_status': report_status,
       
     };
@@ -56,9 +49,7 @@ late final String report_status;
       incident_description: data['incident_description'],
       incident_location: data['incident_location'],
       report_date: data['report_date'],
-      incident_video: data['incident_video'],
       incident_picture: data['incident_picture'],
-      incident_voiceNote: data['incident_voiceNote'],
       report_status: data['report_status'], 
     );
   }

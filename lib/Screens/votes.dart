@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
 class VotingPage extends StatefulWidget {

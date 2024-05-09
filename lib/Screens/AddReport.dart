@@ -31,6 +31,8 @@ class _addReportState extends State<addReport> {
   String _locationMessage = '';
   LatLng _selectedLocation = const LatLng(32.0161, 35.8695);
   bool showMap = false;
+    String? _imageUrl;
+
 
   @override
   void initState() {
@@ -125,7 +127,7 @@ getPermission() async {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextField(
                 enabled: false,
@@ -139,7 +141,7 @@ getPermission() async {
                   Expanded(
                     child: TextField(
                       keyboardType: TextInputType.multiline,
-                      enabled: true,
+                      enabled: false,
                       decoration: const InputDecoration(
                           hintText: 'Address :', filled: true),
                       controller: addressz..text = _locationMessage,
@@ -153,7 +155,7 @@ getPermission() async {
                         MaterialPageRoute(
                           builder: (context) => MapScreen(
                             selectedLocation:
-                                _selectedLocation, // Pass your selected location here
+                                _selectedLocation,
                             onLocationSelected: (location) {
                               setState(() async {
                                 _selectedLocation = location;
@@ -171,7 +173,7 @@ getPermission() async {
                                 });
                               });
                               Navigator.pop(context,
-                                  location); // Pop the map screen and return the selected location
+                                  location); 
                             },
                           ),
                         ),
@@ -206,25 +208,35 @@ getPermission() async {
                   text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
                 ),
               ),
-
-              const ImageInput(),
+                ImageInput(
+                onImageSelected: (imageUrl) {
+                  setState(() {
+                    _imageUrl = imageUrl;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Get.back();
+                      final rand = randomAlphaNumeric(20);
                       final report = reportModel(
-                        report_id: randomAlphaNumeric(20),
+                        report_id: rand,
                         report_type: widget.reportType,
                         incident_description: description.text,
                         report_date: DateTime.now(),
                         report_status: 'Pending',
                         incident_location: GeoPoint(_selectedLocation.latitude, _selectedLocation.longitude),
                         user_email: widget._authRepo.firebaseUser.value?.email,
+                        incident_picture:  _imageUrl,
+
 
                       );
-                      controller.createReport(report);
+                    
+                      controller.createReport(report);  
+                      Get.back();
                     },
                     child: const Text('Submit'),
                   ),

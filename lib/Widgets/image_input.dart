@@ -1,43 +1,66 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class ImageInput extends StatefulWidget {
-  const ImageInput({super.key});
+  final Function(String)? onImageSelected;
+
+  const ImageInput({Key? key, this.onImageSelected}) : super(key: key);
 
   @override
-  State<ImageInput> createState() {
-    return _ImageInputState();
-  }
+  State<ImageInput> createState() => _ImageInputState();
 }
 
 class _ImageInputState extends State<ImageInput> {
-  final User? auth = FirebaseAuth.instance.currentUser!;
-
   File? _selectedImage;
-  void _takePicture() async {
+
+  Future<void> _takePicture() async {
     final imagePicker = ImagePicker();
 
-    final pickedImage =
-        await imagePicker.pickImage(source: ImageSource.camera, maxWidth: 600);
-        // final galleryIamge = await imagePicker.pickImage(source: ImageSource.gallery, maxWidth: 600);
+    final pickedImage = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 600,
+    );
+
     if (pickedImage == null) {
       return;
     }
-else{
-  var imageName = basename(pickedImage.path);
-  var RefrenceStorage = FirebaseStorage.instance.ref('${auth!.email}/$imageName');
-  await RefrenceStorage.putFile(File(pickedImage.path)); 
-  // var url = await RefrenceStorage.getDownloadURL();
-    
 
+    final imageFile = File(pickedImage.path);
+
+    try {
+      final ref = FirebaseStorage.instance.ref().child('images/${DateTime.now().toIso8601String()}');
+      await ref.putFile(imageFile);
+
+      final imageUrl = await ref.getDownloadURL();
+
+      if (widget.onImageSelected != null) {
+        widget.onImageSelected!(imageUrl);
+      }
+
+      setState(() {
+        _selectedImage = imageFile;
+      });
+    } catch (error) {
+      print('Error uploading image: $error');
     }
+  }
+
+  Future<void> _viewImage() async {
+    if (_selectedImage == null) {
+      return;
+    }
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageViewScreen(image: _selectedImage!),
+      ),
+    );
+
     setState(() {
-      _selectedImage = File(pickedImage.path);
+      _selectedImage = null;
     });
   }
 
@@ -45,11 +68,12 @@ else{
   Widget build(BuildContext context) {
     Widget content = TextButton.icon(
       onPressed: _takePicture,
-      icon: const Icon(CupertinoIcons.camera),
-      label: const Text(''),
+      icon: const Icon(Icons.camera),
+      label: const Text('Take Picture'),
     );
     if (_selectedImage != null) {
       content = GestureDetector(
+        onTap: _viewImage,
         child: Image.file(
           _selectedImage!,
           fit: BoxFit.cover,
@@ -63,6 +87,35 @@ else{
       width: double.infinity,
       alignment: Alignment.center,
       child: content,
+    );
+  }
+}
+
+class ImageViewScreen extends StatelessWidget {
+  final File image;
+
+  const ImageViewScreen({Key? key, required this.image}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('View Image'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.file(image),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Retake'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

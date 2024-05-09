@@ -1,6 +1,8 @@
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
@@ -31,9 +33,23 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
   ];
 
 
-    
+    Future<void> _viewImage() async {
+    if (widget.report['incident_picture'] == null) {
+      return;
+    }
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageViewScreen(image: Image.network(widget.report['incident_picture']!)),
+      ),
+    );
+    }
+
   String? _selectedItem = 'Pending';
   String _locationMessage = '';
+    
+
 
 @override
   void initState() {
@@ -113,7 +129,7 @@ Future<void> setLocationName() async {
                         MaterialPageRoute(
                           builder: (context) => MapScreenAdmin(
                             selectedLocation:
-                                widget.report['incident_location'], // Pass your selected location here
+                                widget.report['incident_location'], 
                       
                           ),
                         ),
@@ -152,7 +168,7 @@ Future<void> setLocationName() async {
                 ),
                 controller: TextEditingController(
                   text: widget.report['report_date'] != null
-                      ? DateFormat('yyyy-MM-dd').format(
+                      ?  DateFormat('yyyy-MM-dd - h:mm').format(
                           DateTime.fromMillisecondsSinceEpoch(
                               widget.report['report_date'].seconds * 1000))
                       : 'No date provided',
@@ -162,16 +178,25 @@ Future<void> setLocationName() async {
                 height: 20.2,
               ),
 
-              //     File(
-              //   keyboardType: TextInputType.datetime,
-              //   enabled: false,
-              //   readOnly: true,
-              //   decoration: const InputDecoration(
-              //     hintText: 'date : ',
-              //     filled: true,
-              //   ),
-              //
-              // ),
+                const Text('User\'s Attached Image : '),
+                const SizedBox(
+                height: 10.2,
+              ),
+                GestureDetector(
+                  onTap: _viewImage,
+
+                  child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(widget.report['incident_picture']),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                                
+                                ),
+                ),
               const SizedBox(height: 20.2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -217,6 +242,34 @@ Future<void> setLocationName() async {
         ),
       ),
       bottomNavigationBar: BottomNavigationBarWidget(),
+    );
+  }
+}
+class ImageViewScreen extends StatelessWidget {
+  final Image image;
+
+  const ImageViewScreen({Key? key, required this.image}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('View Image'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            image,
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Go Back'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
