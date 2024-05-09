@@ -11,11 +11,19 @@ class _VotingPageState extends State<VotingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: DrawerWidget(),
-        appBar: AppBar(
-          title: Text('Voting'),
-          backgroundColor: const Color.fromARGB(255, 195, 235, 197),
-          centerTitle: true,
-        ));
+      drawer: DrawerWidget(),
+      appBar: AppBar(
+        title: Text('Voting'),
+        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: ListView(),
+    );
   }
 }

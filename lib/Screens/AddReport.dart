@@ -141,7 +141,6 @@ class _addReportState extends State<addReport> {
                   ),
                 ],
               ),
-
               TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
@@ -152,7 +151,6 @@ class _addReportState extends State<addReport> {
                   filled: true,
                 ),
               ),
-
               TextField(
                 keyboardType: TextInputType.datetime,
                 enabled: false,
@@ -164,7 +162,6 @@ class _addReportState extends State<addReport> {
                   text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
                 ),
               ),
-
               const MicInput(),
               const ImageInput(),
               Row(
@@ -181,7 +178,6 @@ class _addReportState extends State<addReport> {
                         report_status: 'Pending',
                         incident_location: _selectedLocation.toString(),
                         user_email: widget._authRepo.firebaseUser.value?.email,
-
                       );
                       controller.createReport(report);
                     },
@@ -200,7 +196,7 @@ class _addReportState extends State<addReport> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }
