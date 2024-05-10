@@ -32,6 +32,11 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
     'Rejected',
   ];
 
+String? _selectedItem;
+    void initReportState(){
+    
+    _selectedItem = widget.report['report_status'];
+    }
 
     Future<void> _viewImage() async {
     if (widget.report['incident_picture'] == null) {
@@ -46,7 +51,6 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
     );
     }
 
-  String? _selectedItem = 'Pending';
   String _locationMessage = '';
     
 
@@ -55,6 +59,7 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
   void initState() {
     super.initState();
     setLocationName();
+    initReportState();
   }
 
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
+import 'package:notify_ju/Screens/ReportDetails.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
@@ -39,6 +40,7 @@ class _MyReportsState extends State<MyReports> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final items = snapshot.data!;
+                    if(items[index]["report_status"] == 'pending'){
                     return Dismissible(
                       key: UniqueKey(),
                       background: Container(
@@ -68,25 +70,36 @@ class _MyReportsState extends State<MyReports> {
                         ),
                       ),
                       onDismissed: (direction) {
-                        if (direction == DismissDirection.startToEnd) {
+                        if (direction == DismissDirection.startToEnd && items[index]["report_status"] == 'pending') {
                           controller.deleteReport(items[index]["report_id"]);
                         } else if (direction == DismissDirection.endToStart) {
                           //edit item stuff
                         }
                       },
                       child: Card(
-                        color: Color.fromARGB(184, 211, 207, 207),
+                        color: const Color.fromARGB(184, 211, 207, 207),
                         child: ListTile(
                           title: Text(items[index]['report_type']),
                           subtitle: Text(items[index]['incident_description']),
                           onTap: () {
-                            // Handle tapping on the card
+                            Get.to(() =>  ReportDetails(report: items[index]));
                           },
                         ),
                       ),
                     );
-                  },
-                );
+                  }else{
+                    return Card(
+                      color: const Color.fromARGB(184, 211, 207, 207),
+                      child: ListTile(
+                        title: Text(items[index]['report_type']),
+                        subtitle: Text(items[index]['incident_description']),
+                        onTap: () {
+                          Get.to(() =>  ReportDetails(report: items[index]));
+                        },
+                      ),
+                    );
+                  }
+              });
               }
             }
           }

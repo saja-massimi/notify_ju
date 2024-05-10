@@ -124,7 +124,7 @@ Future viewCurrentReports() async{
 
   try {
     final snapshot = await _db.collection('/users/$documentId/reports')
-      .where("report_status", isNotEqualTo: "History")
+      .where("report_status", isNotEqualTo: "Resolved")
       .get();
 
       return snapshot.docs.map((doc) => doc.data()).toList();
@@ -143,7 +143,7 @@ Future<int> viewAllHistoryReportsCount() async {
   try {
     final snapshot = await _db
         .collection('/users/$documentId/reports')
-        .where("report_status", isEqualTo: "History")
+        .where("report_status", isEqualTo: "Resolved")
         .get();
     return snapshot.size;
   } catch (e) {
@@ -158,7 +158,7 @@ Future<int> viewCurrentReportsCount() async {
   try {
     final snapshot = await _db
         .collection('/users/$documentId/reports')
-        .where("report_status", isNotEqualTo: "History")
+        .where("report_status", isNotEqualTo: "Resolved")
         .get();
     return snapshot.size;
   } catch (e) {
