@@ -6,33 +6,58 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Widgets/image_input.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
-import 'package:random_string/random_string.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:notify_ju/Screens/MapScreen.dart';
+import 'package:notify_ju/Widgets/image_input.dart';
 
 class EditReport extends StatefulWidget {
-  final String reportType;
+  final Map<String, dynamic> report;
   final _authRepo = Get.put(AuthenticationRepository());
-
-  EditReport({Key? key, required this.reportType}) : super(key: key);
+  EditReport({Key? key, required this.report}) : super(key: key);
 
   @override
   _EditReportState createState() => _EditReportState();
 }
 
 class _EditReportState extends State<EditReport> {
+
   final description = TextEditingController();
   final addressz = TextEditingController();
   String _locationMessage = '';
   LatLng _selectedLocation = const LatLng(32.0161, 35.8695);
   bool showMap = false;
-    String? _imageUrl;
+  String? _imageUrl;
+  Future<void> _viewImage() async {
+      if (widget.report['incident_picture'] == null) {
+        return;
+      }
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ImageViewScreen(image: Image.network(widget.report['incident_picture']!)),
+        ),
+      );
+      }
+  Future<void> setLocationName() async {
+    GeoPoint incidentLocation = widget.report['incident_location'];
+    
+    double latitude1 = incidentLocation.latitude;
+    double longitude1 = incidentLocation.longitude;
 
+    List<Placemark> placemarks = await placemarkFromCoordinates(latitude1, longitude1);
+    Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
+    String address = place != null
+        ? "${place.street}, ${place.locality}, ${place.country}"
+        : 'Unknown Location';
+    
+    setState(() {
+      _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
+    });
+  }
 
   @override
   void initState() {
@@ -113,7 +138,7 @@ getPermission() async {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
           centerTitle: true,
-          title: const Text('Add Report',
+          title: const Text('Edit Report',
               style: TextStyle(
                   color: Color.fromARGB(255, 0, 0, 0),
                   fontStyle: FontStyle.italic)),
@@ -133,8 +158,8 @@ getPermission() async {
                 enabled: false,
                 readOnly: true,
                 decoration: const InputDecoration(
-                    hintText: 'Report Type : ', filled: true),
-                controller: TextEditingController(text: widget.reportType),
+                hintText: 'Report Type : ', filled: true),
+                controller: TextEditingController(text: widget.report['report_type']),
               ),
               Row(
                 children: [
@@ -190,7 +215,7 @@ getPermission() async {
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
                 enabled: true,
-                controller: description,
+                controller: description..text = widget.report['incident_description'],
                 decoration: const InputDecoration(
                   hintText: 'Description : ',
                   filled: true,
@@ -208,6 +233,26 @@ getPermission() async {
                   text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
                 ),
               ),
+                const Text('User\'s Attached Image : '),
+                const SizedBox(
+                height: 10.2,
+              ),
+                GestureDetector(
+                  onTap: _viewImage,
+
+                  child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(widget.report['incident_picture']),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                                
+                  ),
+                ),
+                const SizedBox(height: 19.9),
                 ImageInput(
                 onImageSelected: (imageUrl) {
                   setState(() {
@@ -215,30 +260,42 @@ getPermission() async {
                   });
                 },
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 19.9),
+
+              const Text('Report Status: '),
+              TextField(
+                keyboardType: TextInputType.multiline,
+                readOnly: true,
+                decoration: const InputDecoration(
+                    hintText: 'Report Status : ', filled: true),
+                controller: TextEditingController(text: widget.report['report_status']),
+              ),
+              const SizedBox(
+                height: 20.2,
+              ),
+            const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      final rand = randomAlphaNumeric(20);
                       final report = reportModel(
-                        report_id: rand,
-                        report_type: widget.reportType,
+                        report_id: widget.report['report_id'],
+                        report_type: widget.report['report_type'],
                         incident_description: description.text,
                         report_date: DateTime.now(),
-                        report_status: 'Pending',
+                        report_status: widget.report['report_status'],
                         incident_location: GeoPoint(_selectedLocation.latitude, _selectedLocation.longitude),
                         user_email: widget._authRepo.firebaseUser.value?.email,
-                        incident_picture:  _imageUrl,
+                        incident_picture:  _imageUrl??widget.report['incident_picture'],
 
 
                       );
                     
-                      controller.createReport(report);  
+                      controller.updateReport(widget.report['report_id'],report);  
                       Get.back();
                     },
-                    child: const Text('Submit'),
+                    child: const Text('Update'),
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton(
@@ -254,6 +311,35 @@ getPermission() async {
         ),
       ),
       bottomNavigationBar:  BottomNavigationBarWidget(),
+    );
+  }
+}
+class ImageViewScreen extends StatelessWidget {
+  final Image image;
+
+  const ImageViewScreen({super.key, required this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('View Image'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            image,
+            ElevatedButton(
+              onPressed: () {
+            
+                Get.back();
+          },
+              child: const Text('Go Back'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

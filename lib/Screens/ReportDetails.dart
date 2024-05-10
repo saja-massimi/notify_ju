@@ -23,12 +23,12 @@ class ReportDetails extends StatefulWidget {
 
 class _ReportDetailsState extends State<ReportDetails> {
   final controller = Get.put(AdminController());
-
+  
+/// ********************************************
     Future<void> _viewImage() async {
     if (widget.report['incident_picture'] == null) {
       return;
     }
-
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -71,6 +71,8 @@ Future<void> setLocationName() async {
       
   @override
   Widget build(BuildContext context) {
+
+    
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -194,7 +196,7 @@ Future<void> setLocationName() async {
                 keyboardType: TextInputType.multiline,
                 readOnly: true,
                 decoration: const InputDecoration(
-                    hintText: 'Report Status : ', filled: true),
+                hintText: 'Report Status : ', filled: true),
                 controller: TextEditingController(text: widget.report['report_status']),
               ),
               const SizedBox(

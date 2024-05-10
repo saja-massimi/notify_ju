@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
+import 'package:notify_ju/Screens/AdminScreens/editReport.dart';
 import 'package:notify_ju/Screens/ReportDetails.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
@@ -40,7 +41,7 @@ class _MyReportsState extends State<MyReports> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final items = snapshot.data!;
-                    if(items[index]["report_status"] == 'pending'){
+                    if(items[index]["report_status"] == 'Pending'){
                     return Dismissible(
                       key: UniqueKey(),
                       background: Container(
@@ -56,31 +57,25 @@ class _MyReportsState extends State<MyReports> {
                           ),
                         ),
                       ),
-                      secondaryBackground: Container(
-                        color: Colors.blue,
-                        child: const Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 20.0),
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
                       onDismissed: (direction) {
                         if (direction == DismissDirection.startToEnd && items[index]["report_status"] == 'pending') {
                           controller.deleteReport(items[index]["report_id"]);
-                        } else if (direction == DismissDirection.endToStart) {
-                          //edit item stuff
-                        }
+                        } 
                       },
                       child: Card(
                         color: const Color.fromARGB(184, 211, 207, 207),
                         child: ListTile(
                           title: Text(items[index]['report_type']),
                           subtitle: Text(items[index]['incident_description']),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              Get.to(() => EditReport(report: items[index]));
+                            },
+                          ),
                           onTap: () {
                             Get.to(() =>  ReportDetails(report: items[index]));
                           },

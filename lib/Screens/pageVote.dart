@@ -25,11 +25,11 @@ class _VotingPageState extends State<VotingPage1> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Voting'),
+          title: const Text('Voting'),
           backgroundColor: const Color.fromARGB(255, 195, 235, 197),
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             },
