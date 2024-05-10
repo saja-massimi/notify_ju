@@ -31,8 +31,7 @@ class _addReportState extends State<addReport> {
   String _locationMessage = '';
   LatLng _selectedLocation = const LatLng(32.0161, 35.8695);
   bool showMap = false;
-    String? _imageUrl;
-
+  String? _imageUrl;
 
   @override
   void initState() {
@@ -44,8 +43,11 @@ class _addReportState extends State<addReport> {
 
   void _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,);
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks[0];
       String address = "${place.name}, ${place.locality}, ${place.country}";
       setState(() {
@@ -58,13 +60,9 @@ class _addReportState extends State<addReport> {
     }
   }
 
-
-
-getPermission() async {
-
+  getPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
-
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -75,35 +73,24 @@ getPermission() async {
     }
 
     permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied)
-    {
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         Get.rawSnackbar(
             title: "Warning",
-            messageText:
-            const Text("You must allow Location Permission to use this feature "));
+            messageText: const Text(
+                "You must allow Location Permission to use this feature "));
         return;
-      }
-      else if (permission == LocationPermission.whileInUse) {
+      } else if (permission == LocationPermission.whileInUse) {
         await getPermission();
-      
       }
-    }
-    else if (permission == LocationPermission.whileInUse) {
-
+    } else if (permission == LocationPermission.whileInUse) {
       Position position = await Geolocator.getCurrentPosition();
       setState(() {
-
         _selectedLocation = LatLng(position.latitude, position.longitude);
-      
       });
     }
-
-    }
-
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,8 +141,7 @@ getPermission() async {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MapScreen(
-                            selectedLocation:
-                                _selectedLocation,
+                            selectedLocation: _selectedLocation,
                             onLocationSelected: (location) {
                               setState(() async {
                                 _selectedLocation = location;
@@ -172,8 +158,7 @@ getPermission() async {
                                   _locationMessage = address;
                                 });
                               });
-                              Navigator.pop(context,
-                                  location); 
+                              Navigator.pop(context, location);
                             },
                           ),
                         ),
@@ -185,7 +170,6 @@ getPermission() async {
                   ),
                 ],
               ),
-
               TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
@@ -196,7 +180,6 @@ getPermission() async {
                   filled: true,
                 ),
               ),
-
               TextField(
                 keyboardType: TextInputType.datetime,
                 enabled: false,
@@ -208,7 +191,7 @@ getPermission() async {
                   text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
                 ),
               ),
-                ImageInput(
+              ImageInput(
                 onImageSelected: (imageUrl) {
                   setState(() {
                     _imageUrl = imageUrl;
@@ -228,14 +211,13 @@ getPermission() async {
                         incident_description: description.text,
                         report_date: DateTime.now(),
                         report_status: 'Pending',
-                        incident_location: GeoPoint(_selectedLocation.latitude, _selectedLocation.longitude),
+                        incident_location: GeoPoint(_selectedLocation.latitude,
+                            _selectedLocation.longitude),
                         user_email: widget._authRepo.firebaseUser.value?.email,
-                        incident_picture:  _imageUrl,
-
-
+                        incident_picture: _imageUrl,
                       );
-                    
-                      controller.createReport(report);  
+
+                      controller.createReport(report);
                       Get.back();
                     },
                     child: const Text('Submit'),
@@ -253,7 +235,7 @@ getPermission() async {
           ),
         ),
       ),
-      bottomNavigationBar:  BottomNavigationBarWidget(),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }
