@@ -1,13 +1,13 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:notify_ju/Screens/AddReport.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
 class Categories extends StatefulWidget {
-  Categories({Key? key}) : super(key: key);
+  const Categories({Key? key}) : super(key: key);
+
   @override
   _CategoriesState createState() => _CategoriesState();
 }
@@ -61,7 +61,6 @@ class _CategoriesState extends State<Categories> {
               mainAxisSpacing: 5.0,
               clipBehavior: Clip.antiAlias,
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
               children: List.generate(
                 image.length,
                 (index) => Container(
