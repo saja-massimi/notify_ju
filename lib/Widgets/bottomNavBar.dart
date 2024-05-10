@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
+import 'package:notify_ju/Screens/pageVote.dart';
 import 'package:notify_ju/Screens/votes.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
@@ -28,15 +29,17 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
             const Spacer(),
             IconButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const MyReports()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyReports()));
                 },
                 icon: const Icon(Icons.notifications)),
             const Spacer(),
             IconButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => VotingPage()));
+                      MaterialPageRoute(builder: (context) => VotingPage1()));
                 },
                 icon: const Icon(Icons.people)),
           ],
