@@ -52,7 +52,8 @@ class _VotingPageState extends State<VotingPage1> {
                             description: post['description'],
                             email: post['email'],
                             post_id: post['post_id'],
-                            likesCount: post['likesCount'],
+                            likesCount:
+                                List<String>.from(post['likesCount'] ?? []),
                           );
                         },
                       );

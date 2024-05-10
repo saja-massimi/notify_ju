@@ -9,13 +9,13 @@ class wallpost extends StatefulWidget {
   final List<String> likesCount;
   // final String time;
   const wallpost({
-    super.key,
+    Key? key,
     required this.description,
     required this.email,
     required this.post_id,
     required this.likesCount,
     // required this.time,
-  });
+  }) : super(key: key);
 
   @override
   State<wallpost> createState() => _wallpostState();
