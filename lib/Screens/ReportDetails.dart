@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
-import 'package:notify_ju/Widgets/mic.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
 import '../Widgets/image_input.dart';
@@ -79,7 +78,6 @@ class ReportDetails extends StatelessWidget {
                 ),
               ),
               const ImageInput(),
-              const MicInput(),
               const SizedBox(height: 20.2),
               ElevatedButton(
                 onPressed: () {

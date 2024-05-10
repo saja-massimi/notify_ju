@@ -35,7 +35,6 @@ class ReportNotification extends GetxController {
             .map((doc) => doc.data() as Map<String, dynamic>));
       }
 
-      print(allReports.toString());
 
       return allReports;
     } catch (e) {
@@ -58,11 +57,9 @@ class ReportNotification extends GetxController {
             .where("report_type", isEqualTo: reportType)
             .get();
 
-        allReports.addAll(reportsSnapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>));
-      }
-
-      print(allReports.toString());
+      allReports.addAll(reportsSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>));
+    }
+      log(allReports.toString());
 
       return allReports;
     } catch (e) {

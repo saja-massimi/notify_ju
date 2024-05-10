@@ -32,9 +32,9 @@ else{
   var imageName = basename(pickedImage.path);
   var RefrenceStorage = FirebaseStorage.instance.ref('${auth!.email}/$imageName');
   await RefrenceStorage.putFile(File(pickedImage.path)); 
-  var url = await RefrenceStorage.getDownloadURL();
+  // var url = await RefrenceStorage.getDownloadURL();
     
-    
+
     }
     setState(() {
       _selectedImage = File(pickedImage.path);
