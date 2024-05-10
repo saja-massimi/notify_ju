@@ -35,15 +35,20 @@ class PostController extends GetxController {
   Future<void> addPost(postModel model) async {
     try {
       final docID = await getDocumentIdByEmail(auth?.email ?? "");
-      await _db
-          .collection('users')
-          .doc(docID)
-          .collection('post')
-          .doc(model.post_id)
-          .set(model.toJson());
-    } catch (e) {
-      log("Error adding post: $e");
-      throw e;
+      log(docID.toString());
+      if (docID != null) {
+        await _db
+            .collection('users')
+            .doc(docID)
+            .collection('post')
+            .doc(model.post_id)
+            .set(model.toJson());
+        Get.snackbar("Success", "Post sent successfully");
+      } else {
+        Get.snackbar("Error", "User not found");
+      }
+    } catch (error) {
+      Get.snackbar("Error", 'Failed to create post: $error');
     }
   }
 
