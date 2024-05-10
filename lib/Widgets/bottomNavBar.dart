@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
 import 'package:notify_ju/Screens/pageVote.dart';
-import 'package:notify_ju/Screens/votes.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
   @override
