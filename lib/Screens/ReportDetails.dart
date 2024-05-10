@@ -1,24 +1,76 @@
-// ignore_for_file: camel_case_types
 
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/ReportsController.dart';
-import 'package:notify_ju/Models/reportModel.dart';
+import 'package:notify_ju/Controller/AdminController.dart';
+import 'package:notify_ju/Screens/AdminScreens/AdminMap.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
-import 'package:random_string/random_string.dart';
-import '../Widgets/image_input.dart';
 import 'package:intl/intl.dart';
 
-class ReportDetails extends StatelessWidget {
-  final String reportType;
-  final description = TextEditingController();
+class ReportDetails extends StatefulWidget {
+  final Map<String, dynamic> report;
+  const ReportDetails({super.key, required this.report});
 
-  final controller = Get.put(ReportsController());
+  @override
+  State<ReportDetails> createState() => _ReportDetailsState();
 
-  ReportDetails({super.key, required this.reportType});
+
+
+}
+
+class _ReportDetailsState extends State<ReportDetails> {
+  final controller = Get.put(AdminController());
+
+    Future<void> _viewImage() async {
+    if (widget.report['incident_picture'] == null) {
+      return;
+    }
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageViewScreen(image: Image.network(widget.report['incident_picture']!)),
+      ),
+    );
+    }
+
+  String _locationMessage = '';
+    
+
+
+@override
+  void initState() {
+    super.initState();
+    setLocationName();
+  }
+
+
+Future<void> setLocationName() async {
+  GeoPoint incidentLocation = widget.report['incident_location'];
+  
+  double latitude1 = incidentLocation.latitude;
+  double longitude1 = incidentLocation.longitude;
+
+  List<Placemark> placemarks = await placemarkFromCoordinates(latitude1, longitude1);
+  Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
+  String address = place != null
+      ? "${place.street}, ${place.locality}, ${place.country}"
+      : 'Unknown Location';
+  
+  setState(() {
+    _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
+  });
+}
+  
+
+
+
+      
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ReportsController());
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -40,24 +92,54 @@ class ReportDetails extends StatelessWidget {
                 readOnly: true,
                 decoration: const InputDecoration(
                     hintText: 'Report Type : ', filled: true),
-                controller: TextEditingController(text: reportType),
+                controller:
+                    TextEditingController(text: widget.report['report_type']),
               ),
               const SizedBox(
                 height: 20.2,
               ),
-              const TextField(
-                enabled: true,
-                decoration:
-                    InputDecoration(hintText: 'Address :', filled: true),
+            Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      enabled: false,
+                      decoration: const InputDecoration(
+                      hintText: 'Address :', filled: true),
+                      controller: TextEditingController(text: _locationMessage),
+
+                    ),
+                  ),
+
+                  IconButton(
+                    icon: const Icon(Icons.location_on),
+                    onPressed: () async {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MapScreenAdmin(
+                            selectedLocation:
+                                widget.report['incident_location'], 
+                      
+                          ),
+                        ),
+                      );
+                      
+                    },
+                  ),
+                ],
               ),
+
               const SizedBox(
                 height: 20.2,
               ),
               TextField(
                 keyboardType: TextInputType.multiline,
+                readOnly: true,
                 maxLines: 5,
-                enabled: true,
-                controller: description,
+                enabled: false,
+                controller: TextEditingController(
+                    text: widget.report['incident_description']),
                 decoration: const InputDecoration(
                   hintText: 'Description : ',
                   filled: true,
@@ -69,35 +151,88 @@ class ReportDetails extends StatelessWidget {
               TextField(
                 keyboardType: TextInputType.datetime,
                 enabled: false,
+                readOnly: true,
                 decoration: const InputDecoration(
                   hintText: 'date : ',
                   filled: true,
                 ),
                 controller: TextEditingController(
-                  text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
+                  text: widget.report['report_date'] != null
+                      ?  DateFormat('yyyy-MM-dd - h:mm').format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              widget.report['report_date'].seconds * 1000))
+                      : 'No date provided',
                 ),
               ),
-              const ImageInput(),
-              const SizedBox(height: 20.2),
-              ElevatedButton(
-                onPressed: () {
-                  final report = reportModel(
-                    report_id: randomAlphaNumeric(20),
-                    report_type: reportType,
-                    incident_description: description.text,
-                    report_date: DateTime.now(),
-                    report_status: 'History',
-                  );
+              const SizedBox(
+                height: 20.2,
+              ),
 
-                  controller.createReport(report);
-                },
-                child: const Text('Submit'),
+                const Text('User\'s Attached Image : '),
+                const SizedBox(
+                height: 10.2,
+              ),
+                GestureDetector(
+                  onTap: _viewImage,
+
+                  child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(widget.report['incident_picture']),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                                
+                                ),
+                ),
+              const SizedBox(height: 20.2),
+          
+              
+              TextField(
+                keyboardType: TextInputType.multiline,
+                readOnly: true,
+                decoration: const InputDecoration(
+                    hintText: 'Report Status : ', filled: true),
+                controller: TextEditingController(text: widget.report['report_status']),
+              ),
+              const SizedBox(
+                height: 20.2,
               ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBarWidget(),
+    );
+  }
+}
+class ImageViewScreen extends StatelessWidget {
+  final Image image;
+
+  const ImageViewScreen({super.key, required this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('View Image'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            image,
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Go Back'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

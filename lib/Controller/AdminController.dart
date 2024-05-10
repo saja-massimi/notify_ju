@@ -44,7 +44,7 @@ Future<void> changeReportStatus(String type, String reportID, String email) asyn
     if (reportSnapshot.docs.isNotEmpty) {
       DocumentSnapshot reportDoc = reportSnapshot.docs.first;
       Map<String, dynamic> dataToUpdate = {
-        'status': type, 
+        'report_status': type, 
       };
 
       await reportDoc.reference.update(dataToUpdate);
