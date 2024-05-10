@@ -18,15 +18,7 @@ class _VotingPageState extends State<VotingPage1> {
   final controller = Get.put(PostController());
   final _authRepo = Get.put(AuthenticationRepository());
   final TextController = TextEditingController();
-  void postMessage() {
-    if (TextController.text.isNotEmpty) {
-      FirebaseFirestore.instance.collection('users').add({
-        'description': TextController.text,
-        'user_email': _authRepo.firebaseUser.value!.email,
-        'TimeStamp': Timestamp.now(),
-      });
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +77,7 @@ class _VotingPageState extends State<VotingPage1> {
                       ),
                     ),
                     IconButton(
-                        onPressed: postMessage,
+                        onPressed:(){ },
                         icon: const Icon(Icons.arrow_upward)),
                   ],
                 ),
