@@ -1,22 +1,52 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notify_ju/Screens/like_button.dart';
 
-class wallpost extends StatelessWidget {
+class wallpost extends StatefulWidget {
   final String description;
-  final String user_email;
+  final String email;
+  final String post_id;
+  final List<String> likesCount;
   // final String time;
   const wallpost({
     super.key,
     required this.description,
-    required this.user_email,
+    required this.email,
+    required this.post_id,
+    required this.likesCount,
     // required this.time,
   });
+
+  @override
+  State<wallpost> createState() => _wallpostState();
+}
+
+class _wallpostState extends State<wallpost> {
+  final currentUSer = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(user_email),
-        Text(description),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [
+              LikeButton(isLiked: true, onTap: () {}),
+            ],
+          ),
+          Text(
+            widget.email,
+            style: TextStyle(color: Colors.black26),
+          ),
+          Text(widget.description),
+        ],
+      ),
     );
   }
 }

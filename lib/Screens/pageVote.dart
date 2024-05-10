@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,15 +20,6 @@ class _VotingPageState extends State<VotingPage1> {
   final controller = Get.put(PostController());
   final _authRepo = Get.put(AuthenticationRepository());
   final TextController = TextEditingController();
-  void postMessage() {
-    if (TextController.text.isNotEmpty) {
-      FirebaseFirestore.instance.collection('users').add({
-        'description': TextController.text,
-        'user_email': _authRepo.firebaseUser.value!.email,
-        'TimeStamp': Timestamp.now(),
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +47,12 @@ class _VotingPageState extends State<VotingPage1> {
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           final post = snapshot.data![index];
+
                           return wallpost(
                             description: post['description'],
-                            user_email: post['user_email'],
+                            email: post['email'],
+                            post_id: post['post_id'],
+                            likesCount: post['likesCount'],
                           );
                         },
                       );
@@ -85,7 +81,20 @@ class _VotingPageState extends State<VotingPage1> {
                       ),
                     ),
                     IconButton(
-                        onPressed: postMessage,
+                        onPressed: () {
+                          log(TextController.text);
+                          log(_authRepo.firebaseUser.value!.email!);
+                          log(DateTime.now().toString());
+                          controller.addPost(
+                            postModel(
+                              post_id: randomAlphaNumeric(20),
+                              description: TextController.text,
+                              email: _authRepo.firebaseUser.value!.email!,
+                              time: DateTime.now(),
+                              likesCount: [],
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.arrow_upward)),
                   ],
                 ),
