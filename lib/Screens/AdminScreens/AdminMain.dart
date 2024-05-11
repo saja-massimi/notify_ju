@@ -4,7 +4,7 @@ import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
 class AdminMain extends StatefulWidget {
-  const AdminMain({super.key});
+  const AdminMain({ key}) : super(key: key);
 
   @override
   State<AdminMain> createState() => _AdminMainState();
@@ -29,6 +29,8 @@ class _AdminMainState extends State<AdminMain> {
     'Infrastructure Damage',
   ];
 
+  final List<int> notifications = [2, 0, 5, 0, 0, 3]; // Sample notifications, replace with actual data
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,42 +54,67 @@ class _AdminMainState extends State<AdminMain> {
               physics: const NeverScrollableScrollPhysics(),
               children: List.generate(
                 image.length,
-                (index) => Container(
-                  padding: const EdgeInsets.all(3),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Incidents(
-                            reportType: names[index],
+                (index) => Stack(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(3),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Incidents(
+                                reportType: names[index],
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
                           ),
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 15),
+                            Container(
+                            width: 100,
+                              height: 70,
+                              child: Image.asset(image[index],
+                                  fit: BoxFit.fitHeight,
+                                  scale: 1.0,
+                                  alignment: Alignment.center),
+                            ),
+                            const SizedBox(height: 15),
+                            Text(names[index],
+                                style: const TextStyle(fontSize: 16),
+                                textAlign: TextAlign.center),
+                          ],
+                        ),
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 15),
-                        Container(
-                          height: 70,
-                          child: Image.asset(image[index],
-                              fit: BoxFit.fitHeight,
-                              scale: 1.0,
-                              alignment: Alignment.center),
+                    if (notifications[index] > 0)
+                      Positioned(
+                        right: 10,
+                        top: 10,
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            notifications[index].toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 15),
-                        Text(names[index],
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center),
-                      ],
-                    ),
-                  ),
+                      ),
+                  ],
                 ),
               ),
             ),

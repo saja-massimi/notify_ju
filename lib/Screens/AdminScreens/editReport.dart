@@ -82,10 +82,7 @@ class _EditReportState extends State<EditReport> {
       });
     }
   }
-
-
-
-getPermission() async {
+        getPermission() async {
 
     bool serviceEnabled;
     LocationPermission permission;

@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
-import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
 import 'package:notify_ju/Screens/email_auth.dart';

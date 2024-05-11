@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/ReportNotificationController.dart';
+import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminReportDetail.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
@@ -14,10 +14,9 @@ class Incidents extends StatefulWidget {
   State<Incidents> createState() => _IncidentsState();
 }
 
-final controller = Get.put(ReportNotification());
 
 class _IncidentsState extends State<Incidents> {
-  final controller = Get.put(ReportNotification());
+  final controller = Get.put(AdminController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
