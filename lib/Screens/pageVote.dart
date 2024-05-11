@@ -114,7 +114,7 @@ class _VotingPageState extends State<VotingPage1> {
                 ],
               ),
             ),
-            Text("Logged in as ${_authRepo.firebaseUser.value!.email}"),
+            SizedBox(height: 10)
           ],
         ),
       ),
