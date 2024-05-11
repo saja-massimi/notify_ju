@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:notify_ju/Controller/postController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:get/get.dart';
 import 'package:notify_ju/Screens/likes.dart';
 
 class wallpost extends StatefulWidget {
@@ -10,15 +10,14 @@ class wallpost extends StatefulWidget {
   final String email;
   final String post_id;
   final List<String> likesCount;
-  // final String time;
+
   const wallpost({
-    super.key,
+    Key? key,
     required this.description,
     required this.email,
     required this.post_id,
     required this.likesCount,
-    // required this.time,
-  });
+  }) : super(key: key);
 
   @override
   State<wallpost> createState() => _wallpostState();
@@ -45,12 +44,14 @@ class _wallpostState extends State<wallpost> {
         description: widget.description,
         email: widget.email,
       ));
+      widget.likesCount.add(_authRepo.firebaseUser.value!.email!);
     } else {
       controller.dislike(postModel(
         post_id: widget.post_id,
         description: widget.description,
         email: widget.email,
       ));
+      widget.likesCount.remove(_authRepo.firebaseUser.value!.email!);
     }
   }
 
@@ -78,7 +79,12 @@ class _wallpostState extends State<wallpost> {
       child: Row(
         children: [
           Column(
-            children: [Likes(isLiked: isLiked, onTap: toggleLike)],
+            children: [
+              Likes(isLiked: isLiked, onTap: toggleLike),
+              const SizedBox(height: 10),
+              Text(widget.likesCount.length.toString(),
+                  style: TextStyle(color: Colors.black26)),
+            ],
           ),
           const SizedBox(width: 10),
           Column(

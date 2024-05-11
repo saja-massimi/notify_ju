@@ -98,12 +98,11 @@ class PostController extends GetxController {
       log("Error fetching reports: $e");
       throw e;
     }
-    return [];
   }
 
   Future<void> likePost(postModel model) async {
     try {
-      final docID = await getDocumentIdByEmail(auth?.email ?? "");
+      final docID = await getDocumentIdByEmail(model.email);
       // Get a reference to the post document
       DocumentReference postRef = FirebaseFirestore.instance
           .collection('users')
