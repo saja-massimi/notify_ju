@@ -1,6 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/like_button.dart';
+import 'package:notify_ju/Controller/postController.dart';
+import 'package:notify_ju/Models/postModel.dart';
+import 'package:notify_ju/Repository/authentication_repository.dart';
+import 'package:get/get.dart';
+import 'package:notify_ju/Screens/likes.dart';
 
 class wallpost extends StatefulWidget {
   final String description;
@@ -9,42 +12,87 @@ class wallpost extends StatefulWidget {
   final List<String> likesCount;
   // final String time;
   const wallpost({
-    Key? key,
+    super.key,
     required this.description,
     required this.email,
     required this.post_id,
     required this.likesCount,
     // required this.time,
-  }) : super(key: key);
+  });
 
   @override
   State<wallpost> createState() => _wallpostState();
 }
 
 class _wallpostState extends State<wallpost> {
-  final currentUSer = FirebaseAuth.instance.currentUser;
+  final _authRepo = Get.put(AuthenticationRepository());
+  final controller = Get.put(PostController());
+  bool isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isLiked = widget.likesCount.contains(_authRepo.firebaseUser.value!.email);
+  }
+
+  void toggleLike() {
+    setState(() {
+      isLiked = !isLiked;
+    });
+    if (isLiked) {
+      controller.likePost(postModel(
+        post_id: widget.post_id,
+        description: widget.description,
+        email: widget.email,
+      ));
+    } else {
+      controller.dislike(postModel(
+        post_id: widget.post_id,
+        description: widget.description,
+        email: widget.email,
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(
+        top: 25,
+        left: 25,
+        right: 25,
+      ),
       padding: const EdgeInsets.all(10),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
+            children: [Likes(isLiked: isLiked, onTap: toggleLike)],
+          ),
+          const SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LikeButton(isLiked: true, onTap: () {}),
+              Text(
+                widget.email,
+                style: TextStyle(color: Colors.black26),
+              ),
+              const SizedBox(height: 10),
+              Text(widget.description),
+              const SizedBox(height: 10),
             ],
           ),
-          Text(
-            widget.email,
-            style: TextStyle(color: Colors.black26),
-          ),
-          Text(widget.description),
         ],
       ),
     );
