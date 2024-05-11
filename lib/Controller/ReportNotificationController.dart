@@ -1,72 +1,95 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:notify_ju/Models/reportModel.dart'; 
 class ReportNotification extends GetxController {
   static ReportNotification get instance => Get.find();
 
-// getToken() async{
-// String? mytoken = await FirebaseMessaging.instance.getToken();
-// log(mytoken!);
-// }
+getToken() async{
+String? mytoken = await FirebaseMessaging.instance.getToken();
+log(mytoken!);
+return mytoken;
+}
 
-// @override
-// void onInit(){
-//   getToken();
-// super.onInit();
-// }
+MyrequestPremission() async{
 
-  Future<List<Map<String, dynamic>>> getReports(String reportType) async {
-    try {
-      QuerySnapshot usersSnapshot =
-          await FirebaseFirestore.instance.collection('users').get();
+FirebaseMessaging messaging = FirebaseMessaging.instance;
+NotificationSettings settings = await messaging.requestPermission(
 
-      List<Map<String, dynamic>> allReports = [];
+  alert: true,
+  badge: true,
+  provisional: false,
+  sound: true,
+);
+if(settings.authorizationStatus == AuthorizationStatus.authorized){
+  log('User granted permission');
+}else if(settings.authorizationStatus == AuthorizationStatus.provisional){
+  log('User granted provisional permission');
+}else{
+  log('User declined or has not accepted permission');
+}
 
-      for (var userDoc in usersSnapshot.docs) {
-        QuerySnapshot reportsSnapshot = await userDoc.reference
-            .collection('reports')
-            .where("report_type", isEqualTo: reportType)
-            .get();
+}
 
-        allReports.addAll(reportsSnapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>));
+sendNotification(title,message,reportModel rep) async{
+  var headersList = {
+  'Accept': '*/*',
+  'Content-Type': 'application/json',
+  'Authorization': 'key=AAAAyvpO5hE:APA91bF3tr_j_O6tNjhVWzRUC63-z8IEH_WMvOSo0UNk2YaOJtbQamRxBi4l7YRdDHwkmpsZEFn_5D7Uzlu8E5qdYuRup25XLvuRCbfUwoxa5ojvXKt2u_e1_r0uJWvy7KsC37Fq_f-t' 
+};
+var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
+
+var body = {
+    "to": getToken(),
+    "notification": {
+      "title":title,
+      "body": message,
+      "mutable_content": true,
+      "sound": "Tri-tone",
+      },
+
+    "data": {
+    "report_type": rep.report_type,
       }
+};
+
+var req = http.Request('POST', url);
+req.headers.addAll(headersList);
+req.body = json.encode(body);
 
 
-      return allReports;
-    } catch (e) {
-      log("Error fetching reports: $e");
-      throw e;
-    }
-  }
+var res = await req.send();
+final resBody = await res.stream.bytesToString();
 
-  Future<List<Map<String, dynamic>>> getReportsDetails(
-      String reportType) async {
-    try {
-      QuerySnapshot usersSnapshot =
-          await FirebaseFirestore.instance.collection('users').get();
+if (res.statusCode >= 200 && res.statusCode < 300) {
+  log(resBody);
+}
+else {
+  log(res.reasonPhrase!);
+}
+}
 
-      List<Map<String, dynamic>> allReports = [];
 
-      for (var userDoc in usersSnapshot.docs) {
-        QuerySnapshot reportsSnapshot = await userDoc.reference
-            .collection('reports')
-            .where("report_type", isEqualTo: reportType)
-            .get();
 
-      allReports.addAll(reportsSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>));
-    }
-      log(allReports.toString());
+@override
+void onInit(){
 
-      return allReports;
-    } catch (e) {
-      log("Error fetching reports: $e");
-      throw e;
-    }
-  }
+  FirebaseMessaging.onMessage.listen((
+    RemoteMessage message) {   
+      if(message.notification!=null){
+    log('Got a message whilst in the foreground!');
+}
+});
+  MyrequestPremission();
+  getToken();
+super.onInit();
+}
 
-  viewCurrentReports() {}
+
+
 }

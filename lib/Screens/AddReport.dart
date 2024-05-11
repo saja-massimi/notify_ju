@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Controller/ReportNotificationController.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
@@ -32,7 +33,7 @@ class _addReportState extends State<addReport> {
   LatLng _selectedLocation = const LatLng(32.0161, 35.8695);
   bool showMap = false;
   String? _imageUrl;
-
+  final notif = Get.put(ReportNotification());
   @override
   void initState() {
     super.initState();
@@ -212,11 +213,12 @@ class _addReportState extends State<addReport> {
                         report_date: DateTime.now(),
                         report_status: 'Pending',
                         incident_location: GeoPoint(_selectedLocation.latitude,
-                            _selectedLocation.longitude),
+                        _selectedLocation.longitude),
                         user_email: widget._authRepo.firebaseUser.value?.email,
                         incident_picture: _imageUrl,
                       );
-
+                      
+                      notif.sendNotification('A new report', 'A new report has been sent', report);
                       controller.createReport(report);
                       Get.back();
                     },

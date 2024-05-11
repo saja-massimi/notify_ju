@@ -56,6 +56,55 @@ Future<void> changeReportStatus(String type, String reportID, String email) asyn
   }
 }
 
+    Future<List<Map<String, dynamic>>> getReports(String reportType) async {
+    try {
+      QuerySnapshot usersSnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+
+      List<Map<String, dynamic>> allReports = [];
+
+      for (var userDoc in usersSnapshot.docs) {
+        QuerySnapshot reportsSnapshot = await userDoc.reference
+            .collection('reports')
+            .where("report_type", isEqualTo: reportType)
+            .get();
+
+        allReports.addAll(reportsSnapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>));
+      }
+
+
+      return allReports;
+    } catch (e) {
+      log("Error fetching reports: $e");
+      throw e;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getReportsDetails(
+      String reportType) async {
+    try {
+      QuerySnapshot usersSnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+
+      List<Map<String, dynamic>> allReports = [];
+
+      for (var userDoc in usersSnapshot.docs) {
+        QuerySnapshot reportsSnapshot = await userDoc.reference
+            .collection('reports')
+            .where("report_type", isEqualTo: reportType)
+            .get();
+
+      allReports.addAll(reportsSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>));
+    }
+      log(allReports.toString());
+
+      return allReports;
+    } catch (e) {
+      log("Error fetching reports: $e");
+      throw e;
+    }
+  }
 
 
 
