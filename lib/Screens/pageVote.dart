@@ -1,12 +1,10 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/postController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Repository/user_repository.dart';
 import 'package:notify_ju/Screens/The_wall.dart';
 import 'package:random_string/random_string.dart';
 
@@ -20,6 +18,12 @@ class _VotingPageState extends State<VotingPage1> {
   final controller = Get.put(PostController());
   final _authRepo = Get.put(AuthenticationRepository());
   final TextController = TextEditingController();
+
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    TextController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {

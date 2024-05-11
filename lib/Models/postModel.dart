@@ -10,7 +10,7 @@ class postModel {
   final List<String>? likesCount;
   // final List<int>? DislikesCount;
   // final String? comments;
-  final DateTime time;
+  final DateTime? time;
 
   postModel({
     required this.post_id,
@@ -20,7 +20,7 @@ class postModel {
     this.likesCount,
     // this.DislikesCount,
     // this.comments,
-    required this.time,
+    this.time,
   });
 
   toJson() {

@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
+import 'package:notify_ju/Screens/email_auth.dart';
 
 class PostController extends GetxController {
   static PostController get instance => Get.find();
@@ -65,16 +66,86 @@ class PostController extends GetxController {
   }
 
   Future<List<Map<String, dynamic>>> getpost() async {
+    //
+    //   try {
+    //     final docID = await getDocumentIdByEmail(auth?.email ?? "");
+    //     final querySnapshot =
+    //         await _db.collection('users').doc(docID).collection('post').get();
+    //     return querySnapshot.docs
+    //         .map((e) => e.data())
+    //         .toList()
+    //         .cast<Map<String, dynamic>>();
+    //   } catch (error) {
+    //     Get.snackbar("Error", "Failed to get posts: $error");
+    //     return [];
+    //   }
+    // }
+    try {
+      QuerySnapshot usersSnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+
+      List<Map<String, dynamic>> allposts = [];
+
+      for (var userDoc in usersSnapshot.docs) {
+        QuerySnapshot reportsSnapshot =
+            await userDoc.reference.collection('post').get();
+
+        allposts.addAll(reportsSnapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>));
+      }
+      return allposts;
+    } catch (e) {
+      log("Error fetching reports: $e");
+      throw e;
+    }
+    return [];
+  }
+
+  Future<void> likePost(postModel model) async {
     try {
       final docID = await getDocumentIdByEmail(auth?.email ?? "");
-      final snapshot =
-          await _db.collection('users').doc(docID).collection('post').get();
-      final List<Map<String, dynamic>> posts =
-          snapshot.docs.map((doc) => doc.data()).toList();
-      return posts;
-    } catch (e) {
-      log("Error getting post: $e");
-      throw e;
+      // Get a reference to the post document
+      DocumentReference postRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(docID)
+          .collection('post')
+          .doc(model.post_id);
+
+      // Update the likes field in the post document
+      await postRef.update({
+        'likesCount': FieldValue.arrayUnion([auth?.email ?? ""])
+      });
+      // await postRef.update({
+      //   'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
+      // });
+
+      print('Post liked successfully');
+    } catch (error) {
+      print('Error liking post: $error');
+    }
+  }
+
+  Future<void> dislike(postModel model) async {
+    try {
+      final docID = await getDocumentIdByEmail(auth?.email ?? "");
+      // Get a reference to the post document
+      DocumentReference postRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(docID)
+          .collection('post')
+          .doc(model.post_id);
+
+      // Update the likes field in the post document
+      await postRef.update({
+        'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
+      });
+      // await postRef.update({
+      //   'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
+      // });
+
+      print('Post liked successfully');
+    } catch (error) {
+      print('Error liking post: $error');
     }
   }
 }
