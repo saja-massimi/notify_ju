@@ -8,20 +8,20 @@ import 'package:notify_ju/Screens/splashScreen';
 import 'package:notify_ju/firebase_options.dart';
 
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+// @pragma('vm:entry-point')
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
-await Firebase.initializeApp();
-final con = Get.put(AuthenticationRepository());
-  con.changeNum(message);
-  print("Handling a background message: ${message.messageId}");
-}
+// await Firebase.initializeApp();
+// final con = Get.put(AuthenticationRepository());
+//   con.changeNum(message);
+//   print("Handling a background message: ${message.messageId}");
+// }
 
 void main() async {
   
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((value) => Get.put(AuthenticationRepository()));
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
