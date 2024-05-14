@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
+import 'package:notify_ju/Screens/splashScreen';
 import 'package:notify_ju/firebase_options.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -22,10 +23,9 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   void initState() {
-
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) { 
-    
-    print('Message clicked!');});
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Message clicked!');
+    });
   }
 
   @override
@@ -33,10 +33,14 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF464A5E)),
         useMaterial3: true,
       ),
-      home: const email_auth(),
+      initialRoute: '/', // Set the initial route to '/'
+      routes: {
+        '/': (context) => SplashScreen(),
+        '/emailAuth': (context) => email_auth(),
+      },
     );
   }
 }
