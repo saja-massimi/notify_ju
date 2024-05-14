@@ -14,7 +14,7 @@ class DrawerWidget extends StatelessWidget {
   Future<String> getName() async {
     final profileData = Get.put(ProfileController());
     final adminData = Get.put(AdminController());
-    
+
     final isAdmin = await adminData.isAdmin();
     if (isAdmin) {
       return await profileData.getAdminName();
@@ -34,7 +34,7 @@ class DrawerWidget extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 195, 235, 197),
+              color: const Color(0xFF464A5E),
             ),
             child: Row(
               children: [

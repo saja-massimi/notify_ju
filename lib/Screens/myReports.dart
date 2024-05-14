@@ -21,8 +21,9 @@ class _MyReportsState extends State<MyReports> {
       drawer: DrawerWidget(),
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF464A5E),
         centerTitle: true,
-        title: const Text('My Reports'),
+        title: const Text('My Reports', style: TextStyle(color: Colors.white)),
       ),
       body: FutureBuilder(
         future: controller.viewCurrentReports(),
@@ -38,63 +39,69 @@ class _MyReportsState extends State<MyReports> {
                     child: Text("You don't have any reports yet"));
               } else {
                 return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final items = snapshot.data!;
-                    if(items[index]["report_status"] == 'Pending'){
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(
-                        color: Colors.red,
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 20.0),
-                            child: Icon(
-                              Icons.delete,
-                              color: Colors.white,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final items = snapshot.data!;
+                      if (items[index]["report_status"] == 'Pending') {
+                        return Dismissible(
+                          key: UniqueKey(),
+                          background: Container(
+                            color: Colors.red,
+                            child: const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 20.0),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      onDismissed: (direction) {
-                        if (direction == DismissDirection.startToEnd && items[index]["report_status"] == 'pending') {
-                          controller.deleteReport(items[index]["report_id"]);
-                        } 
-                      },
-                      child: Card(
-                        color: const Color.fromARGB(184, 211, 207, 207),
-                        child: ListTile(
-                          title: Text(items[index]['report_type']),
-                          subtitle: Text(items[index]['incident_description']),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                          onDismissed: (direction) {
+                            if (direction == DismissDirection.startToEnd &&
+                                items[index]["report_status"] == 'pending') {
+                              controller
+                                  .deleteReport(items[index]["report_id"]);
+                            }
+                          },
+                          child: Card(
+                            color: const Color.fromARGB(184, 211, 207, 207),
+                            child: ListTile(
+                              title: Text(items[index]['report_type']),
+                              subtitle:
+                                  Text(items[index]['incident_description']),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  Get.to(
+                                      () => EditReport(report: items[index]));
+                                },
+                              ),
+                              onTap: () {
+                                Get.to(
+                                    () => ReportDetails(report: items[index]));
+                              },
+                            ),
                           ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              Get.to(() => EditReport(report: items[index]));
+                        );
+                      } else {
+                        return Card(
+                          color: const Color.fromARGB(184, 211, 207, 207),
+                          child: ListTile(
+                            title: Text(items[index]['report_type']),
+                            subtitle:
+                                Text(items[index]['incident_description']),
+                            onTap: () {
+                              Get.to(() => ReportDetails(report: items[index]));
                             },
                           ),
-                          onTap: () {
-                            Get.to(() =>  ReportDetails(report: items[index]));
-                          },
-                        ),
-                      ),
-                    );
-                  }else{
-                    return Card(
-                      color: const Color.fromARGB(184, 211, 207, 207),
-                      child: ListTile(
-                        title: Text(items[index]['report_type']),
-                        subtitle: Text(items[index]['incident_description']),
-                        onTap: () {
-                          Get.to(() =>  ReportDetails(report: items[index]));
-                        },
-                      ),
-                    );
-                  }
-              });
+                        );
+                      }
+                    });
               }
             }
           }
