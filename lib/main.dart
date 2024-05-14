@@ -4,24 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
-import 'package:notify_ju/Screens/splashScreen';
-import 'package:notify_ju/firebase_options.dart';
 
 
-// @pragma('vm:entry-point')
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
-// await Firebase.initializeApp();
-// final con = Get.put(AuthenticationRepository());
-//   con.changeNum(message);
-//   print("Handling a background message: ${message.messageId}");
-// }
+ await Firebase.initializeApp();
+final con = Get.put(AuthenticationRepository());
+  con.changeNum(message);
+  print("Handling a background message: ${message.messageId}");
+}
 
 void main() async {
   
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((value) => Get.put(AuthenticationRepository()));
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((value) => Get.put(AuthenticationRepository()));
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -40,11 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF464A5E)),
         useMaterial3: true,
       ),
-      initialRoute: '/', // Set the initial route to '/'
-      routes: {
-        '/': (context) => SplashScreen(),
-        '/emailAuth': (context) => email_auth(),
-      },
+      home:  email_auth(),
     );
   }
 }
