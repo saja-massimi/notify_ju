@@ -24,7 +24,7 @@ class _email_auth extends State<email_auth> {
           child: Image.asset(
             'images/uniPic.jpeg',
             fit: BoxFit.cover,
-            color: Color.fromARGB(255, 82, 63, 93),
+            color: const Color(0xFF464A5E),
             colorBlendMode: BlendMode.modulate,
           ),
         ),

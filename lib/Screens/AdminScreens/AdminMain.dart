@@ -32,6 +32,7 @@ class _AdminMainState extends State<AdminMain> {
     'Infrastructure Damage',
   ];
 
+  final List<int> notifications = [2, 0, 5, 0, 0, 3]; // Sample notifications, replace with actual data
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class _AdminMainState extends State<AdminMain> {
         centerTitle: true,
         title: const Text('Admin Control Panel',
             style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF69BE49),
+        backgroundColor: const Color(0xFF464A5E),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -81,7 +82,7 @@ class _AdminMainState extends State<AdminMain> {
                           children: [
                             const SizedBox(height: 15),
                             Container(
-                            width: 100,
+                              width: 100,
                               height: 70,
                               child: Image.asset(image[index],
                                   fit: BoxFit.fitHeight,

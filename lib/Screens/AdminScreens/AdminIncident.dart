@@ -14,7 +14,6 @@ class Incidents extends StatefulWidget {
   State<Incidents> createState() => _IncidentsState();
 }
 
-
 class _IncidentsState extends State<Incidents> {
   final controller = Get.put(AdminController());
   @override
@@ -45,7 +44,7 @@ class _IncidentsState extends State<Incidents> {
                       final items = snapshot.data!;
 
                       return ListTile(
-                        tileColor: const Color.fromARGB(255, 202, 253, 198),
+                        tileColor: const Color(0xFFA797B0),
                         title: Text(items[index]['report_type']),
                         onTap: () {
                           Navigator.push(
