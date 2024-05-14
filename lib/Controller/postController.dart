@@ -4,8 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Models/postModel.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
-import 'package:notify_ju/Screens/email_auth.dart';
 
 class PostController extends GetxController {
   static PostController get instance => Get.find();

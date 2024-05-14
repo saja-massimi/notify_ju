@@ -1,11 +1,14 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
 class AdminMain extends StatefulWidget {
-  const AdminMain({ key}) : super(key: key);
 
+    AdminMain({ key,  required this.notifications}) : super(key: key);
+    final List<int> notifications;
   @override
   State<AdminMain> createState() => _AdminMainState();
 }
@@ -29,7 +32,6 @@ class _AdminMainState extends State<AdminMain> {
     'Infrastructure Damage',
   ];
 
-  final List<int> notifications = [2, 0, 5, 0, 0, 3]; // Sample notifications, replace with actual data
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +96,7 @@ class _AdminMainState extends State<AdminMain> {
                         ),
                       ),
                     ),
-                    if (notifications[index] > 0)
+                    if (widget.notifications[index] > 0)
                       Positioned(
                         right: 10,
                         top: 10,
@@ -105,7 +107,7 @@ class _AdminMainState extends State<AdminMain> {
                             shape: BoxShape.circle,
                           ),
                           child: Text(
-                            notifications[index].toString(),
+                            widget.notifications[index].toString(),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,

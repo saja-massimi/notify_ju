@@ -1,4 +1,6 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
@@ -12,27 +14,48 @@ class AuthenticationRepository extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late final Rx<User?> firebaseUser = Rx<User?>(_auth.currentUser);
 
+
+
   @override
   void onInit() {
     super.onInit();
-    firebaseUser.bindStream(_auth.authStateChanges());
-    ever<User?>(firebaseUser, (user) {
+      firebaseUser.bindStream(_auth.authStateChanges());
+      ever<User?>(firebaseUser, (user) {
       setInitialScreen(user);
     });
   }
 
+  final List<int> notifications = [0, 0, 0, 0, 0, 0];
+  List<int> changeNum(RemoteMessage message){
+
+    if(message.notification != null){
+    switch(message.data['report_type']){
+      case 'fight': notifications[0]++; break;
+      case 'fire': notifications[1]++; break;
+      case 'car_accident': notifications[2]++; break;
+      case 'stray_animals': notifications[3]++; break;
+      case 'injury': notifications[4]++; break;
+      case 'infrastructure_damage': notifications[5]++; break;
+}}
+    return notifications;
+
+  }
+
+    
   Future<void> setInitialScreen(User? user) async{
 
-    final adminData = Get.put(AdminController());
-  final isAdmin = await adminData.isAdmin();
-
+  final adminData = Get.put(AdminController());
+  final isAdmin = await adminData.isAdmin(); 
   if (user == null) {
     Get.to(() => const email_auth());
   } else if (user.emailVerified == true) {
     if(isAdmin){
-      Get.to(() =>const AdminMain());
+
+      Get.to(() => AdminMain(notifications: notifications));
+
     } else {
-      Get.to(() => Categories());
+
+      Get.to(() => const Categories());
     }
   } else {
     Get.offAll(() => const email_otp());

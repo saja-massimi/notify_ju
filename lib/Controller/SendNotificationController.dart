@@ -6,17 +6,17 @@ import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:notify_ju/Models/reportModel.dart'; 
-class ReportNotification extends GetxController {
-  static ReportNotification get instance => Get.find();
+import 'package:notify_ju/Models/reportModel.dart';
+import 'package:notify_ju/Repository/user_repository.dart'; 
 
-getToken() async{
-String? mytoken = await FirebaseMessaging.instance.getToken();
-log(mytoken!);
-return mytoken;
-}
+class SendNotification extends GetxController {
 
-MyrequestPremission() async{
+
+static SendNotification get instance => Get.find();
+
+final con = Get.put(UserRepository());
+
+Future<void> MyrequestPremission() async{
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 NotificationSettings settings = await messaging.requestPermission(
@@ -36,7 +36,7 @@ if(settings.authorizationStatus == AuthorizationStatus.authorized){
 
 }
 
-sendNotification(title,message,reportModel rep) async{
+Future<void> sendNotification(title,message,reportModel rep) async{
   var headersList = {
   'Accept': '*/*',
   'Content-Type': 'application/json',
@@ -45,12 +45,12 @@ sendNotification(title,message,reportModel rep) async{
 var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
 
 var body = {
-    "to": getToken(),
+    "to": '',
     "notification": {
       "title":title,
       "body": message,
       "mutable_content": true,
-      "sound": "Tri-tone",
+      "sound": "default",
       },
 
     "data": {
@@ -66,7 +66,9 @@ req.body = json.encode(body);
 var res = await req.send();
 final resBody = await res.stream.bytesToString();
 
-if (res.statusCode >= 200 && res.statusCode < 300) {
+if (res.statusCode >= 200 && res.statusCode < 300) 
+{
+  log('Success');
   log(resBody);
 }
 else {
@@ -76,17 +78,18 @@ else {
 
 
 
+
 @override
 void onInit(){
+MyrequestPremission();
+FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  print('Got a message whilst in the foreground!');
+  print('Message data: ${message.data}');
 
-  FirebaseMessaging.onMessage.listen((
-    RemoteMessage message) {   
-      if(message.notification!=null){
-    log('Got a message whilst in the foreground!');
-}
+  if (message.notification != null) {
+    print('Message also contained a notification: ${message.notification}');
+  }
 });
-  MyrequestPremission();
-  getToken();
 super.onInit();
 }
 
