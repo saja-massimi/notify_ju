@@ -10,10 +10,9 @@ class BottomNavigationBarWidget extends StatefulWidget {
 }
 
 class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
-  @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-        color: const Color.fromARGB(255, 195, 235, 197),
+        color: const Color(0xFF464A5E),
         shape: const CircularNotchedRectangle(),
         notchMargin: 50,
         child: Row(
@@ -23,7 +22,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Categories()));
               },
-              icon: const Icon(Icons.home),
+              icon: const Icon(Icons.home, color: Colors.white),
             ),
             const Spacer(),
             IconButton(
@@ -33,14 +32,14 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
                       MaterialPageRoute(
                           builder: (context) => const MyReports()));
                 },
-                icon: const Icon(Icons.notifications)),
+                icon: const Icon(Icons.category, color: Colors.white)),
             const Spacer(),
             IconButton(
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => VotingPage1()));
                 },
-                icon: const Icon(Icons.people)),
+                icon: const Icon(Icons.people, color: Colors.white)),
           ],
         ));
   }

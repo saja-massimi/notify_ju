@@ -9,14 +9,11 @@ class contact_us extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+        backgroundColor: const Color(0xFF464A5E),
         centerTitle: true,
         title: const Text(
           'Contact Us',
-          style: TextStyle(
-            color: Color.fromARGB(255, 0, 0, 0),
-            fontStyle: FontStyle.italic,
-          ),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       drawer: DrawerWidget(),
