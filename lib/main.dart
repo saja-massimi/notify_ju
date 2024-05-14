@@ -9,8 +9,8 @@ import 'package:notify_ju/firebase_options.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
- 
- await Firebase.initializeApp();
+
+await Firebase.initializeApp();
 final con = Get.put(AuthenticationRepository());
   con.changeNum(message);
   print("Handling a background message: ${message.messageId}");
