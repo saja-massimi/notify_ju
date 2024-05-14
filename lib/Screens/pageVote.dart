@@ -33,7 +33,7 @@ class _VotingPageState extends State<VotingPage1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Voting'),
+        title: const Text('Suggestions'),
         backgroundColor: const Color.fromARGB(255, 195, 235, 197),
         centerTitle: true,
         leading: IconButton(
@@ -85,7 +85,7 @@ class _VotingPageState extends State<VotingPage1> {
                       controller: TextController,
                       obscureText: false,
                       decoration: const InputDecoration(
-                        hintText: 'Enter your vote',
+                        hintText: 'Tell us your thoughts!',
                         border: OutlineInputBorder(),
                       ),
                     ),
