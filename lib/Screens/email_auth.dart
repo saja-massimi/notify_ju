@@ -20,7 +20,7 @@ class _email_auth extends State<email_auth> {
       backgroundColor: Colors.white,
       body: Stack(fit: StackFit.expand, children: [
         Opacity(
-          opacity: 0.6,
+          opacity: 0.4,
           child: Image.asset(
             'images/uniPic.jpeg',
             fit: BoxFit.cover,
@@ -32,14 +32,14 @@ class _email_auth extends State<email_auth> {
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 245, 245, 245).withOpacity(0.55),
+              color: const Color.fromARGB(255, 245, 245, 245).withOpacity(0.55),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Row(
                   mainAxisAlignment:
-                      MainAxisAlignment.center, // Centering the row
+                      MainAxisAlignment.center, 
                   children: [
                     Image(
                       image: AssetImage('images/GradTransparentLogo.png'),
@@ -79,7 +79,7 @@ class _email_auth extends State<email_auth> {
                             validator: (value) {
                               if (value == null ||
                                   value.trim().isEmpty ||
-                                  !value.contains('@ju.edu.jo')) {
+                                  !value.endsWith('@ju.edu.jo')) {
                                 return 'Enter your university email';
                               }
                               return null;

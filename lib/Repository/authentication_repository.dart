@@ -7,6 +7,7 @@ import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/email_OTP.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
+import 'package:notify_ju/Screens/splashScreen.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -44,14 +45,17 @@ class AuthenticationRepository extends GetxController {
     
   Future<void> setInitialScreen(User? user) async{
 
+
   final adminData = Get.put(AdminController());
   final isAdmin = await adminData.isAdmin(); 
-  
+
+
   if (user == null) {
+
     Get.to(() => const email_auth());
   } else if (user.emailVerified == true) {
     if(isAdmin){
-
+        
           Get.to(() => AdminMain(notifications: notifications));
 
     } else {
