@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF464A5E)),
           useMaterial3: true,
         ),
-        initialRoute: '/', // Set the initial route to '/'
+        initialRoute: '/',
         home: const email_auth());
   }
 }
