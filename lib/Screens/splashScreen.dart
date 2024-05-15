@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // Import Get package
-import 'package:notify_ju/Screens/email_auth.dart';
+import 'package:get/get.dart';
+import 'package:notify_ju/Repository/authentication_repository.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 3), () {
-      Get.off(() => email_auth());
-    });
+    Future.delayed(const Duration(seconds: 3)
+        , () {
+
+final c = Get.put(AuthenticationRepository());
+c.setInitialScreen( c.firebaseUser.value);
+    }
+    
+    );
 
     return Scaffold(
       body: Center(

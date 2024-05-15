@@ -24,10 +24,9 @@ class ReportDetails extends StatefulWidget {
 class _ReportDetailsState extends State<ReportDetails> {
   final controller = Get.put(AdminController());
   
-/// ********************************************
     Future<void> _viewImage() async {
     if (widget.report['incident_picture'] == null) {
-      return;
+      return ;
     }
     await Navigator.push(
       context,
@@ -176,13 +175,12 @@ Future<void> setLocationName() async {
               ),
                 GestureDetector(
                   onTap: _viewImage,
-
                   child: Container(
                   height: 200,
                   width: 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.report['incident_picture']),
+                      image: NetworkImage(widget.report['incident_picture'] ?? "No Image Provided"),
                       fit: BoxFit.cover,
                     ),
                   ),
