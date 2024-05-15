@@ -45,28 +45,23 @@ class AuthenticationRepository extends GetxController {
     
   Future<void> setInitialScreen(User? user) async{
 
+Get.to(() => SplashScreen()); // Display splash screen
+  
 
   final adminData = Get.put(AdminController());
   final isAdmin = await adminData.isAdmin(); 
 
-
   if (user == null) {
-
-    Get.to(() => const email_auth());
+    Get.offAll(() => const email_auth()); // Navigate to email authentication page
   } else if (user.emailVerified == true) {
     if(isAdmin){
-        
-          Get.to(() => AdminMain(notifications: notifications));
-
+      Get.offAll(() => AdminMain(notifications: notifications)); // Navigate to admin main page
     } else {
-
-      Get.to(() => const Categories());
+      Get.offAll(() => const Categories()); // Navigate to categories page
     }
   } else {
-    Get.offAll(() => const email_otp());
+    Get.offAll(() => const email_otp()); // Navigate to email OTP page
   }
-
-
 
 }
 
