@@ -15,7 +15,18 @@ class SendNotification extends GetxController {
 static SendNotification get instance => Get.find();
 
 final con = Get.put(UserRepository());
+ static FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
+  static Future<String?> getFCMToken() async {
+    String? fcmToken;
+    try {
+      fcmToken = await _firebaseMessaging.getToken();
+      log('FCM Token: $fcmToken');
+    } catch (e) {
+      print('Error retrieving FCM token: $e');
+    }
+    return fcmToken;
+  }
 Future<void> MyrequestPremission() async{
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -45,7 +56,7 @@ Future<void> sendNotification(title,message,reportModel rep) async{
 var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
 
 var body = {
-    "to": '',
+    "to": 'dMBEucdbRIaNeCI75cSyjl:APA91bEJSCJFMSqVsdU61RY1ATtSs5R124L11Wd1zab-4aUQtgnWBQMJ0FgeVs4qHVmS6LOx8rZO-3IwacOvj2IptWFtbNTXi5BGKCA8ZNSem-MoMyiCfjYTTgJPl-jtA3WqNlTVJmHO',
     "notification": {
       "title":title,
       "body": message,
@@ -68,7 +79,7 @@ final resBody = await res.stream.bytesToString();
 
 if (res.statusCode >= 200 && res.statusCode < 300) 
 {
-  log('Success');
+  log(rep.report_type);
   log(resBody);
 }
 else {
@@ -77,19 +88,10 @@ else {
 }
 
 
-
-
 @override
 void onInit(){
+  getFCMToken();
 MyrequestPremission();
-FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  print('Got a message whilst in the foreground!');
-  print('Message data: ${message.data}');
-
-  if (message.notification != null) {
-    print('Message also contained a notification: ${message.notification}');
-  }
-});
 super.onInit();
 }
 

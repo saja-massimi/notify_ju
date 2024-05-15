@@ -218,8 +218,8 @@ class _addReportState extends State<addReport> {
                         incident_picture: _imageUrl,
                       );
 
-                      notif.sendNotification('A new report', 'A new report has been sent', report);
-                      controller.createReport(report);
+                    await  notif.sendNotification('A new report', 'A new report has been sent', report);
+                    await controller.createReport(report);
                       Get.back();
                     },
                     child: const Text('Submit'),
