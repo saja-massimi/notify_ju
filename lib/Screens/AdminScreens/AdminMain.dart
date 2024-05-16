@@ -1,11 +1,10 @@
 // ignore_for_file: sized_box_for_whitespace, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IncidentData {
   final String imagePath;
@@ -18,48 +17,21 @@ class IncidentData {
     required this.notificationCount, 
   });
 }
-final con = Get.put(AdminController());
 
-List<IncidentData> incidentsList = <IncidentData>[
-  IncidentData(
-    imagePath: 'images/amanzimgs/fire-truck.png',
-    titleTxt: 'Fire',
-    notificationCount: con.receveNotification( 'Fire'),
-    
+Future<List<int>> getNotifCount() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  ),
-  IncidentData(
-    imagePath: 'images/amanzimgs/car-accident.png',
-    titleTxt: 'Car Accident',
-    notificationCount: con.receveNotification( 'Car Accident'),
+  List<int> notif = [
+    prefs.getInt('fire') ?? 0,
+    prefs.getInt('car') ?? 0,
+    prefs.getInt('injury') ?? 0,
+    prefs.getInt('fight') ?? 0,
+    prefs.getInt('infra') ?? 0,
+    prefs.getInt('animal') ?? 0,
+  ];
 
-  ),
-  IncidentData(
-    imagePath: 'images/amanzimgs/stretcher.png',
-    titleTxt: 'Injury',
-    notificationCount: con.receveNotification( 'Injury'),
-
-  ),
-  IncidentData(
-    imagePath: 'images/amanzimgs/fight.png',
-    titleTxt: 'Fight',
-    notificationCount: con.receveNotification( 'Fight'),
-
-  ),
-  IncidentData(
-    imagePath: 'images/amanzimgs/leak.png',
-    titleTxt: 'Infrastructural Damage',
-    notificationCount: con.receveNotification( 'Infrastructural Damage'),
-
-  ),
-  IncidentData(
-    imagePath: 'images/amanzimgs/dog.png',
-    titleTxt: 'Stray Animals',
-    notificationCount: con.receveNotification( 'Stray Animals'),
-
-  ),
-];
-
+  return notif;
+}
 Widget buildCategoryCard(BuildContext context, IncidentData data) {
   return Container(
     margin: const EdgeInsets.only(bottom: 7),
@@ -137,48 +109,89 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
 
 
 class AdminMain extends StatefulWidget {
-
-  const AdminMain({super.key});
+  const AdminMain({Key? key}) : super(key: key);
 
   @override
   _AdminMainState createState() => _AdminMainState();
 }
 
 class _AdminMainState extends State<AdminMain> {
-  late GlobalKey _myKey;
+  late Future<List<int>> _notificationCountsFuture;
 
   @override
   void initState() {
     super.initState();
-    _myKey = GlobalKey();
+    _notificationCountsFuture = getNotifCount();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _myKey,
       drawer: DrawerWidget(),
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
         centerTitle: true,
-        title: const Stack(
-          children: [
-            Text(
-              'Choose a Category',
-              style: TextStyle(color: Colors.white),
-            ),
-          
-          ],
+        title: const Text(
+          'Choose a Category',
+          style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: incidentsList.length,
-          itemBuilder: (context, index) {
-            
-            return buildCategoryCard(context, incidentsList[index]);
+        child: FutureBuilder<List<int>>(
+          future: _notificationCountsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              List<int> notificationCounts = snapshot.data ?? [];
+              List<IncidentData> incidentsList = [
+                IncidentData(
+                  imagePath: 'images/amanzimgs/fire-truck.png',
+                  titleTxt: 'Fire',
+                  notificationCount: notificationCounts.isNotEmpty ? notificationCounts[0] : 0,
+                ),
+                IncidentData(
+                  imagePath: 'images/amanzimgs/car-accident.png',
+                  titleTxt: 'Car Accident',
+                  notificationCount: notificationCounts.length > 1 ? notificationCounts[1] : 0,
+                ),
+                IncidentData(
+                  imagePath: 'images/amanzimgs/stretcher.png',
+                  titleTxt: 'Injury',
+                  notificationCount: notificationCounts.length > 2 ? notificationCounts[2] : 0,
+                ),
+                IncidentData(
+                  imagePath: 'images/amanzimgs/fight.png',
+                  titleTxt: 'Fight',
+                  notificationCount: notificationCounts.length > 3 ? notificationCounts[3] : 0,
+                ),
+                IncidentData(
+                  imagePath: 'images/amanzimgs/leak.png',
+                  titleTxt: 'Infrastructural Damage',
+                  notificationCount: notificationCounts.length > 4 ? notificationCounts[4] : 0,
+                ),
+                IncidentData(
+                  imagePath: 'images/amanzimgs/dog.png',
+                  titleTxt: 'Stray Animals',
+                  notificationCount: notificationCounts.length > 5 ? notificationCounts[5] : 0,
+                ),
+              ];
+
+              return ListView.builder(
+                itemCount: incidentsList.length,
+                itemBuilder: (context, index) {
+                  return buildCategoryCard(context, incidentsList[index]);
+                },
+              );
+            }
           },
         ),
       ),
@@ -186,6 +199,3 @@ class _AdminMainState extends State<AdminMain> {
     );
   }
 }
-
-
-

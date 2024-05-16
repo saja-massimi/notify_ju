@@ -64,7 +64,7 @@ dependencies:
   google_nav_bar: ^5.0.6
   firebase_storage: ^11.7.4
   flutter_local_notifications: ^17.1.2
-
+  shared_preferences: ^2.2.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

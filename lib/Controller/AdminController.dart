@@ -5,12 +5,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminController extends GetxController {
   AdminController get instance => Get.find();
 
   final _db = FirebaseFirestore.instance;
   final _authRepo = Get.put(AuthenticationRepository());
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
 
 @override
@@ -33,9 +35,7 @@ super.onInit();
     return false;
   }
 
- final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
- Future<void>updateFCMToken() async {
+  Future<void>updateFCMToken() async {
     String? fcmToken;
     try {
       fcmToken = await _firebaseMessaging.getToken();
@@ -44,7 +44,7 @@ super.onInit();
           final documentId = await rep.getDocumentIdByEmail("sja0202385@ju.edu.jo");
 
       await _db.collection("users").doc(documentId).update({
-        "fcm_token": fcmToken,
+        "fcmToken": fcmToken,
       });
 
 
@@ -53,39 +53,43 @@ super.onInit();
     }
   }
 
-  int receveNotification(String reportType) {
-  int notif=0;
+  Future<void> receveNotification() async {
+
+SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+
+  List<int> notif=[0,0,0,0,0,0];
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-log(' messagesent');
-switch (reportType) {
+log(' message sent');
+
+switch (message.data['report_type']) {
     case 'Fire':
-      notif++;
+      prefs.setInt('fire', notif[0]++);
       break;
     case 'Car Accident':
-      notif++;
+      prefs.setInt('car', notif[1]++);      
       break;
       case 'Injury':
-      notif++;
+      prefs.setInt('injury', notif[2]++);
       break;
       case 'Fight':
-      notif++;
+      prefs.setInt('fight', notif[3]++);
       break;
       case 'Infrastructural Damage':
-      notif++;
+      prefs.setInt('infra', notif[4]++);
       break;
       case 'Stray Animals':
-      notif++;
+      prefs.setInt('animal', notif[5]++);
       break;
     default:
       log('Unknown notification received');
       
       }
   
-
 });
 
 
-      return notif;
 
   }
 
@@ -122,7 +126,7 @@ switch (reportType) {
   }
 }
 
-    Future<List<Map<String, dynamic>>> getReports(String reportType) async {
+  Future<List<Map<String, dynamic>>> getReports(String reportType) async {
     try {
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();

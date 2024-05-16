@@ -16,7 +16,6 @@ class SendNotification extends GetxController {
 static SendNotification get instance => Get.find();
 
 final con = Get.put(UserRepository());
-
   
 Future<String> GetToken() async{
 
@@ -27,12 +26,14 @@ Future<String> GetToken() async{
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {  
-return (querySnapshot.docs.first.data() as Map<String, dynamic>)['fcmtoken'] as String;
+      log('Token: ${querySnapshot.docs.first.data()}');
+return (querySnapshot.docs.first.data() as Map<String, dynamic>)['fcmToken'] as String;
     } else {
       return 'null';
     }
 
 }
+
 Future<void> MyrequestPremission() async{
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -53,44 +54,43 @@ if(settings.authorizationStatus == AuthorizationStatus.authorized){
 
 }
 
-Future<void> sendNotification(title,message,reportModel rep) async{
+Future<void> sendNotification(title, message, reportModel rep) async {
   var headersList = {
-  'Accept': '*/*',
-  'Content-Type': 'application/json',
-  'Authorization': 'key=AAAAyvpO5hE:APA91bF3tr_j_O6tNjhVWzRUC63-z8IEH_WMvOSo0UNk2YaOJtbQamRxBi4l7YRdDHwkmpsZEFn_5D7Uzlu8E5qdYuRup25XLvuRCbfUwoxa5ojvXKt2u_e1_r0uJWvy7KsC37Fq_f-t' 
-};
-var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
+    'Accept': '*/*',
+    'Content-Type': 'application/json',
+    'Authorization': 'key=AAAAyvpO5hE:APA91bF3tr_j_O6tNjhVWzRUC63-z8IEH_WMvOSo0UNk2YaOJtbQamRxBi4l7YRdDHwkmpsZEFn_5D7Uzlu8E5qdYuRup25XLvuRCbfUwoxa5ojvXKt2u_e1_r0uJWvy7KsC37Fq_f-t' 
+  };
+  var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
 
-var body = {
-    "to": GetToken,
+  // Get the token asynchronously
+  String token = await GetToken();
+
+  var body = {
+    "to": token, // Use the retrieved token here
     "notification": {
-      "title":title,
+      "title": title,
       "body": message,
       "mutable_content": true,
-      "sound": "default",
-      },
-
+      "sound": "default"
+    },
     "data": {
-    "report_type": rep.report_type,
-      }
-};
+      "report_type": rep.report_type,
+    }
+  };
 
-var req = http.Request('POST', url);
-req.headers.addAll(headersList);
-req.body = json.encode(body);
+  var req = http.Request('POST', url);
+  req.headers.addAll(headersList);
+  req.body = json.encode(body);
 
+  var res = await req.send();
+  final resBody = await res.stream.bytesToString();
 
-var res = await req.send();
-final resBody = await res.stream.bytesToString();
-
-if (res.statusCode >= 200 && res.statusCode < 300) 
-{
-  log(rep.report_type);
-  log(resBody);
-}
-else {
-  log(res.reasonPhrase!);
-}
+  if (res.statusCode >= 200 && res.statusCode < 300) {
+    log(rep.report_type);
+    log(resBody);
+  } else {
+    log(res.reasonPhrase!);
+  }
 }
 
 

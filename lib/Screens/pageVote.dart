@@ -25,7 +25,6 @@ class _VotingPageState extends State<VotingPage1> {
 
   @override
   void dispose() {
-    // Dispose the text controller
     TextController.dispose();
     super.dispose();
   }

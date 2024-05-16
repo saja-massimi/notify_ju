@@ -29,6 +29,7 @@ class _IncidentsState extends State<Incidents> {
           stream: Stream.fromFuture(controller.getReports(widget.reportType)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
+              
               return const Center(child: CircularProgressIndicator());
             }
             if (snapshot.hasError) {
@@ -38,6 +39,7 @@ class _IncidentsState extends State<Incidents> {
                 return const Center(
                     child: Text("No reports for this category yet"));
               } else {
+              
                 return ListView.builder(
                     itemCount: (snapshot.data as List).length,
                     itemBuilder: (context, index) {
@@ -56,9 +58,13 @@ class _IncidentsState extends State<Incidents> {
                           );
                         },
                       );
+                      
                     });
+                    
               }
+              
             }
+            
           }),
       bottomNavigationBar: BottomNavigationBarWidget(),
     );
