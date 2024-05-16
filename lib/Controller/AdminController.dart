@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
+import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminController extends GetxController {
   AdminController get instance => Get.find();
@@ -18,6 +18,7 @@ class AdminController extends GetxController {
 @override
 void onInit(){
   updateFCMToken();
+  receveNotification();
 super.onInit();
 }
 
@@ -49,43 +50,45 @@ super.onInit();
 
 
     } catch (e) {
-      print('Error retrieving FCM token: $e');
+      log('Error retrieving FCM token: $e');
     }
   }
 
   Future<void> receveNotification() async {
-
-SharedPreferences prefs = await SharedPreferences.getInstance();
-
-
-
-  List<int> notif=[0,0,0,0,0,0];
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  FirebaseMessaging.onMessage.listen((RemoteMessage message)async {
 log(' message sent');
+List<int> notif = [
+    await SharedPrefController.getNotif('fire'),
+    await SharedPrefController.getNotif('car'),
+    await SharedPrefController.getNotif('injury'),
+    await SharedPrefController.getNotif('fight'),
+    await SharedPrefController.getNotif('infra'),
+    await SharedPrefController.getNotif('animal'),
 
-switch (message.data['report_type']) {
+  ];
+
+    switch (message.data['report_type']) {
     case 'Fire':
-      prefs.setInt('fire', notif[0]++);
+        await SharedPrefController.setNotif('fire', notif[0]+1);
       break;
     case 'Car Accident':
-      prefs.setInt('car', notif[1]++);      
+            await SharedPrefController.setNotif('car', notif[1]+1);
       break;
-      case 'Injury':
-      prefs.setInt('injury', notif[2]++);
+    case 'Injury':
+        await SharedPrefController.setNotif('injury', notif[2]+1);
       break;
-      case 'Fight':
-      prefs.setInt('fight', notif[3]++);
+    case 'Fight':
+            await SharedPrefController.setNotif('fight', notif[3]+1);
       break;
-      case 'Infrastructural Damage':
-      prefs.setInt('infra', notif[4]++);
+    case 'Infrastructural Damage':
+            await SharedPrefController.setNotif('infra', notif[4]+1);
       break;
-      case 'Stray Animals':
-      prefs.setInt('animal', notif[5]++);
+    case 'Stray Animals':
+            await SharedPrefController.setNotif('fight', notif[5]+1);
       break;
     default:
       log('Unknown notification received');
-      
-      }
+  }
   
 });
 

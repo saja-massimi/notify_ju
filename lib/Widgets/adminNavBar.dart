@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminNotifications.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminVoting.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';

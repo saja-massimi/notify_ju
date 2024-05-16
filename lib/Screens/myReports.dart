@@ -59,11 +59,7 @@ class _MyReportsState extends State<MyReports> {
                             ),
                           ),
                           onDismissed: (direction) {
-                            if (direction == DismissDirection.startToEnd &&
-                                items[index]["report_status"] == 'pending') {
-                              controller
-                                  .deleteReport(items[index]["report_id"]);
-                            }
+                              controller.deleteReport(items[index]["report_id"]);
                           },
                           child: Card(
                             color: const Color.fromARGB(184, 211, 207, 207),
