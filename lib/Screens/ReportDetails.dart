@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,69 +14,59 @@ class ReportDetails extends StatefulWidget {
 
   @override
   State<ReportDetails> createState() => _ReportDetailsState();
-
-
-
 }
 
 class _ReportDetailsState extends State<ReportDetails> {
   final controller = Get.put(AdminController());
-  
-    Future<void> _viewImage() async {
+
+  Future<void> _viewImage() async {
     if (widget.report['incident_picture'] == null) {
-      return ;
+      return;
     }
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ImageViewScreen(image: Image.network(widget.report['incident_picture']!)),
+        builder: (context) => ImageViewScreen(
+            image: Image.network(widget.report['incident_picture']!)),
       ),
     );
-    }
+  }
 
   String _locationMessage = '';
-    
 
-
-@override
+  @override
   void initState() {
     super.initState();
     setLocationName();
   }
 
+  Future<void> setLocationName() async {
+    GeoPoint incidentLocation = widget.report['incident_location'];
 
-Future<void> setLocationName() async {
-  GeoPoint incidentLocation = widget.report['incident_location'];
-  
-  double latitude1 = incidentLocation.latitude;
-  double longitude1 = incidentLocation.longitude;
+    double latitude1 = incidentLocation.latitude;
+    double longitude1 = incidentLocation.longitude;
 
-  List<Placemark> placemarks = await placemarkFromCoordinates(latitude1, longitude1);
-  Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
-  String address = place != null
-      ? "${place.street}, ${place.locality}, ${place.country}"
-      : 'Unknown Location';
-  
-  setState(() {
-    _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
-  });
-}
-  
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(latitude1, longitude1);
+    Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
+    String address = place != null
+        ? "${place.street}, ${place.locality}, ${place.country}"
+        : 'Unknown Location';
 
+    setState(() {
+      _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
+    });
+  }
 
-
-      
   @override
   Widget build(BuildContext context) {
-
-    
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         centerTitle: true,
         title:
             const Text('Report Details', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF69BE49),
+        backgroundColor: const Color(0xFF464A5E),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -99,38 +87,33 @@ Future<void> setLocationName() async {
               const SizedBox(
                 height: 20.2,
               ),
-            Row(
+              Row(
                 children: [
                   Expanded(
                     child: TextField(
                       keyboardType: TextInputType.multiline,
                       enabled: false,
                       decoration: const InputDecoration(
-                      hintText: 'Address :', filled: true),
+                          hintText: 'Address :', filled: true),
                       controller: TextEditingController(text: _locationMessage),
-
                     ),
                   ),
-
                   IconButton(
                     icon: const Icon(Icons.location_on),
                     onPressed: () async {
-                    await Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => MapScreenAdmin(
                             selectedLocation:
-                                widget.report['incident_location'], 
-                      
+                                widget.report['incident_location'],
                           ),
                         ),
                       );
-                      
                     },
                   ),
                 ],
               ),
-
               const SizedBox(
                 height: 20.2,
               ),
@@ -159,7 +142,7 @@ Future<void> setLocationName() async {
                 ),
                 controller: TextEditingController(
                   text: widget.report['report_date'] != null
-                      ?  DateFormat('yyyy-MM-dd - h:mm').format(
+                      ? DateFormat('yyyy-MM-dd - h:mm').format(
                           DateTime.fromMillisecondsSinceEpoch(
                               widget.report['report_date'].seconds * 1000))
                       : 'No date provided',
@@ -168,34 +151,32 @@ Future<void> setLocationName() async {
               const SizedBox(
                 height: 20.2,
               ),
-
-                const Text('User\'s Attached Image : '),
-                const SizedBox(
+              const Text('User\'s Attached Image : '),
+              const SizedBox(
                 height: 10.2,
               ),
-                GestureDetector(
-                  onTap: _viewImage,
-                  child: Container(
+              GestureDetector(
+                onTap: _viewImage,
+                child: Container(
                   height: 200,
                   width: 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.report['incident_picture'] ?? "No Image Provided"),
+                      image: NetworkImage(widget.report['incident_picture'] ??
+                          "No Image Provided"),
                       fit: BoxFit.cover,
                     ),
                   ),
-                                
-                                ),
                 ),
+              ),
               const SizedBox(height: 20.2),
-          
-              
               TextField(
                 keyboardType: TextInputType.multiline,
                 readOnly: true,
                 decoration: const InputDecoration(
-                hintText: 'Report Status : ', filled: true),
-                controller: TextEditingController(text: widget.report['report_status']),
+                    hintText: 'Report Status : ', filled: true),
+                controller:
+                    TextEditingController(text: widget.report['report_status']),
               ),
               const SizedBox(
                 height: 20.2,
@@ -208,6 +189,7 @@ Future<void> setLocationName() async {
     );
   }
 }
+
 class ImageViewScreen extends StatelessWidget {
   final Image image;
 

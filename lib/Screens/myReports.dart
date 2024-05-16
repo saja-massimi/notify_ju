@@ -19,7 +19,7 @@ class _MyReportsState extends State<MyReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: DrawerWidget(),
-      backgroundColor: const Color(0xFFEFF5EA),
+      backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         backgroundColor: const Color(0xFF464A5E),
         centerTitle: true,
@@ -60,44 +60,68 @@ class _MyReportsState extends State<MyReports> {
                           ),
                           onDismissed: (direction) {
                             if (direction == DismissDirection.startToEnd &&
-                                items[index]["report_status"] == 'pending') {
+                                items[index]["report_status"] == 'Pending') {
                               controller
                                   .deleteReport(items[index]["report_id"]);
                             }
                           },
-                          child: Card(
-                            color: const Color.fromARGB(184, 211, 207, 207),
-                            child: ListTile(
-                              title: Text(items[index]['report_type']),
-                              subtitle:
-                                  Text(items[index]['incident_description']),
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 8),
+                            height: 80,
+                            child: Card(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(40),
                               ),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {
-                                  Get.to(
-                                      () => EditReport(report: items[index]));
+                              color: Color.fromARGB(185, 227, 226, 226),
+                              elevation: 6,
+                              child: ListTile(
+                                title: Text(
+                                  items[index]['report_type'],
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  items[index]['incident_description'],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                trailing: IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    Get.to(
+                                        () => EditReport(report: items[index]));
+                                  },
+                                ),
+                                onTap: () {
+                                  Get.to(() =>
+                                      ReportDetails(report: items[index]));
                                 },
                               ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          child: Card(
+                            color: const Color.fromARGB(185, 227, 226, 226),
+                            elevation: 6,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: ListTile(
+                              title: Text(items[index]['report_type'],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                              subtitle: Text(
+                                  items[index]['incident_description'],
+                                  maxLines: 1),
                               onTap: () {
                                 Get.to(
                                     () => ReportDetails(report: items[index]));
                               },
                             ),
-                          ),
-                        );
-                      } else {
-                        return Card(
-                          color: const Color.fromARGB(184, 211, 207, 207),
-                          child: ListTile(
-                            title: Text(items[index]['report_type']),
-                            subtitle:
-                                Text(items[index]['incident_description']),
-                            onTap: () {
-                              Get.to(() => ReportDetails(report: items[index]));
-                            },
                           ),
                         );
                       }

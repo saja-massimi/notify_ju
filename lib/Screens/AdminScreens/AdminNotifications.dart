@@ -14,7 +14,7 @@ class _AdminNotificationsState extends State<AdminNotifications> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: AdminDrawerWidget(),
-      backgroundColor: const Color(0xFFEFF5EA),
+      backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,
         title: const Text(

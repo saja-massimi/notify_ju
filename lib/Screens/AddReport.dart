@@ -90,9 +90,8 @@ class _addReportState extends State<addReport> {
       setState(() {
         _selectedLocation = LatLng(position.latitude, position.longitude);
       });
-
     }
-    setState(() {}); 
+    setState(() {});
   }
 
   @override
@@ -103,13 +102,12 @@ class _addReportState extends State<addReport> {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
           centerTitle: true,
-          title: const Text('Add Report',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontStyle: FontStyle.italic)),
-          backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+          title:
+              const Text('Add Report', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color(0xFF464A5E),
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_outlined),
+              icon: const Icon(Icons.arrow_back_ios_outlined,
+                  color: Colors.white),
               onPressed: () {
                 Get.back();
               })),
@@ -206,7 +204,7 @@ class _addReportState extends State<addReport> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       final rand = randomAlphaNumeric(20);
                       final report = reportModel(
                         report_id: rand,
@@ -215,13 +213,14 @@ class _addReportState extends State<addReport> {
                         report_date: DateTime.now(),
                         report_status: 'Pending',
                         incident_location: GeoPoint(_selectedLocation.latitude,
-                        _selectedLocation.longitude),
+                            _selectedLocation.longitude),
                         user_email: widget._authRepo.firebaseUser.value?.email,
                         incident_picture: _imageUrl,
                       );
-                      
-                    await controller.createReport(report);
-                    await  notif.sendNotification('A new report', 'A new report has been sent', report);
+
+                      await controller.createReport(report);
+                      await notif.sendNotification(
+                          'A new report', 'A new report has been sent', report);
                       Get.back();
                     },
                     child: const Text('Submit'),
