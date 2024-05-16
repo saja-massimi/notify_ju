@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
 
 class AdminController extends GetxController {
-  static AdminController get instance => Get.find();
+  AdminController get instance => Get.find();
 
   final _db = FirebaseFirestore.instance;
   final _authRepo = Get.put(AuthenticationRepository());
@@ -14,6 +15,7 @@ class AdminController extends GetxController {
 
 @override
 void onInit(){
+  updateFCMToken();
 super.onInit();
 }
 
@@ -31,17 +33,30 @@ super.onInit();
     return false;
   }
 
+ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+ Future<void>updateFCMToken() async {
+    String? fcmToken;
+    try {
+      fcmToken = await _firebaseMessaging.getToken();
+      log('FCM Token: $fcmToken');
+      final rep = Get.put(ReportsController());
+          final documentId = await rep.getDocumentIdByEmail("sja0202385@ju.edu.jo");
+
+      await _db.collection("users").doc(documentId).update({
+        "fcm_token": fcmToken,
+      });
+
+
+    } catch (e) {
+      print('Error retrieving FCM token: $e');
+    }
+  }
+
   int receveNotification(String reportType) {
-
-
-int notif=0;
-
-
-
-
-
+  int notif=0;
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
+log(' messagesent');
 switch (reportType) {
     case 'Fire':
       notif++;

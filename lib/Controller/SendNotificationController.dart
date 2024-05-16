@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -15,18 +16,23 @@ class SendNotification extends GetxController {
 static SendNotification get instance => Get.find();
 
 final con = Get.put(UserRepository());
- static FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  static Future<String?> getFCMToken() async {
-    String? fcmToken;
-    try {
-      fcmToken = await _firebaseMessaging.getToken();
-      log('FCM Token: $fcmToken');
-    } catch (e) {
-      print('Error retrieving FCM token: $e');
+  
+Future<String> GetToken() async{
+
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('user_email', isEqualTo: 'sja0202385@ju.edu.jo')
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {  
+return (querySnapshot.docs.first.data() as Map<String, dynamic>)['fcmtoken'] as String;
+    } else {
+      return 'null';
     }
-    return fcmToken;
-  }
+
+}
 Future<void> MyrequestPremission() async{
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -56,7 +62,7 @@ Future<void> sendNotification(title,message,reportModel rep) async{
 var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
 
 var body = {
-    "to": 'dMBEucdbRIaNeCI75cSyjl:APA91bEJSCJFMSqVsdU61RY1ATtSs5R124L11Wd1zab-4aUQtgnWBQMJ0FgeVs4qHVmS6LOx8rZO-3IwacOvj2IptWFtbNTXi5BGKCA8ZNSem-MoMyiCfjYTTgJPl-jtA3WqNlTVJmHO',
+    "to": GetToken,
     "notification": {
       "title":title,
       "body": message,
@@ -90,7 +96,6 @@ else {
 
 @override
 void onInit(){
-  getFCMToken();
 MyrequestPremission();
 super.onInit();
 }

@@ -19,7 +19,6 @@ class IncidentData {
   });
 }
 final con = Get.put(AdminController());
-// int notif =  con.receveNotification(titleTxt,notificationCount);
 
 List<IncidentData> incidentsList = <IncidentData>[
   IncidentData(
@@ -109,7 +108,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
-                      if (data.notificationCount > 0) // Display notification circle if there are notifications
+                      if (data.notificationCount > 0) 
                         Container(
                           padding: const EdgeInsets.all(4),
                           decoration: const BoxDecoration(
@@ -139,7 +138,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
 
 class AdminMain extends StatefulWidget {
 
-  AdminMain({super.key});
+  const AdminMain({super.key});
 
   @override
   _AdminMainState createState() => _AdminMainState();

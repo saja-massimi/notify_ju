@@ -90,7 +90,9 @@ class _addReportState extends State<addReport> {
       setState(() {
         _selectedLocation = LatLng(position.latitude, position.longitude);
       });
+
     }
+    setState(() {}); 
   }
 
   @override

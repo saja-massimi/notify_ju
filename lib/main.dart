@@ -11,8 +11,7 @@ import 'package:notify_ju/firebase_options.dart';
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
-
-
+  
   log("A message is recieved in the background");
   log("Handling a background message: ${message.messageId}");
 }
