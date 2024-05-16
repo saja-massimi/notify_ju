@@ -30,9 +30,18 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyReports()));
+                          builder: (context) => const Categories()));
                 },
                 icon: const Icon(Icons.category, color: Colors.white)),
+            const Spacer(),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyReports()));
+                },
+                icon: const Icon(Icons.description, color: Colors.white)),
             const Spacer(),
             IconButton(
                 onPressed: () {

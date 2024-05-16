@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminReportDetail.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
-import 'package:notify_ju/Widgets/drawer.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
+import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
 class Incidents extends StatefulWidget {
   final String reportType;
@@ -19,7 +19,7 @@ class _IncidentsState extends State<Incidents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
+      drawer: AdminDrawerWidget(),
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
         centerTitle: true,
@@ -29,7 +29,6 @@ class _IncidentsState extends State<Incidents> {
           stream: Stream.fromFuture(controller.getReports(widget.reportType)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              
               return const Center(child: CircularProgressIndicator());
             }
             if (snapshot.hasError) {
@@ -39,7 +38,6 @@ class _IncidentsState extends State<Incidents> {
                 return const Center(
                     child: Text("No reports for this category yet"));
               } else {
-              
                 return ListView.builder(
                     itemCount: (snapshot.data as List).length,
                     itemBuilder: (context, index) {
@@ -58,15 +56,11 @@ class _IncidentsState extends State<Incidents> {
                           );
                         },
                       );
-                      
                     });
-                    
               }
-              
             }
-            
           }),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }

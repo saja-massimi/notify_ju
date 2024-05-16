@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
-import 'package:notify_ju/Widgets/drawer.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
+import 'package:notify_ju/Widgets/AdminDrawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class IncidentData {
@@ -14,7 +14,7 @@ class IncidentData {
   IncidentData({
     required this.imagePath,
     required this.titleTxt,
-    required this.notificationCount, 
+    required this.notificationCount,
   });
 }
 
@@ -32,6 +32,7 @@ Future<List<int>> getNotifCount() async {
 
   return notif;
 }
+
 Widget buildCategoryCard(BuildContext context, IncidentData data) {
   return Container(
     margin: const EdgeInsets.only(bottom: 7),
@@ -80,7 +81,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
-                      if (data.notificationCount > 0) 
+                      if (data.notificationCount > 0)
                         Container(
                           padding: const EdgeInsets.all(4),
                           decoration: const BoxDecoration(
@@ -107,7 +108,6 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
   );
 }
 
-
 class AdminMain extends StatefulWidget {
   const AdminMain({Key? key}) : super(key: key);
 
@@ -127,7 +127,7 @@ class _AdminMainState extends State<AdminMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
+      drawer: AdminDrawerWidget(),
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
         centerTitle: true,
@@ -156,32 +156,38 @@ class _AdminMainState extends State<AdminMain> {
                 IncidentData(
                   imagePath: 'images/amanzimgs/fire-truck.png',
                   titleTxt: 'Fire',
-                  notificationCount: notificationCounts.isNotEmpty ? notificationCounts[0] : 0,
+                  notificationCount:
+                      notificationCounts.isNotEmpty ? notificationCounts[0] : 0,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/car-accident.png',
                   titleTxt: 'Car Accident',
-                  notificationCount: notificationCounts.length > 1 ? notificationCounts[1] : 0,
+                  notificationCount:
+                      notificationCounts.length > 1 ? notificationCounts[1] : 0,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/stretcher.png',
                   titleTxt: 'Injury',
-                  notificationCount: notificationCounts.length > 2 ? notificationCounts[2] : 0,
+                  notificationCount:
+                      notificationCounts.length > 2 ? notificationCounts[2] : 0,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/fight.png',
                   titleTxt: 'Fight',
-                  notificationCount: notificationCounts.length > 3 ? notificationCounts[3] : 0,
+                  notificationCount:
+                      notificationCounts.length > 3 ? notificationCounts[3] : 0,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/leak.png',
                   titleTxt: 'Infrastructural Damage',
-                  notificationCount: notificationCounts.length > 4 ? notificationCounts[4] : 0,
+                  notificationCount:
+                      notificationCounts.length > 4 ? notificationCounts[4] : 0,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/dog.png',
                   titleTxt: 'Stray Animals',
-                  notificationCount: notificationCounts.length > 5 ? notificationCounts[5] : 0,
+                  notificationCount:
+                      notificationCounts.length > 5 ? notificationCounts[5] : 0,
                 ),
               ];
 
@@ -195,7 +201,7 @@ class _AdminMainState extends State<AdminMain> {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }

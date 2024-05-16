@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Models/userModel.dart';
 import 'package:notify_ju/Repository/user_repository.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
 
 class userData extends StatelessWidget {
   const userData({super.key, required this.userEmail});
@@ -70,7 +70,7 @@ class userData extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }
