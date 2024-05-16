@@ -217,11 +217,18 @@ class _addReportState extends State<addReport> {
                         user_email: widget._authRepo.firebaseUser.value?.email,
                         incident_picture: _imageUrl,
                       );
+<<<<<<< HEAD
 
                       await controller.createReport(report);
                       await notif.sendNotification(
                           'A new report', 'A new report has been sent', report);
+=======
+                      
+                    await controller.createReport(report);
+>>>>>>> 5039b8b63f764901469e6adb7356bd959d5905d7
                       Get.back();
+                    await  notif.sendNotification('A new report', 'A new report has been sent', report);
+
                     },
                     child: const Text('Submit'),
                   ),

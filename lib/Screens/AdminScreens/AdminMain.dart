@@ -1,10 +1,12 @@
 // ignore_for_file: sized_box_for_whitespace, library_private_types_in_public_api
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IncidentData {
   final String imagePath;
@@ -19,17 +21,18 @@ class IncidentData {
 }
 
 Future<List<int>> getNotifCount() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
 
   List<int> notif = [
-    prefs.getInt('fire') ?? 0,
-    prefs.getInt('car') ?? 0,
-    prefs.getInt('injury') ?? 0,
-    prefs.getInt('fight') ?? 0,
-    prefs.getInt('infra') ?? 0,
-    prefs.getInt('animal') ?? 0,
+    await SharedPrefController.getNotif('fire'),
+    await SharedPrefController.getNotif('car'),
+    await SharedPrefController.getNotif('injury'),
+    await SharedPrefController.getNotif('fight'),
+    await SharedPrefController.getNotif('infra'),
+    await SharedPrefController.getNotif('animal'),
+
   ];
 
+log(notif.toString());
   return notif;
 }
 
@@ -44,7 +47,30 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
       color: Colors.white,
       elevation: 4,
       child: InkWell(
-        onTap: () {
+        onTap: () async{
+
+switch (data.titleTxt) {
+    case 'Fire':
+        await SharedPrefController.setNotif('fire', 0);
+      break;
+    case 'Car Accident':
+            await SharedPrefController.setNotif('car', 0);
+      break;
+    case 'Injury':
+        await SharedPrefController.setNotif('injury', 0);
+      break;
+    case 'Fight':
+            await SharedPrefController.setNotif('fight', 0);
+      break;
+    case 'Infrastructural Damage':
+            await SharedPrefController.setNotif('infra', 0);
+      break;
+    case 'Stray Animals':
+            await SharedPrefController.setNotif('fight', 0);
+      break;
+    default:
+      log('Unknown notification received');
+  }
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -116,14 +142,8 @@ class AdminMain extends StatefulWidget {
 }
 
 class _AdminMainState extends State<AdminMain> {
-  late Future<List<int>> _notificationCountsFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _notificationCountsFuture = getNotifCount();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +160,7 @@ class _AdminMainState extends State<AdminMain> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FutureBuilder<List<int>>(
-          future: _notificationCountsFuture,
+          future: getNotifCount(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -156,38 +176,37 @@ class _AdminMainState extends State<AdminMain> {
                 IncidentData(
                   imagePath: 'images/amanzimgs/fire-truck.png',
                   titleTxt: 'Fire',
-                  notificationCount:
-                      notificationCounts.isNotEmpty ? notificationCounts[0] : 0,
+                  notificationCount:notificationCounts[0],
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/car-accident.png',
                   titleTxt: 'Car Accident',
                   notificationCount:
-                      notificationCounts.length > 1 ? notificationCounts[1] : 0,
+                    notificationCounts[1] ,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/stretcher.png',
                   titleTxt: 'Injury',
                   notificationCount:
-                      notificationCounts.length > 2 ? notificationCounts[2] : 0,
+                  notificationCounts[2] ,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/fight.png',
                   titleTxt: 'Fight',
                   notificationCount:
-                      notificationCounts.length > 3 ? notificationCounts[3] : 0,
+                    notificationCounts[3] ,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/leak.png',
                   titleTxt: 'Infrastructural Damage',
                   notificationCount:
-                      notificationCounts.length > 4 ? notificationCounts[4] : 0,
+              notificationCounts[4] ,
                 ),
                 IncidentData(
                   imagePath: 'images/amanzimgs/dog.png',
                   titleTxt: 'Stray Animals',
                   notificationCount:
-                      notificationCounts.length > 5 ? notificationCounts[5] : 0,
+                    notificationCounts[5] ,
                 ),
               ];
 
