@@ -45,6 +45,7 @@ class ProfileWidget extends StatelessWidget {
         backgroundColor: const Color(0xFF464A5E),
       ),
       drawer: AdminDrawerWidget(),
+      backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: FutureBuilder<bool>(

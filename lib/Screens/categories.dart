@@ -142,7 +142,7 @@ class _CategoriesState extends State<Categories> {
     return Scaffold(
       key: _myKey,
       drawer: DrawerWidget(),
-      backgroundColor: const Color(0xFFEFF5EA),
+      backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
