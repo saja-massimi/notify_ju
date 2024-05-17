@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/SignupController.dart';
@@ -26,7 +24,7 @@ class _email_auth extends State<email_auth> {
           child: Image.asset(
             'images/uniPic.jpeg',
             fit: BoxFit.cover,
-            color: const Color(0xFF96DE7C),
+            color: Color.fromARGB(255, 82, 63, 93),
             colorBlendMode: BlendMode.modulate,
           ),
         ),
@@ -34,23 +32,20 @@ class _email_auth extends State<email_auth> {
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF3A652B).withOpacity(0.6),
+              color: Color.fromARGB(255, 245, 245, 245).withOpacity(0.55),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Centering the row
                   children: [
                     Image(
-                      image: AssetImage('images/uniLogo.png'),
-                      width: 150,
-                      height: 140,
+                      image: AssetImage('images/GradTransparentLogo.png'),
+                      width: 250,
+                      height: 240,
                     ),
-                    Text('Notify JU',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold)),
                   ],
                 ),
                 Form(
@@ -63,7 +58,8 @@ class _email_auth extends State<email_auth> {
                             children: [
                               Text(
                                 "Enter your email",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Color.fromARGB(225, 255, 255, 255)),
                               ),
                             ],
                           ),

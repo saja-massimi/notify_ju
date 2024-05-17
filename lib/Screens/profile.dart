@@ -40,10 +40,9 @@ class ProfileWidget extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           'Profile',
-          style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0), fontStyle: FontStyle.italic),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+        backgroundColor: const Color(0xFF464A5E),
       ),
       drawer: DrawerWidget(),
       body: SingleChildScrollView(

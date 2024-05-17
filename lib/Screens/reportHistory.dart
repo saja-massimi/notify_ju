@@ -21,11 +21,11 @@ class _HistoryReportsState extends State<HistoryReports> {
       backgroundColor: const Color(0xFFEFF5EA),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Report History',
-            style: TextStyle(
-                color: Color.fromARGB(255, 0, 0, 0),
-                fontStyle: FontStyle.italic)),
-        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+        title: const Text(
+          'Report History',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF464A5E),
       ),
       body: FutureBuilder(
         future: controller.viewAllHistoryReports(),
