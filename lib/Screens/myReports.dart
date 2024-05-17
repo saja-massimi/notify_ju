@@ -13,9 +13,9 @@ class MyReports extends StatefulWidget {
 }
 
 final controller = Get.put(ReportsController());
-
+/*
 class _MyReportsState extends State<MyReports> {
-  /* Future<void> _confirmDelete(String reportId) async {
+  Future<void> _confirmDelete(String reportId) async {
     final bool? result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
