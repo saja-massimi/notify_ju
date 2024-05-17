@@ -83,7 +83,7 @@ class _wallpostState extends State<wallpost> {
               Likes(isLiked: isLiked, onTap: toggleLike),
               const SizedBox(height: 10),
               Text(widget.likesCount.length.toString(),
-                  style: TextStyle(color: Colors.black26)),
+                  style: const TextStyle(color: Colors.black26)),
             ],
           ),
           const SizedBox(width: 10),
@@ -92,7 +92,7 @@ class _wallpostState extends State<wallpost> {
             children: [
               Text(
                 widget.email,
-                style: TextStyle(color: Colors.black26),
+                style: const TextStyle(color: Colors.black26),
               ),
               const SizedBox(height: 10),
               Container(
@@ -103,7 +103,7 @@ class _wallpostState extends State<wallpost> {
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                     )),
               ),

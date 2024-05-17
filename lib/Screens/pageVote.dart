@@ -6,13 +6,12 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/postController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Repository/user_repository.dart';
 import 'package:notify_ju/Screens/The_wall.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
 
 class VotingPage1 extends StatefulWidget {
-  const VotingPage1({Key? key}) : super(key: key);
+  const VotingPage1({super.key});
 
   @override
   State<VotingPage1> createState() => _VotingPageState();
@@ -21,11 +20,11 @@ class VotingPage1 extends StatefulWidget {
 class _VotingPageState extends State<VotingPage1> {
   final controller = Get.put(PostController());
   final _authRepo = Get.put(AuthenticationRepository());
+  // ignore: non_constant_identifier_names
   final TextController = TextEditingController();
 
   @override
   void dispose() {
-    // Dispose the text controller
     TextController.dispose();
     super.dispose();
   }
@@ -115,7 +114,7 @@ class _VotingPageState extends State<VotingPage1> {
                 ],
               ),
             ),
-            SizedBox(height: 10)
+            const SizedBox(height: 10)
           ],
         ),
       ),

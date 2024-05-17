@@ -63,11 +63,12 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   google_nav_bar: ^5.0.6
   firebase_storage: ^11.7.4
-
+  flutter_local_notifications: ^17.1.2
+  shared_preferences: ^2.2.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
+  
   
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -75,6 +76,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+flutter_launcher_icons: ^0.13.1
 flutter_icons:
     android: true
     ios: true
@@ -178,4 +180,3 @@ flutter:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
-

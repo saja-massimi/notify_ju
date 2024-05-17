@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
@@ -5,6 +6,7 @@ import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/email_OTP.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
+import 'package:notify_ju/Screens/splashScreen.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -12,33 +14,36 @@ class AuthenticationRepository extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late final Rx<User?> firebaseUser = Rx<User?>(_auth.currentUser);
 
+
+
   @override
   void onInit() {
     super.onInit();
-    firebaseUser.bindStream(_auth.authStateChanges());
-    ever<User?>(firebaseUser, (user) {
+      firebaseUser.bindStream(_auth.authStateChanges());
+      ever<User?>(firebaseUser, (user) {
       setInitialScreen(user);
+      
     });
   }
-
+    
   Future<void> setInitialScreen(User? user) async{
 
-    final adminData = Get.put(AdminController());
-  final isAdmin = await adminData.isAdmin();
+  Get.to(() => const SplashScreen()); 
+
+  final adminData = Get.put(AdminController());
+  final isAdmin = await adminData.isAdmin(); 
 
   if (user == null) {
-    Get.to(() => const email_auth());
+    Get.offAll(() => const email_auth());
   } else if (user.emailVerified == true) {
     if(isAdmin){
-      Get.to(() =>const AdminMain());
+      Get.offAll(() =>  AdminMain()); 
     } else {
-      Get.to(() => Categories());
+      Get.offAll(() => const Categories()); 
     }
   } else {
-    Get.offAll(() => const email_otp());
+    Get.offAll(() => const email_otp()); 
   }
-
-
 
 }
 

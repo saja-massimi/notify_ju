@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminReportDetail.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
-import 'package:notify_ju/Widgets/drawer.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
+import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
 class Incidents extends StatefulWidget {
   final String reportType;
@@ -14,14 +14,13 @@ class Incidents extends StatefulWidget {
   State<Incidents> createState() => _IncidentsState();
 }
 
-
 class _IncidentsState extends State<Incidents> {
   final controller = Get.put(AdminController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
-      backgroundColor: const Color(0xFFEFF5EA),
+      drawer: AdminDrawerWidget(),
+      backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,
         title: Text('${widget.reportType} Reports'),
@@ -44,24 +43,38 @@ class _IncidentsState extends State<Incidents> {
                     itemBuilder: (context, index) {
                       final items = snapshot.data!;
 
-                      return ListTile(
-                        tileColor: const Color.fromARGB(255, 202, 253, 198),
-                        title: Text(items[index]['report_type']),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  AdminReportDetails(report: items[index]),
-                            ),
-                          );
-                        },
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        color: Color.fromARGB(185, 227, 226, 226),
+                        elevation: 5,
+                        child: ListTile(
+                          title: Text(
+                            items[index]['report_type'],
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            items[index]['incident_description'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AdminReportDetails(report: items[index]),
+                              ),
+                            );
+                          },
+                        ),
                       );
                     });
               }
             }
           }),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }

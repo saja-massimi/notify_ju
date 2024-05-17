@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -24,7 +24,6 @@ class EditReport extends StatefulWidget {
 }
 
 class _EditReportState extends State<EditReport> {
-
   final description = TextEditingController();
   final addressz = TextEditingController();
   String _locationMessage = '';
@@ -32,28 +31,31 @@ class _EditReportState extends State<EditReport> {
   bool showMap = false;
   String? _imageUrl;
   Future<void> _viewImage() async {
-      if (widget.report['incident_picture'] == null) {
-        return;
-      }
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ImageViewScreen(image: Image.network(widget.report['incident_picture']!)),
-        ),
-      );
-      }
+    if (widget.report['incident_picture'] == null) {
+      return;
+    }
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageViewScreen(
+            image: Image.network(widget.report['incident_picture']!)),
+      ),
+    );
+  }
+
   Future<void> setLocationName() async {
     GeoPoint incidentLocation = widget.report['incident_location'];
-    
+
     double latitude1 = incidentLocation.latitude;
     double longitude1 = incidentLocation.longitude;
 
-    List<Placemark> placemarks = await placemarkFromCoordinates(latitude1, longitude1);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(latitude1, longitude1);
     Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
     String address = place != null
         ? "${place.street}, ${place.locality}, ${place.country}"
         : 'Unknown Location';
-    
+
     setState(() {
       _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
     });
@@ -69,8 +71,11 @@ class _EditReportState extends State<EditReport> {
 
   void _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,);
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks[0];
       String address = "${place.name}, ${place.locality}, ${place.country}";
       setState(() {
@@ -82,11 +87,10 @@ class _EditReportState extends State<EditReport> {
       });
     }
   }
-        getPermission() async {
 
+  getPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
-
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -97,35 +101,24 @@ class _EditReportState extends State<EditReport> {
     }
 
     permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied)
-    {
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         Get.rawSnackbar(
             title: "Warning",
-            messageText:
-            const Text("You must allow Location Permission to use this feature "));
+            messageText: const Text(
+                "You must allow Location Permission to use this feature "));
         return;
-      }
-      else if (permission == LocationPermission.whileInUse) {
+      } else if (permission == LocationPermission.whileInUse) {
         await getPermission();
-      
       }
-    }
-    else if (permission == LocationPermission.whileInUse) {
-
+    } else if (permission == LocationPermission.whileInUse) {
       Position position = await Geolocator.getCurrentPosition();
       setState(() {
-
         _selectedLocation = LatLng(position.latitude, position.longitude);
-      
       });
     }
-
-    }
-
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,8 +148,9 @@ class _EditReportState extends State<EditReport> {
                 enabled: false,
                 readOnly: true,
                 decoration: const InputDecoration(
-                hintText: 'Report Type : ', filled: true),
-                controller: TextEditingController(text: widget.report['report_type']),
+                    hintText: 'Report Type : ', filled: true),
+                controller:
+                    TextEditingController(text: widget.report['report_type']),
               ),
               Row(
                 children: [
@@ -176,8 +170,7 @@ class _EditReportState extends State<EditReport> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MapScreen(
-                            selectedLocation:
-                                _selectedLocation,
+                            selectedLocation: _selectedLocation,
                             onLocationSelected: (location) {
                               setState(() async {
                                 _selectedLocation = location;
@@ -194,8 +187,7 @@ class _EditReportState extends State<EditReport> {
                                   _locationMessage = address;
                                 });
                               });
-                              Navigator.pop(context,
-                                  location); 
+                              Navigator.pop(context, location);
                             },
                           ),
                         ),
@@ -207,18 +199,17 @@ class _EditReportState extends State<EditReport> {
                   ),
                 ],
               ),
-
               TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
                 enabled: true,
-                controller: description..text = widget.report['incident_description'],
+                controller: description
+                  ..text = widget.report['incident_description'],
                 decoration: const InputDecoration(
                   hintText: 'Description : ',
                   filled: true,
                 ),
               ),
-
               TextField(
                 keyboardType: TextInputType.datetime,
                 enabled: false,
@@ -230,14 +221,13 @@ class _EditReportState extends State<EditReport> {
                   text: DateFormat('yyyy-MM-dd - h:mm').format(DateTime.now()),
                 ),
               ),
-                const Text('User\'s Attached Image : '),
-                const SizedBox(
+              const Text('User\'s Attached Image : '),
+              const SizedBox(
                 height: 10.2,
               ),
-                GestureDetector(
-                  onTap: _viewImage,
-
-                  child: Container(
+              GestureDetector(
+                onTap: _viewImage,
+                child: Container(
                   height: 200,
                   width: 200,
                   decoration: BoxDecoration(
@@ -246,11 +236,10 @@ class _EditReportState extends State<EditReport> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                                
-                  ),
                 ),
-                const SizedBox(height: 19.9),
-                ImageInput(
+              ),
+              const SizedBox(height: 19.9),
+              ImageInput(
                 onImageSelected: (imageUrl) {
                   setState(() {
                     _imageUrl = imageUrl;
@@ -258,19 +247,19 @@ class _EditReportState extends State<EditReport> {
                 },
               ),
               const SizedBox(height: 19.9),
-
               const Text('Report Status: '),
               TextField(
                 keyboardType: TextInputType.multiline,
                 readOnly: true,
                 decoration: const InputDecoration(
                     hintText: 'Report Status : ', filled: true),
-                controller: TextEditingController(text: widget.report['report_status']),
+                controller:
+                    TextEditingController(text: widget.report['report_status']),
               ),
               const SizedBox(
                 height: 20.2,
               ),
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -282,14 +271,15 @@ class _EditReportState extends State<EditReport> {
                         incident_description: description.text,
                         report_date: DateTime.now(),
                         report_status: widget.report['report_status'],
-                        incident_location: GeoPoint(_selectedLocation.latitude, _selectedLocation.longitude),
+                        incident_location: GeoPoint(_selectedLocation.latitude,
+                            _selectedLocation.longitude),
                         user_email: widget._authRepo.firebaseUser.value?.email,
-                        incident_picture:  _imageUrl??widget.report['incident_picture'],
-
-
+                        incident_picture:
+                            _imageUrl ?? widget.report['incident_picture'],
                       );
-                    
-                      controller.updateReport(widget.report['report_id'],report);  
+
+                      controller.updateReport(
+                          widget.report['report_id'], report);
                       Get.back();
                     },
                     child: const Text('Update'),
@@ -307,10 +297,11 @@ class _EditReportState extends State<EditReport> {
           ),
         ),
       ),
-      bottomNavigationBar:  BottomNavigationBarWidget(),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }
+
 class ImageViewScreen extends StatelessWidget {
   final Image image;
 
@@ -329,9 +320,8 @@ class ImageViewScreen extends StatelessWidget {
             image,
             ElevatedButton(
               onPressed: () {
-            
                 Get.back();
-          },
+              },
               child: const Text('Go Back'),
             ),
           ],

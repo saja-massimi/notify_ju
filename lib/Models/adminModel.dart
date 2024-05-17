@@ -9,13 +9,15 @@ final String admin_name;
 final String email;
 final String admin_phone_num;
 final String role ;
+final String? token;
 
   adminModel({
   required this.admin_id, 
   required this.admin_name, 
   required this.email, 
   required this.admin_phone_num,
-  required this.role});
+  required this.role,
+   this.token});
 
 toJson() {
     return {
@@ -24,6 +26,7 @@ toJson() {
       'user_email': email,
       'admin_phone_num': admin_phone_num,
       'role': role,
+      'fcmToken': token ?? '',
       
     };
   }
@@ -36,6 +39,7 @@ toJson() {
       email: data['user_email'],
       admin_phone_num: data['admin_phone_num'],
       role: data['role'],
+      token: data['fcmToken'],
     );
   }
 }

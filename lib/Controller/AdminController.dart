@@ -1,14 +1,26 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Controller/ReportsController.dart';
+import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
 
 class AdminController extends GetxController {
-  static AdminController get instance => Get.find();
+  AdminController get instance => Get.find();
 
   final _db = FirebaseFirestore.instance;
   final _authRepo = Get.put(AuthenticationRepository());
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+
+@override
+void onInit(){
+  updateFCMToken();
+  receveNotification();
+super.onInit();
+}
 
   Future<bool> isAdmin() async {
     final email = _authRepo.firebaseUser.value?.email;
@@ -24,7 +36,69 @@ class AdminController extends GetxController {
     return false;
   }
 
+  Future<void>updateFCMToken() async {
+    String? fcmToken;
+    try {
+      fcmToken = await _firebaseMessaging.getToken();
+      log('FCM Token: $fcmToken');
+      final rep = Get.put(ReportsController());
+          final documentId = await rep.getDocumentIdByEmail("sja0202385@ju.edu.jo");
+
+      await _db.collection("users").doc(documentId).update({
+        "fcmToken": fcmToken,
+      });
+
+
+    } catch (e) {
+      log('Error retrieving FCM token: $e');
+    }
+  }
+
+  Future<void> receveNotification() async {
+  FirebaseMessaging.onMessage.listen((RemoteMessage message)async {
+log(' message sent');
+List<int> notif = [
+    await SharedPrefController.getNotif('fire'),
+    await SharedPrefController.getNotif('car'),
+    await SharedPrefController.getNotif('injury'),
+    await SharedPrefController.getNotif('fight'),
+    await SharedPrefController.getNotif('infra'),
+    await SharedPrefController.getNotif('animal'),
+
+  ];
+
+    switch (message.data['report_type']) {
+    case 'Fire':
+        await SharedPrefController.setNotif('fire', notif[0]+1);
+      break;
+    case 'Car Accident':
+            await SharedPrefController.setNotif('car', notif[1]+1);
+      break;
+    case 'Injury':
+        await SharedPrefController.setNotif('injury', notif[2]+1);
+      break;
+    case 'Fight':
+            await SharedPrefController.setNotif('fight', notif[3]+1);
+      break;
+    case 'Infrastructural Damage':
+            await SharedPrefController.setNotif('infra', notif[4]+1);
+      break;
+    case 'Stray Animals':
+            await SharedPrefController.setNotif('fight', notif[5]+1);
+      break;
+    default:
+      log('Unknown notification received');
+  }
+  
+});
+
+
+
+  }
+
   Future<void> changeReportStatus(
+
+
       String type, String reportID, String email) async {
     QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -55,7 +129,7 @@ class AdminController extends GetxController {
   }
 }
 
-    Future<List<Map<String, dynamic>>> getReports(String reportType) async {
+  Future<List<Map<String, dynamic>>> getReports(String reportType) async {
     try {
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
