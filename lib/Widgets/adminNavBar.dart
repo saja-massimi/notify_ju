@@ -4,12 +4,15 @@ import 'package:notify_ju/Screens/AdminScreens/AdminVoting.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
 
 class AdminNavigationBarWidget extends StatefulWidget {
+  const AdminNavigationBarWidget({super.key});
+
   @override
   State<AdminNavigationBarWidget> createState() =>
       _AdminNavigationBarWidgetState();
 }
 
 class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
+  @override
   Widget build(BuildContext context) {
     return BottomAppBar(
         color: const Color(0xFF464A5E),
@@ -22,7 +25,7 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AdminNotifications()));
+                        builder: (context) => const AdminNotifications()));
               },
               icon: const Icon(Icons.notification_important_outlined,
                   color: Colors.white),
@@ -33,7 +36,7 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminMain(),
+                        builder: (context) => const AdminMain(),
                       ));
                 },
                 icon: const Icon(Icons.category, color: Colors.white)),

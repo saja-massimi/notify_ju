@@ -1,220 +1,174 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:get/get.dart';
-import 'package:notify_ju/Controller/AdminController.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminMap.dart';
+import 'package:notify_ju/Screens/AddReport.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
-import 'package:intl/intl.dart';
+import 'package:notify_ju/Widgets/drawer.dart';
 
-class subAdminMain extends StatefulWidget {
-  final Map<String, dynamic> report;
-  const subAdminMain({super.key, required this.report});
+class IncidentData {
+  final String imagePath;
+  final String titleTxt;
+  final String description;
 
-  @override
-  State<subAdminMain> createState() => _subAdminMainState();
+  IncidentData({
+    required this.imagePath,
+    required this.titleTxt,
+    required this.description,
+  });
 }
 
-class _subAdminMainState extends State<subAdminMain> {
-  final controller = Get.put(AdminController());
+List<IncidentData> incidentsList = <IncidentData>[
+  IncidentData(
+    imagePath: 'images/amanzimgs/fire-truck.png',
+    titleTxt: 'Fire',
+    description:
+        'Report fire outbreaks or hazards on campus for immediate action.',
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/car-accident.png',
+    titleTxt: 'Car Accident',
+    description: 'Report vehicle incidents on campus for prompt action.',
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/stretcher.png',
+    titleTxt: 'Injury',
+    description:
+        'Report campus injuries promptly for swift medical assistance.',
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/fight.png',
+    titleTxt: 'Fight',
+    description:
+        'Report physical conflicts on campus for immediate intervention',
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/leak.png',
+    titleTxt: 'Infrastructural Damage',
+    description:
+        'Report damage to campus property or equipment for quick repairs.',
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/dog.png',
+    titleTxt: 'Stray Animals',
+    description:
+        'Report sightings of stray animals for appropriate handling and safety measures',
+  ),
+];
 
-  Future<void> _viewImage() async {
-    if (widget.report['incident_picture'] == null) {
-      return;
-    }
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ImageViewScreen(
-            image: Image.network(widget.report['incident_picture']!)),
+Widget buildCategoryCard(BuildContext context, IncidentData data) {
+  return Container(
+    margin: EdgeInsets.only(bottom: 7),
+    height: 135,
+    child: Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25),
       ),
-    );
-  }
-
-  String _locationMessage = '';
-
-  @override
-  void initState() {
-    super.initState();
-    setLocationName();
-  }
-
-  Future<void> setLocationName() async {
-    GeoPoint incidentLocation = widget.report['incident_location'];
-
-    double latitude1 = incidentLocation.latitude;
-    double longitude1 = incidentLocation.longitude;
-
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(latitude1, longitude1);
-    Placemark? place = placemarks.isNotEmpty ? placemarks[0] : null;
-    String address = place != null
-        ? "${place.street}, ${place.locality}, ${place.country}"
-        : 'Unknown Location';
-
-    setState(() {
-      _locationMessage = address.isNotEmpty ? address : 'Unknown Location';
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        centerTitle: true,
-        title:
-            const Text('Report Details', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF464A5E),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 100.2,
+      color: Colors.white,
+      elevation: 4,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => addReport(
+                reportType: data.titleTxt,
               ),
-              TextField(
-                enabled: false,
-                readOnly: true,
-                decoration: const InputDecoration(
-                    hintText: 'Report Type : ', filled: true),
-                controller:
-                    TextEditingController(text: widget.report['report_type']),
-              ),
-              const SizedBox(
-                height: 20.2,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      enabled: false,
-                      decoration: const InputDecoration(
-                          hintText: 'Address :', filled: true),
-                      controller: TextEditingController(text: _locationMessage),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.location_on),
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MapScreenAdmin(
-                            selectedLocation:
-                                widget.report['incident_location'],
-                          ),
+            ),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Image.asset(
+                  data.imagePath,
+                  width: 50,
+                  height: 50,
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data.titleTxt,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.2,
-              ),
-              TextField(
-                keyboardType: TextInputType.multiline,
-                readOnly: true,
-                maxLines: 5,
-                enabled: false,
-                controller: TextEditingController(
-                    text: widget.report['incident_description']),
-                decoration: const InputDecoration(
-                  hintText: 'Description : ',
-                  filled: true,
-                ),
-              ),
-              const SizedBox(
-                height: 20.2,
-              ),
-              TextField(
-                keyboardType: TextInputType.datetime,
-                enabled: false,
-                readOnly: true,
-                decoration: const InputDecoration(
-                  hintText: 'date : ',
-                  filled: true,
-                ),
-                controller: TextEditingController(
-                  text: widget.report['report_date'] != null
-                      ? DateFormat('yyyy-MM-dd - h:mm').format(
-                          DateTime.fromMillisecondsSinceEpoch(
-                              widget.report['report_date'].seconds * 1000))
-                      : 'No date provided',
-                ),
-              ),
-              const SizedBox(
-                height: 20.2,
-              ),
-              const Text('User\'s Attached Image : '),
-              const SizedBox(
-                height: 10.2,
-              ),
-              GestureDetector(
-                onTap: _viewImage,
-                child: Container(
-                  height: 200,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(widget.report['incident_picture'] ??
-                          "No Image Provided"),
-                      fit: BoxFit.cover,
-                    ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        data.description,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 20.2),
-              TextField(
-                keyboardType: TextInputType.multiline,
-                readOnly: true,
-                decoration: const InputDecoration(
-                    hintText: 'Report Status : ', filled: true),
-                controller:
-                    TextEditingController(text: widget.report['report_status']),
-              ),
-              const SizedBox(
-                height: 20.2,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
-    );
-  }
+    ),
+  );
 }
 
-class ImageViewScreen extends StatelessWidget {
-  final Image image;
+class subAdminMain extends StatefulWidget {
+  subAdminMain({super.key,required this.reportTypes,required this.adminName});
+List<String> reportTypes;
+String adminName;
+  @override
+  _subAdminMainState createState() => _subAdminMainState();
+}
 
-  const ImageViewScreen({super.key, required this.image});
+class _subAdminMainState extends State<subAdminMain> {
+  late GlobalKey _myKey;
+  @override
+  void initState() {
+    super.initState();
+    _myKey = GlobalKey();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _myKey,
+      drawer: DrawerWidget(),
+      backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
-        title: const Text('View Image'),
+        centerTitle: true,
+        title:  Text(
+          '${widget.adminName} Admin Dashboard',
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF464A5E),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            image,
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Go Back'),
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemCount: widget.reportTypes.length,
+          itemBuilder: (context, index) {
+            for (var i = 0; i < incidentsList.length; i++) {
+              if (incidentsList[i].titleTxt == widget.reportTypes[index]) {
+                return buildCategoryCard(context, incidentsList[i]);
+              }
+            }
+            return null;
+          },
         ),
       ),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }

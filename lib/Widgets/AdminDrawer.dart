@@ -1,11 +1,15 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Controller/SignupController.dart';
 
 import 'package:notify_ju/Screens/AdminScreens/AdminProflie.dart';
+import 'package:notify_ju/Screens/AdminScreens/HistoryReports.dart';
+import 'package:notify_ju/Screens/AdminScreens/stats.dart';
+import 'package:notify_ju/Screens/AdminScreens/warningsPage.dart';
 
 class AdminDrawerWidget extends StatelessWidget {
   AdminDrawerWidget({super.key});
@@ -33,7 +37,7 @@ class AdminDrawerWidget extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: const Color(0xFF464A5E),
+              color: Color(0xFF464A5E),
             ),
             child: Row(
               children: [
@@ -75,6 +79,7 @@ class AdminDrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.person),
             title: const Text('My Profile'),
             onTap: () {
               final adminData = Get.put(AdminController());
@@ -83,10 +88,27 @@ class AdminDrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
+        leading: const Icon(Icons.list_rounded),
+            title: const Text('History Reports'),
+            onTap: () => Get.to(const HistoryReportsAdmin()),
+          ),
+          ListTile(
+            leading: const Icon(Icons.warning_rounded),
+            title: const Text('Warnings'),
+            onTap: () =>  Get.to(const Warnings()),
+          ),
+          ListTile(
+            leading: const Icon(Icons.bar_chart),
+            title: const Text('Statistics'),
+            onTap: () => Get.to(const stats()),
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
             title: const Text('Sign out'),
             onTap: () => controller.logout(),
           ),
         ],
+        
       ),
     );
   }
