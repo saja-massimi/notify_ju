@@ -43,18 +43,32 @@ class _IncidentsState extends State<Incidents> {
                     itemBuilder: (context, index) {
                       final items = snapshot.data!;
 
-                      return ListTile(
-                        tileColor: const Color(0xFFA797B0),
-                        title: Text(items[index]['report_type']),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  AdminReportDetails(report: items[index]),
-                            ),
-                          );
-                        },
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        color: Color.fromARGB(185, 227, 226, 226),
+                        elevation: 5,
+                        child: ListTile(
+                          title: Text(
+                            items[index]['report_type'],
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            items[index]['incident_description'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AdminReportDetails(report: items[index]),
+                              ),
+                            );
+                          },
+                        ),
                       );
                     });
               }

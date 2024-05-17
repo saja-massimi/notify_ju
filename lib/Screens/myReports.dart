@@ -15,6 +15,39 @@ class MyReports extends StatefulWidget {
 final controller = Get.put(ReportsController());
 
 class _MyReportsState extends State<MyReports> {
+  /* Future<void> _confirmDelete(String reportId) async {
+    final bool? result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Delete'),
+          content: Text('Are you sure you want to delete this report?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      controller.deleteReport(reportId);
+    } else {
+      // If the deletion was not confirmed, insert the item back into the list.
+      setState(() {});
+    }
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

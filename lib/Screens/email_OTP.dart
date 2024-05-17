@@ -15,13 +15,14 @@ class _email_otpState extends State<email_otp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 233, 234, 238),
+        backgroundColor: const Color(0xFF464A5E),
         body: Stack(fit: StackFit.expand, children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(
                 Icons.email_outlined,
+                color: Colors.white,
                 size: 100,
               ),
               const SizedBox(
@@ -29,7 +30,7 @@ class _email_otpState extends State<email_otp> {
               ),
               const Text('Verify your email address',
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 255, 255, 255),
                       fontSize: 20,
                       fontWeight: FontWeight.bold)),
               const SizedBox(
@@ -54,7 +55,7 @@ class _email_otpState extends State<email_otp> {
               ElevatedButton(
                 onPressed: () => controller.sendVerificationEmail(),
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF464A5E),
+                    backgroundColor: const Color.fromARGB(255, 233, 234, 238),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50, vertical: 20),
                     textStyle: const TextStyle(
