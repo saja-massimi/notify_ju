@@ -219,9 +219,10 @@ class _addReportState extends State<addReport> {
                       );
 
                       await controller.createReport(report);
+                      Get.back();
                       await notif.sendNotification(
                           'A new report', 'A new report has been sent', report);
-                      Get.back();
+
                       await notif.sendNotification(
                           'A new report', 'A new report has been sent', report);
                     },
