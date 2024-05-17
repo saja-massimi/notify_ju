@@ -64,33 +64,38 @@ class _EditReportState extends State<EditReport> {
 
   Future<void> _confirmUpdate(
       String reportId, reportModel updatedReport) async {
-    final bool? result = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Update'),
-          content: const Text('Are you sure you want to update this report?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Update'),
-            ),
-          ],
-        );
-      },
-    );
+    try {
+      final bool? result = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Update'),
+            content: const Text('Are you sure you want to update this report?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Update'),
+              ),
+            ],
+          );
+        },
+      );
 
-    if (result == true) {
-      await controller.updateReport(reportId, updatedReport);
-      Get.back();
+      if (result == true) {
+        await controller.updateReport(reportId, updatedReport);
+        Get.back(); // Assuming you're using Get for navigation
+      }
+    } catch (e) {
+      print('Error updating report: $e');
+      Get.snackbar('Error', 'Failed to update report: $e');
     }
   }
 

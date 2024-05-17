@@ -76,6 +76,7 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.person),
             title: const Text('My Profile'),
             onTap: () {
               final adminData = Get.put(AdminController());
@@ -84,18 +85,21 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.list_rounded),
             title: const Text('Report History'),
             onTap: () {
               Get.to(() => const HistoryReports());
             },
           ),
           ListTile(
+            leading: const Icon(Icons.contact_mail_rounded),
             title: const Text('Contact Us'),
             onTap: () {
               Get.to(() => contact_us());
             },
           ),
           ListTile(
+            leading: const Icon(Icons.logout),
             title: const Text('Sign out'),
             onTap: () => controller.logout(),
           ),
