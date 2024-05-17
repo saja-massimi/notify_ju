@@ -62,20 +62,7 @@ class PostController extends GetxController {
   }
 
   Future<List<Map<String, dynamic>>> getpost() async {
-    //
-    //   try {
-    //     final docID = await getDocumentIdByEmail(auth?.email ?? "");
-    //     final querySnapshot =
-    //         await _db.collection('users').doc(docID).collection('post').get();
-    //     return querySnapshot.docs
-    //         .map((e) => e.data())
-    //         .toList()
-    //         .cast<Map<String, dynamic>>();
-    //   } catch (error) {
-    //     Get.snackbar("Error", "Failed to get posts: $error");
-    //     return [];
-    //   }
-    // }
+    
     try {
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
@@ -97,30 +84,49 @@ class PostController extends GetxController {
   }
 
   Future<void> likePost(postModel model) async {
-    try {
-      final docID = await getDocumentIdByEmail(model.email);
-      // Get a reference to the post document
-      DocumentReference postRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(docID)
-          .collection('post')
-          .doc(model.post_id);
+  try {
+    final docID = await getDocumentIdByEmail(auth?.email ?? "");
+    // Get a reference to the post document
+    DocumentReference postRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(docID)
+        .collection('post')
+        .doc(model.post_id);
 
-      // Update the likes field in the post document
-      await postRef.update({
-        'likesCount': FieldValue.arrayUnion([auth?.email ?? ""])
-      });
-      // await postRef.update({
-      //   'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
-      // });
+    // Update the likes field in the post document
+    await postRef.update({
+      'likesCount': FieldValue.arrayUnion([auth?.email ?? ""])
+    });
 
-      print('Post liked successfully');
-    } catch (error) {
-      print('Error liking post: $error');
-    }
+    print('Post liked successfully');
+  } catch (error) {
+    print('Error liking post: $error');
   }
+}
 
-  Future<void> dislike(postModel model) async {
+Future<void> dislike(postModel model) async {
+  try {
+    final docID = await getDocumentIdByEmail(auth?.email ?? "");
+    // Get a reference to the post document
+    DocumentReference postRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(docID)
+        .collection('post')
+        .doc(model.post_id);
+
+    // Update the likes field in the post document
+    await postRef.update({
+      'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
+    });
+
+    print('Post disliked successfully');
+  } catch (error) {
+    print('Error disliking post: $error');
+  }
+}
+
+
+  Future<void> commentPost(postModel model, String comment) async {
     try {
       final docID = await getDocumentIdByEmail(auth?.email ?? "");
       // Get a reference to the post document
@@ -130,17 +136,20 @@ class PostController extends GetxController {
           .collection('post')
           .doc(model.post_id);
 
-      // Update the likes field in the post document
+      // Update the comments field in the post document
       await postRef.update({
-        'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
+        'comments': FieldValue.arrayUnion([
+          {
+            'comment': comment,
+            'commenter': auth?.email,
+            'timestamp': FieldValue.serverTimestamp()
+          }
+        ])
       });
-      // await postRef.update({
-      //   'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
-      // });
 
-      print('Post liked successfully');
+      print('Post commented successfully');
     } catch (error) {
-      print('Error liking post: $error');
+      print('Error commenting post: $error');
     }
   }
 }

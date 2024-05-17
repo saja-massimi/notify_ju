@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
-import 'package:notify_ju/Screens/AdminScreens/editReport.dart';
+import 'package:notify_ju/Screens/editReport.dart';
 import 'package:notify_ju/Screens/ReportDetails.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';

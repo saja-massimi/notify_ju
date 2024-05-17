@@ -232,7 +232,7 @@ class _EditReportState extends State<EditReport> {
                   width: 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.report['incident_picture']),
+                      image: (NetworkImage(widget.report['incident_picture']??'')),
                       fit: BoxFit.cover,
                     ),
                   ),
