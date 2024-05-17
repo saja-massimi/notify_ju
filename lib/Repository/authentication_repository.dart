@@ -1,8 +1,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminMain.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/email_OTP.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
@@ -30,16 +30,27 @@ class AuthenticationRepository extends GetxController {
 
   Get.to(() => const SplashScreen()); 
 
-  final adminData = Get.put(AdminController());
-  final isAdmin = await adminData.isAdmin(); 
 
   if (user == null) {
     Get.offAll(() => const email_auth());
   } else if (user.emailVerified == true) {
-    if(isAdmin){
-      Get.offAll(() =>  AdminMain()); 
-    } else {
-      Get.offAll(() => const Categories()); 
+    if(user.email == 'sja0202385@ju.edu.jo'){
+      Get.offAll(() =>  const AdminMain()); 
+      }
+      else {
+      switch (user.email) {
+      case 'ama0193677@ju.edu.jo':
+        Get.offAll(() =>  subAdminMain(reportTypes: const ['Infrastructural Damage'],adminName: 'Public Services')); 
+        break;
+      case 'hla0207934@ju.edu.jo':
+        Get.offAll(() =>  subAdminMain(reportTypes: const ['Fire','Injury'],adminName: 'Emergency Services')); 
+        break;
+      case 'gad0200681@ju.edu.jo':
+        Get.offAll(() =>  subAdminMain(reportTypes: const ['Fight','Stray Animals','Car Accident'], adminName: 'Security',)); 
+        break;
+      default:
+      Get.offAll(() => const Categories()); break;
+    }
     }
   } else {
     Get.offAll(() => const email_otp()); 

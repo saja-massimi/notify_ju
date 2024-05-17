@@ -152,7 +152,7 @@ class _AdminMainState extends State<AdminMain> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Choose a Category',
+          'Admin Dashboard',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
