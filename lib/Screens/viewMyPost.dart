@@ -62,7 +62,7 @@ class _ViewMyPostState extends State<ViewMyPost> {
         future: controller.viewAllUserPosts(), // Fetch user posts
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {

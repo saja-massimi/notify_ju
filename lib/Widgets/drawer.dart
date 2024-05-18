@@ -13,7 +13,7 @@ class DrawerWidget extends StatelessWidget {
 
   Future<String> getName() async {
     final profileData = Get.put(ProfileController());
-      return await profileData.getUserName();
+    return await profileData.getUserName();
   }
 
   final controller = Get.put(SignupController());
@@ -27,7 +27,7 @@ class DrawerWidget extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color:  Color(0xFF464A5E),
+              color: Color(0xFF464A5E),
             ),
             child: Row(
               children: [
@@ -68,11 +68,11 @@ class DrawerWidget extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(                          
+          ListTile(
             leading: const Icon(Icons.person),
             title: const Text('My Profile'),
             onTap: () {
-              Get.to(()=>UserPage());
+              Get.to(() => UserPage());
             },
           ),
           ListTile(
@@ -83,16 +83,12 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-<<<<<<< HEAD
             title: const Text('My posts'),
             onTap: () {
               Get.to(ViewMyPost());
             },
           ),
           ListTile(
-=======
-            leading: const Icon(Icons.contact_mail_rounded),
->>>>>>> 5f15ce7c673c2dd8ab96e9db64b21f21a4dba453
             title: const Text('Contact Us'),
             onTap: () {
               Get.to(() => contact_us());
