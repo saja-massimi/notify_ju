@@ -335,7 +335,7 @@ class _EditReportState extends State<EditReport> {
           ),
         ),
       ),
-      bottomNavigationBar: const AdminNavigationBarWidget(),
+      bottomNavigationBar:  AdminNavigationBarWidget(),
     );
   }
 }

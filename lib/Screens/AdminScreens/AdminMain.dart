@@ -1,9 +1,6 @@
-// ignore_for_file: sized_box_for_whitespace, library_private_types_in_public_api
-
-import 'dart:developer';
+// ignore_for_file: sized_box_for_whitespace, library_private_types_in_public_api, await_only_futures
 
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminIncident.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
@@ -11,30 +8,44 @@ import 'package:notify_ju/Widgets/AdminDrawer.dart';
 class IncidentData {
   final String imagePath;
   final String titleTxt;
-  final int notificationCount;
 
   IncidentData({
     required this.imagePath,
     required this.titleTxt,
-    required this.notificationCount,
   });
 }
+List<IncidentData> incidentsList = <IncidentData>[
+  IncidentData(
+    imagePath: 'images/amanzimgs/fire-truck.png',
+    titleTxt: 'Fire',
+  
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/car-accident.png',
+    titleTxt: 'Car Accident',
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/stretcher.png',
+    titleTxt: 'Injury',
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/fight.png',
+    titleTxt: 'Fight',
+  
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/leak.png',
+    titleTxt: 'Infrastructural Damage',
 
-Future<List<int>> getNotifCount() async {
+  ),
+  IncidentData(
+    imagePath: 'images/amanzimgs/dog.png',
+    titleTxt: 'Stray Animals',
+  
+  ),
+];
 
-  List<int> notif = [
-    await SharedPrefController.getNotif('fire'),
-    await SharedPrefController.getNotif('car'),
-    await SharedPrefController.getNotif('injury'),
-    await SharedPrefController.getNotif('fight'),
-    await SharedPrefController.getNotif('infra'),
-    await SharedPrefController.getNotif('animal'),
 
-  ];
-
-log(notif.toString());
-  return notif;
-}
 
 Widget buildCategoryCard(BuildContext context, IncidentData data) {
   return Container(
@@ -48,30 +59,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
       elevation: 4,
       child: InkWell(
         onTap: () async{
-
-switch (data.titleTxt) {
-    case 'Fire':
-        await SharedPrefController.setNotif('fire', 0);
-      break;
-    case 'Car Accident':
-            await SharedPrefController.setNotif('car', 0);
-      break;
-    case 'Injury':
-        await SharedPrefController.setNotif('injury', 0);
-      break;
-    case 'Fight':
-            await SharedPrefController.setNotif('fight', 0);
-      break;
-    case 'Infrastructural Damage':
-            await SharedPrefController.setNotif('infra', 0);
-      break;
-    case 'Stray Animals':
-            await SharedPrefController.setNotif('fight', 0);
-      break;
-    default:
-      log('Unknown notification received');
-  }
-          Navigator.push(
+  Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => Incidents(
@@ -107,21 +95,7 @@ switch (data.titleTxt) {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
-                      if (data.notificationCount > 0)
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            data.notificationCount.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                
                     ],
                   ),
                 ),
@@ -143,7 +117,7 @@ class AdminMain extends StatefulWidget {
 
 class _AdminMainState extends State<AdminMain> {
 
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,66 +131,13 @@ class _AdminMainState extends State<AdminMain> {
         ),
         backgroundColor: const Color(0xFF464A5E),
       ),
-      body: Padding(
+      body:
+          Padding(
         padding: const EdgeInsets.all(8.0),
-        child: FutureBuilder<List<int>>(
-          future: getNotifCount(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else {
-              List<int> notificationCounts = snapshot.data ?? [];
-              List<IncidentData> incidentsList = [
-                IncidentData(
-                  imagePath: 'images/amanzimgs/fire-truck.png',
-                  titleTxt: 'Fire',
-                  notificationCount:notificationCounts[0],
-                ),
-                IncidentData(
-                  imagePath: 'images/amanzimgs/car-accident.png',
-                  titleTxt: 'Car Accident',
-                  notificationCount:
-                    notificationCounts[1] ,
-                ),
-                IncidentData(
-                  imagePath: 'images/amanzimgs/stretcher.png',
-                  titleTxt: 'Injury',
-                  notificationCount:
-                  notificationCounts[2] ,
-                ),
-                IncidentData(
-                  imagePath: 'images/amanzimgs/fight.png',
-                  titleTxt: 'Fight',
-                  notificationCount:
-                    notificationCounts[3] ,
-                ),
-                IncidentData(
-                  imagePath: 'images/amanzimgs/leak.png',
-                  titleTxt: 'Infrastructural Damage',
-                  notificationCount:
-              notificationCounts[4] ,
-                ),
-                IncidentData(
-                  imagePath: 'images/amanzimgs/dog.png',
-                  titleTxt: 'Stray Animals',
-                  notificationCount:
-                    notificationCounts[5] ,
-                ),
-              ];
-
-              return ListView.builder(
-                itemCount: incidentsList.length,
-                itemBuilder: (context, index) {
-                  return buildCategoryCard(context, incidentsList[index]);
-                },
-              );
-            }
+        child: ListView.builder(
+          itemCount: incidentsList.length,
+          itemBuilder: (context, index) {
+            return buildCategoryCard(context, incidentsList[index]);
           },
         ),
       ),
