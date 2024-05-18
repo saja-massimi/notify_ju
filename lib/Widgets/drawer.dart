@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Controller/SignupController.dart';
 import 'package:notify_ju/Screens/contact.dart';
@@ -13,14 +12,7 @@ class DrawerWidget extends StatelessWidget {
 
   Future<String> getName() async {
     final profileData = Get.put(ProfileController());
-    final adminData = Get.put(AdminController());
-
-    final isAdmin = await adminData.isAdmin();
-    if (isAdmin) {
-      return await profileData.getAdminName();
-    } else {
       return await profileData.getUserName();
-    }
   }
 
   final controller = Get.put(SignupController());
@@ -34,7 +26,7 @@ class DrawerWidget extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: const Color(0xFF464A5E),
+              color:  Color(0xFF464A5E),
             ),
             child: Row(
               children: [
@@ -75,27 +67,29 @@ class DrawerWidget extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(
+          ListTile(                          
+            leading: const Icon(Icons.person),
             title: const Text('My Profile'),
             onTap: () {
-              final adminData = Get.put(AdminController());
-              final isAdminFuture = adminData.isAdmin();
-              Get.to(ProfileWidget(isAdminFuture: isAdminFuture));
+              Get.to(()=>UserPage());
             },
           ),
           ListTile(
+            leading: const Icon(Icons.list_rounded),
             title: const Text('Report History'),
             onTap: () {
               Get.to(() => const HistoryReports());
             },
           ),
           ListTile(
+            leading: const Icon(Icons.phone_android),
             title: const Text('Contact Us'),
             onTap: () {
               Get.to(() => contact_us());
             },
           ),
           ListTile(
+            leading: const Icon(Icons.logout),
             title: const Text('Sign out'),
             onTap: () => controller.logout(),
           ),

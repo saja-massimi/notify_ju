@@ -16,18 +16,15 @@ class AdminDrawerWidget extends StatelessWidget {
 
   Future<String> getName() async {
     final profileData = Get.put(ProfileController());
-    final adminData = Get.put(AdminController());
-
-    final isAdmin = await adminData.isAdmin();
-    if (isAdmin) {
+    
+    
       return await profileData.getAdminName();
-    } else {
-      return await profileData.getUserName();
-    }
+    
+    
   }
 
   final controller = Get.put(SignupController());
-  final controllerprof = Get.put(ProfileController());
+
 
   @override
   Widget build(BuildContext context) {

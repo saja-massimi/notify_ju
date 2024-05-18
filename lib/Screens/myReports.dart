@@ -164,7 +164,7 @@ class _MyReportsState extends State<MyReports> {
           }
         },
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

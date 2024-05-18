@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
 class Warnings extends StatefulWidget {
@@ -63,7 +63,7 @@ class _WarningsAdminState extends State<Warnings> {
           }
         },
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }

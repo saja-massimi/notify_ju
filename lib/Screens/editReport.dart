@@ -278,8 +278,7 @@ class _EditReportState extends State<EditReport> {
                             _imageUrl ?? widget.report['incident_picture'],
                       );
 
-                      controller.updateReport(
-                          widget.report['report_id'], report);
+                      controller.updateReport(widget.report['report_id'], report);
                       Get.back();
                     },
                     child: const Text('Update'),

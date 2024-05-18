@@ -26,7 +26,6 @@ Future<String> GetToken() async{
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {  
-      // log( (querySnapshot.docs.first.data() as Map<String, dynamic>)['fcmToken'] as String);
 return (querySnapshot.docs.first.data() as Map<String, dynamic>)['fcmToken'] as String;
     } else {
       return 'null';

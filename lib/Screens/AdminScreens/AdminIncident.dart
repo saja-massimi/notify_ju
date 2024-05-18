@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
@@ -47,12 +49,12 @@ class _IncidentsState extends State<Incidents> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
                         ),
-                        color: Color.fromARGB(185, 227, 226, 226),
+                        color: const Color.fromARGB(185, 227, 226, 226),
                         elevation: 5,
                         child: ListTile(
                           title: Text(
                             items[index]['report_type'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
                             items[index]['incident_description'],

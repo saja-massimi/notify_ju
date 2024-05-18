@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -57,39 +59,11 @@ super.onInit();
   Future<void> receveNotification() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message)async {
 log(' message sent');
-List<int> notif = [
-    await SharedPrefController.getNotif('fire'),
-    await SharedPrefController.getNotif('car'),
-    await SharedPrefController.getNotif('injury'),
-    await SharedPrefController.getNotif('fight'),
-    await SharedPrefController.getNotif('infra'),
-    await SharedPrefController.getNotif('animal'),
-
-  ];
-
-    switch (message.data['report_type']) {
-    case 'Fire':
-        await SharedPrefController.setNotif('fire', notif[0]+1);
-      break;
-    case 'Car Accident':
-            await SharedPrefController.setNotif('car', notif[1]+1);
-      break;
-    case 'Injury':
-        await SharedPrefController.setNotif('injury', notif[2]+1);
-      break;
-    case 'Fight':
-            await SharedPrefController.setNotif('fight', notif[3]+1);
-      break;
-    case 'Infrastructural Damage':
-            await SharedPrefController.setNotif('infra', notif[4]+1);
-      break;
-    case 'Stray Animals':
-            await SharedPrefController.setNotif('fight', notif[5]+1);
-      break;
-    default:
-      log('Unknown notification received');
-  }
+Get.snackbar('New Report', message.notification!.title!);
+int notif = await SharedPrefController.getNotif('notif');
+SharedPrefController.setNotif('notif', notif + 1);
   
+
 });
 
 
@@ -129,7 +103,7 @@ List<int> notif = [
   }
 }
 
-  Future<List<Map<String, dynamic>>> getReports(String reportType) async {
+  Future<List<Map<String, dynamic>>> getReportStatus(String status) async {
     try {
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
@@ -139,7 +113,7 @@ List<int> notif = [
       for (var userDoc in usersSnapshot.docs) {
         QuerySnapshot reportsSnapshot = await userDoc.reference
             .collection('reports')
-            .where("report_type", isEqualTo: reportType)
+            .where("report_status", isEqualTo: status)
             .get();
 
         allReports.addAll(reportsSnapshot.docs
@@ -150,6 +124,36 @@ List<int> notif = [
       return allReports;
     } catch (e) {
       log("Error fetching reports: $e");
+      throw e;
+    }
+  }
+
+
+  Future<List<Map<String, dynamic>>> getReports(String reportType) async {
+    try {
+      QuerySnapshot usersSnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+
+      List<Map<String, dynamic>> allReports = [];
+
+    for (var userDoc in usersSnapshot.docs) {
+    QuerySnapshot reportsSnapshot = await userDoc.reference
+        .collection('reports')
+        .where("report_type", isEqualTo: reportType)
+        .get();
+
+    reportsSnapshot.docs.forEach((doc) {
+      var data = doc.data() as Map<String, dynamic>;
+      if (data['report_status'] != 'Pending') {
+        allReports.add(data);
+      }
+    });
+  }
+
+
+      return allReports;
+    } catch (e) {
+      log("Error fetching reports: $e");    
       throw e;
     }
   }
