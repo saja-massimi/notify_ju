@@ -89,7 +89,6 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.contact_mail_rounded),
             title: const Text('Contact Us'),
             onTap: () {
               Get.to(() => contact_us());
