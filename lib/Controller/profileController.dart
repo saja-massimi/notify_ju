@@ -10,52 +10,33 @@ class ProfileController extends GetxController {
   final _authRepo = Get.put(AuthenticationRepository());
   final _userRepo = Get.put(UserRepository());
 
-getUserData()
-{
-final email = _authRepo.firebaseUser.value?.email;
+  getUserData() {
+    final email = _authRepo.firebaseUser.value?.email;
 
-if(email!=null){
-  return _userRepo.getUserDetails(email);
-}
+    if (email != null) {
+      return _userRepo.getUserDetails(email);
+    } else {
+      Get.snackbar("Error", "Login to view profile");
+    }
+  }
 
-
-else {
-  Get.snackbar("Error", "Login to view profile");
-}
-
-}
-
-
-
-  Future<String> getUserName ()async
-  {
+  Future<String> getUserName() async {
     UserModel user = await getUserData();
     return user.username;
   }
 
-  Future<String> getAdminName ()async
-  {
-  adminModel admin = await getAdminData();
+  Future<String> getAdminName() async {
+    adminModel admin = await getAdminData();
     return admin.admin_name;
   }
 
-
-    
-  
-
-
-
-getAdminData(){
-  final email = _authRepo.firebaseUser.value?.email;
-if(email!=null){
-
-
-  return _userRepo.getAdminDetails(email);
-}
-else {
-  Get.snackbar("Error", "Login to view profile");
-}
-
-}
+  getAdminData() {
+    final email = _authRepo.firebaseUser.value?.email;
+    if (email != null) {
+      return _userRepo.getAdminDetails(email);
+    } else {
+      Get.snackbar("Error", "Login to view profile");
+    }
+  }
 
 }

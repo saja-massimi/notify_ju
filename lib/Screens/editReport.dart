@@ -61,6 +61,46 @@ class _EditReportState extends State<EditReport> {
     });
   }
 
+  Future<void> _confirmUpdate(
+      String reportId, reportModel updatedReport) async {
+    try {
+      final bool? result = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Update'),
+            content: const Text('Are you sure you want to update this report?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Update'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (result == true) {
+
+        
+        final controller = Get.put(ReportsController());
+        await controller.updateReport(reportId, updatedReport);
+        Get.back(); 
+      }
+    } catch (e) {
+      print('Error updating report: $e');
+      Get.snackbar('Error', 'Failed to update report: $e');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -122,19 +162,19 @@ class _EditReportState extends State<EditReport> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ReportsController());
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
           centerTitle: true,
-          title: const Text('Edit Report',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontStyle: FontStyle.italic)),
-          backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+          title:
+              const Text('Edit Report', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color(0xFF464A5E),
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_outlined),
+              icon: const Icon(
+                Icons.arrow_back_ios_outlined,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Get.back();
               })),
@@ -232,7 +272,8 @@ class _EditReportState extends State<EditReport> {
                   width: 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.report['incident_picture']),
+                      image: (NetworkImage(
+                          widget.report['incident_picture'] ?? '')),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -278,9 +319,7 @@ class _EditReportState extends State<EditReport> {
                             _imageUrl ?? widget.report['incident_picture'],
                       );
 
-                      controller.updateReport(
-                          widget.report['report_id'], report);
-                      Get.back();
+                      _confirmUpdate(widget.report['report_id'], report);
                     },
                     child: const Text('Update'),
                   ),
@@ -297,7 +336,7 @@ class _EditReportState extends State<EditReport> {
           ),
         ),
       ),
-      bottomNavigationBar: AdminNavigationBarWidget(),
+      bottomNavigationBar:  AdminNavigationBarWidget(),
     );
   }
 }

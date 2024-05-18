@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Screens/ReportDetails.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
-class HistoryReports extends StatefulWidget {
-  const HistoryReports({Key? key}) : super(key: key);
+class HistoryReportsAdmin extends StatefulWidget {
+  const HistoryReportsAdmin({Key? key}) : super(key: key);
 
   @override
-  State<HistoryReports> createState() => _HistoryReportsState();
+  State<HistoryReportsAdmin> createState() => _HistoryReportsAdminAdminState();
 }
 
 final controller = Get.put(ReportsController());
 
-class _HistoryReportsState extends State<HistoryReports> {
+class _HistoryReportsAdminAdminState extends State<HistoryReportsAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +39,7 @@ class _HistoryReportsState extends State<HistoryReports> {
             } else {
               if (snapshot.data == null || snapshot.data!.isEmpty) {
                 return const Center(
-                    child: Text("You don't have any reports yet"));
+                    child: Text("No Reports Yet"));
               } else {
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
@@ -64,7 +64,7 @@ class _HistoryReportsState extends State<HistoryReports> {
           }
         },
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }

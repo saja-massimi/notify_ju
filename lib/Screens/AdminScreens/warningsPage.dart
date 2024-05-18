@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
-import 'package:notify_ju/Screens/ReportDetails.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
-class HistoryReports extends StatefulWidget {
-  const HistoryReports({Key? key}) : super(key: key);
+class Warnings extends StatefulWidget {
+  const Warnings({Key? key}) : super(key: key);
 
   @override
-  State<HistoryReports> createState() => _HistoryReportsState();
+  State<Warnings> createState() => _WarningsAdminState();
 }
 
 final controller = Get.put(ReportsController());
 
-class _HistoryReportsState extends State<HistoryReports> {
+class _WarningsAdminState extends State<Warnings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +22,7 @@ class _HistoryReportsState extends State<HistoryReports> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Report History',
+          'Warnings',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
@@ -35,11 +34,11 @@ class _HistoryReportsState extends State<HistoryReports> {
             return const Center(child: CircularProgressIndicator());
           } else {
             if (snapshot.hasError) {
-              return const Center(child: Text("Error fetching reports"));
+              return const Center(child: Text("Error fetching warnings"));
             } else {
               if (snapshot.data == null || snapshot.data!.isEmpty) {
                 return const Center(
-                    child: Text("You don't have any reports yet"));
+                    child: Text("No Warnings Yet"));
               } else {
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
@@ -53,7 +52,7 @@ class _HistoryReportsState extends State<HistoryReports> {
                         title: Text(items[index]['report_type']),
                         subtitle: Text(items[index]['incident_description']),
                         onTap: () {
-                          Get.to(()=> ReportDetails(report: items[index],));
+                          // Get.to(()=> ReportDetails(report: items[index],));
                         },
                       ),
                     );
@@ -64,7 +63,7 @@ class _HistoryReportsState extends State<HistoryReports> {
           }
         },
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }

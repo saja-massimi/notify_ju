@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, library_private_types_in_public_api
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class addReport extends StatefulWidget {
   final String reportType;
   final _authRepo = Get.put(AuthenticationRepository());
 
-  addReport({Key? key, required this.reportType}) : super(key: key);
+  addReport({super.key, required this.reportType});
 
   @override
   _addReportState createState() => _addReportState();
@@ -217,14 +217,12 @@ class _addReportState extends State<addReport> {
                         user_email: widget._authRepo.firebaseUser.value?.email,
                         incident_picture: _imageUrl,
                       );
-
-                      await controller.createReport(report);
                       Get.back();
+                      await controller.createReport(report);
                       await notif.sendNotification(
                           'A new report', 'A new report has been sent', report);
 
-                      await notif.sendNotification(
-                          'A new report', 'A new report has been sent', report);
+                      // Get.offAll(() => Home());
                     },
                     child: const Text('Submit'),
                   ),

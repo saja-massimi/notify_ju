@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
-import 'package:notify_ju/Screens/AdminScreens/editReport.dart';
+import 'package:notify_ju/Screens/editReport.dart';
 import 'package:notify_ju/Screens/ReportDetails.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
@@ -15,13 +15,13 @@ class MyReports extends StatefulWidget {
 final controller = Get.put(ReportsController());
 
 class _MyReportsState extends State<MyReports> {
-  /* Future<void> _confirmDelete(String reportId) async {
+  Future<void> _confirmDelete(String reportId) async {
     final bool? result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this report?'),
+          title: const Text('Confirm Delete'),
+          content: const Text('Are you sure you want to delete this report?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -43,10 +43,9 @@ class _MyReportsState extends State<MyReports> {
     if (result == true) {
       controller.deleteReport(reportId);
     } else {
-      // If the deletion was not confirmed, insert the item back into the list.
       setState(() {});
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +90,12 @@ class _MyReportsState extends State<MyReports> {
                               ),
                             ),
                           ),
+                          direction: DismissDirection.startToEnd,
                           onDismissed: (direction) {
                             if (direction == DismissDirection.startToEnd &&
                                 items[index]["report_status"] == 'Pending') {
-                              controller
-                                  .deleteReport(items[index]["report_id"]);
+                              _confirmDelete(items[index]["report_id"]);
+                              // controller.deleteReport(items[index]["report_id"]);
                             }
                           },
                           child: Container(
@@ -106,12 +106,13 @@ class _MyReportsState extends State<MyReports> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40),
                               ),
-                              color: Color.fromARGB(185, 227, 226, 226),
+                              color: const Color.fromARGB(185, 227, 226, 226),
                               elevation: 6,
                               child: ListTile(
                                 title: Text(
                                   items[index]['report_type'],
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(
                                   items[index]['incident_description'],
@@ -164,7 +165,7 @@ class _MyReportsState extends State<MyReports> {
           }
         },
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

@@ -1,22 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMap.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:intl/intl.dart';
 
-class ReportDetails extends StatefulWidget {
+class AdminReportDetails extends StatefulWidget {
   final Map<String, dynamic> report;
-  const ReportDetails({super.key, required this.report});
+  const AdminReportDetails({super.key, required this.report});
 
   @override
-  State<ReportDetails> createState() => _ReportDetailsState();
+  State<AdminReportDetails> createState() => _AdminReportDetailsState();
 }
 
-class _ReportDetailsState extends State<ReportDetails> {
+class _AdminReportDetailsState extends State<AdminReportDetails> {
   final controller = Get.put(AdminController());
 
   Future<void> _viewImage() async {
@@ -185,7 +184,7 @@ class _ReportDetailsState extends State<ReportDetails> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
+      bottomNavigationBar:  AdminNavigationBarWidget(),
     );
   }
 }
