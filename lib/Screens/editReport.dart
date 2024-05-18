@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminProflie.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
@@ -90,8 +89,11 @@ class _EditReportState extends State<EditReport> {
       );
 
       if (result == true) {
+
+        
+        final controller = Get.put(ReportsController());
         await controller.updateReport(reportId, updatedReport);
-        Get.back(); // Assuming you're using Get for navigation
+        Get.back(); 
       }
     } catch (e) {
       print('Error updating report: $e');
@@ -160,7 +162,6 @@ class _EditReportState extends State<EditReport> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ReportsController());
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),

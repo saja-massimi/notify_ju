@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:notify_ju/Models/adminModel.dart';
-import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Models/userModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Repository/user_repository.dart';
@@ -40,5 +39,4 @@ class ProfileController extends GetxController {
     }
   }
 
-  updateReport(String reportId, reportModel updatedReport) {}
 }
