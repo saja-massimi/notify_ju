@@ -1,10 +1,11 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Models/postModel.dart';
-import 'package:uuid/uuid.dart';
 
 class PostController extends GetxController {
   static PostController get instance => Get.find();
@@ -138,9 +139,9 @@ class PostController extends GetxController {
           .collection('post')
           .doc(model.post_id);
 
-      print('comments added successfully');
+      log('comments added successfully');
     } catch (error) {
-      print('Error commenting post: $error');
+      log('Error commenting post: $error');
     }
   }
 

@@ -1,6 +1,10 @@
 
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminMain.dart';
 import 'package:notify_ju/Screens/categories.dart';
@@ -14,11 +18,19 @@ class AuthenticationRepository extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late final Rx<User?> firebaseUser = Rx<User?>(_auth.currentUser);
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+
+  int s = await SharedPrefController.getNotif('notifs');
+  await SharedPrefController.setNotif('notifs', s + 1);
+  log("A message is received in the background");
+}
 
 
   @override
   void onInit() {
     super.onInit();
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
       firebaseUser.bindStream(_auth.authStateChanges());
       ever<User?>(firebaseUser, (user) {
       setInitialScreen(user);

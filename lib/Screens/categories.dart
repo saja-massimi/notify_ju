@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/AddReport.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
@@ -55,7 +57,7 @@ List<IncidentData> incidentsList = <IncidentData>[
 
 Widget buildCategoryCard(BuildContext context, IncidentData data) {
   return Container(
-    margin: EdgeInsets.only(bottom: 7),
+    margin: const EdgeInsets.only(bottom: 7),
     height: 135,
     child: Card(
       shape: RoundedRectangleBorder(
@@ -75,7 +77,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
           );
         },
         child: Container(
-          decoration: BoxDecoration(),
+          decoration: const BoxDecoration(),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -123,7 +125,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
 }
 
 class Categories extends StatefulWidget {
-  const Categories({Key? key}) : super(key: key);
+  const Categories({super.key});
 
   @override
   _CategoriesState createState() => _CategoriesState();
@@ -162,7 +164,7 @@ class _CategoriesState extends State<Categories> {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

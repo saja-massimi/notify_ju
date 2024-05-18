@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Models/adminModel.dart';
-import 'package:notify_ju/Models/userModel.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 
@@ -48,33 +47,17 @@ class ProfileWidget extends StatelessWidget {
       ),
       drawer: AdminDrawerWidget(),
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: FutureBuilder<bool>(
-          future: isAdminFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                final isAdmin = snapshot.data!;
-                return isAdmin ? AdminPage() : UserPage();
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                return const Center(child: Text("Something went wrong"));
-              }
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+  child: AdminPage(),
       ),
-      bottomNavigationBar: AdminNavigationBarWidget(),
+      bottomNavigationBar: const AdminNavigationBarWidget(),
     );
   }
 }
 
 class AdminPage extends StatelessWidget {
-  AdminPage({super.key});
+  const AdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -129,65 +112,3 @@ class AdminPage extends StatelessWidget {
   }
 }
 
-class UserPage extends StatelessWidget {
-  UserPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: FutureBuilder(
-          future: controller.getUserData(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                UserModel user = snapshot.data as UserModel;
-                return Form(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormField(
-                        initialValue: user.username,
-                        readOnly: true,
-                        decoration: const InputDecoration(labelText: 'Name'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        initialValue: user.user_email,
-                        readOnly: true,
-                        decoration: const InputDecoration(labelText: 'Email'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        initialValue: user.student_id,
-                        readOnly: true,
-                        decoration:
-                            const InputDecoration(labelText: 'Student ID'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        initialValue: user.user_phone_num.toString(),
-                        readOnly: true,
-                        keyboardType: TextInputType.phone,
-                        decoration:
-                            const InputDecoration(labelText: 'Phone number'),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                return const Center(child: Text("Something went wrong"));
-              }
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      ),
-    );
-  }
-}

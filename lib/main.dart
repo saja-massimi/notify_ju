@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/sharedPref.dart';
@@ -9,19 +7,11 @@ import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
 import 'package:notify_ju/firebase_options.dart';
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-int s = await SharedPrefController.getNotif('notif');
-SharedPrefController.setNotif('notif', s + 1);
-  log("A message is received in the background");
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
       .then((value) => Get.put(AuthenticationRepository()));
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await SharedPrefController.init();
   runApp(const MyApp());
 }

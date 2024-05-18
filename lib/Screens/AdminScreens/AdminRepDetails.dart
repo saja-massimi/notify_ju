@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMap.dart';
+import 'package:notify_ju/Screens/AdminScreens/UserData.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:intl/intl.dart';
 
@@ -17,11 +19,24 @@ class AdminReportDetails extends StatefulWidget {
 
 class _AdminReportDetailsState extends State<AdminReportDetails> {
   final controller = Get.put(AdminController());
+  final List<String> _dropdownItems = [
+    'Pending',
+    'Under Review',
+    'Resolved',
+    'On Hold',
+    'Rejected',
+  ];
+
+  String? _selectedItem;
+  void initReportState() {
+    _selectedItem = widget.report['report_status'];
+  }
 
   Future<void> _viewImage() async {
     if (widget.report['incident_picture'] == null) {
       return;
     }
+
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -37,6 +52,7 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
   void initState() {
     super.initState();
     setLocationName();
+    initReportState();
   }
 
   Future<void> setLocationName() async {
@@ -66,6 +82,8 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
         title:
             const Text('Report Details', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -169,13 +187,43 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
                 ),
               ),
               const SizedBox(height: 20.2),
-              TextField(
-                keyboardType: TextInputType.multiline,
-                readOnly: true,
-                decoration: const InputDecoration(
-                    hintText: 'Report Status : ', filled: true),
-                controller:
-                    TextEditingController(text: widget.report['report_status']),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DropdownButton(
+                    value: _selectedItem,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    items: _dropdownItems.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedItem = newValue!;
+                      });
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.changeReportStatus(
+                          _selectedItem!,
+                          widget.report['report_id'],
+                          widget.report['user_email']);
+                          Get.snackbar('Success', 'Status Changed Successfully');
+                    },
+
+                    child: const Text('Change Status'),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.to(
+                      () => userData(userEmail: widget.report['user_email']));
+                },
+                child: const Text('View User Data'),
               ),
               const SizedBox(
                 height: 20.2,
@@ -184,7 +232,7 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
           ),
         ),
       ),
-      bottomNavigationBar:  AdminNavigationBarWidget(),
+      bottomNavigationBar: const AdminNavigationBarWidget(),
     );
   }
 }
@@ -192,7 +240,7 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
 class ImageViewScreen extends StatelessWidget {
   final Image image;
 
-  const ImageViewScreen({super.key, required this.image});
+  const ImageViewScreen({Key? key, required this.image}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

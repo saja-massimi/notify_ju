@@ -6,12 +6,12 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:notify_ju/Screens/MapScreen.dart';
+import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/image_input.dart';
 
 class EditReport extends StatefulWidget {
@@ -38,7 +38,7 @@ class _EditReportState extends State<EditReport> {
       context,
       MaterialPageRoute(
         builder: (context) => ImageViewScreen(
-            image: Image.network(widget.report['incident_picture']!)),
+            image: Image.network(widget.report['incident_picture']??'')),
       ),
     );
   }
@@ -79,6 +79,7 @@ class _EditReportState extends State<EditReport> {
               ),
               TextButton(
                 onPressed: () {
+                  
                   Navigator.of(context).pop(true);
                 },
                 child: const Text('Update'),
@@ -336,7 +337,7 @@ class _EditReportState extends State<EditReport> {
           ),
         ),
       ),
-      bottomNavigationBar:  AdminNavigationBarWidget(),
+      bottomNavigationBar:  const BottomNavigationBarWidget(),
     );
   }
 }

@@ -20,7 +20,7 @@ class AdminController extends GetxController {
 @override
 void onInit(){
   updateFCMToken();
-  receveNotification();
+  receiveNotification();
 super.onInit();
 }
 
@@ -56,24 +56,29 @@ super.onInit();
     }
   }
 
-  Future<void> receveNotification() async {
-  FirebaseMessaging.onMessage.listen((RemoteMessage message)async {
-log(' message sent');
-Get.snackbar('New Report', message.notification!.title!);
-int notif = await SharedPrefController.getNotif('notif');
-SharedPrefController.setNotif('notif', notif + 1);
-  
+Future<void> receiveNotification() async {
 
-});
+      if(await isAdmin()) {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
 
+    log('message received');
 
+    Get.snackbar(
+      'New Report',
+      'A new ${message.data["report_type"]} report has been submitted',
+      snackPosition: SnackPosition.BOTTOM,
+    );
 
-  }
+    // Get current notification count from shared preferences
+    int notif = await SharedPrefController.getNotif('notifs');
 
-  Future<void> changeReportStatus(
+    // Increment the notification count and save it back to shared preferences
+    await SharedPrefController.setNotif('notifs', notif + 1);
+  });
+}
+}
 
-
-      String type, String reportID, String email) async {
+  Future<void> changeReportStatus(String type, String reportID, String email) async {
     QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
         .collection('users')
         .where('user_email', isEqualTo: email)
@@ -103,30 +108,33 @@ SharedPrefController.setNotif('notif', notif + 1);
   }
 }
 
-  Future<List<Map<String, dynamic>>> getReportStatus(String status) async {
-    try {
-      QuerySnapshot usersSnapshot =
-          await FirebaseFirestore.instance.collection('users').get();
+ Future<List<Map<String, dynamic>>> getReportStatus(String status) async {
+  try {
+    QuerySnapshot usersSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
 
-      List<Map<String, dynamic>> allReports = [];
+    List<Map<String, dynamic>> allReports = [];
 
-      for (var userDoc in usersSnapshot.docs) {
-        QuerySnapshot reportsSnapshot = await userDoc.reference
-            .collection('reports')
-            .where("report_status", isEqualTo: status)
-            .get();
+    for (var userDoc in usersSnapshot.docs) {
+      QuerySnapshot reportsSnapshot = await userDoc.reference
+          .collection('reports')
+          .where("report_status", isEqualTo: status)
+          .orderBy("report_date", descending: true)
+          .get();
 
-        allReports.addAll(reportsSnapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>));
-      }
-
-
-      return allReports;
-    } catch (e) {
-      log("Error fetching reports: $e");
-      throw e;
+      allReports.addAll(reportsSnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>));
     }
+
+    allReports.sort((a, b) => (b['report_date'] as Timestamp).compareTo(a['report_date'] as Timestamp));
+
+    return allReports;
+  } catch (e) {
+    log("Error fetching reports: $e");
+    throw e;
   }
+}
+
 
 
   Future<List<Map<String, dynamic>>> getReports(String reportType) async {
@@ -144,7 +152,9 @@ SharedPrefController.setNotif('notif', notif + 1);
 
     reportsSnapshot.docs.forEach((doc) {
       var data = doc.data() as Map<String, dynamic>;
-      if (data['report_status'] != 'Pending') {
+      if (data['report_status'] != 'Pending' &&
+          data['report_status'] != 'Rejected' && 
+          data['report_status'] != 'Resolved') {
         allReports.add(data);
       }
     });
@@ -184,5 +194,31 @@ SharedPrefController.setNotif('notif', notif + 1);
   }
 
 
+  Future<List<Map<String, dynamic>>> getHistoryReports() async {
+    try {
+      QuerySnapshot usersSnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+
+      List<Map<String, dynamic>> allReports = [];
+
+    for (var userDoc in usersSnapshot.docs) {
+    QuerySnapshot reportsSnapshot = await userDoc.reference
+        .collection('reports')
+        .where( "report_status", whereIn: ["Resolved", "Rejected"])
+        .get();
+
+    reportsSnapshot.docs.forEach((doc) {
+      var data = doc.data() as Map<String, dynamic>;
+        allReports.add(data);
+    });
+  }
+
+
+      return allReports;
+    } catch (e) {
+      log("Error fetching reports: $e");    
+      throw e;
+    }
+  }
 
 }

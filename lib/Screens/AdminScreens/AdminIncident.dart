@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminReportDetail.dart';
+import 'package:notify_ju/Screens/AdminScreens/AdminRepDetails.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
@@ -78,7 +78,7 @@ class _IncidentsState extends State<Incidents> {
               }
             }
           }),
-      bottomNavigationBar: AdminNavigationBarWidget(),
+      bottomNavigationBar: const AdminNavigationBarWidget(),
     );
   }
 }
