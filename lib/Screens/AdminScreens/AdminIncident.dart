@@ -26,6 +26,8 @@ class _IncidentsState extends State<Incidents> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('${widget.reportType} Reports'),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: StreamBuilder<dynamic>(
           stream: Stream.fromFuture(controller.getReports(widget.reportType)),

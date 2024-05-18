@@ -26,6 +26,8 @@ class _WarningsAdminState extends State<Warnings> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder(
         future: controller.viewAllHistoryReports(),
@@ -37,8 +39,7 @@ class _WarningsAdminState extends State<Warnings> {
               return const Center(child: Text("Error fetching warnings"));
             } else {
               if (snapshot.data == null || snapshot.data!.isEmpty) {
-                return const Center(
-                    child: Text("No Warnings Yet"));
+                return const Center(child: Text("No Warnings Yet"));
               } else {
                 return ListView.builder(
                   itemCount: snapshot.data!.length,

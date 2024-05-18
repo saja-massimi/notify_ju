@@ -67,6 +67,8 @@ class _ReportDetailsState extends State<ReportDetails> {
         title:
             const Text('Report Details', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: SingleChildScrollView(
         child: Padding(

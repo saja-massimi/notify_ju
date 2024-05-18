@@ -56,6 +56,8 @@ class _MyReportsState extends State<MyReports> {
         backgroundColor: const Color(0xFF464A5E),
         centerTitle: true,
         title: const Text('My Reports', style: TextStyle(color: Colors.white)),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder(
         future: controller.viewCurrentReports(),

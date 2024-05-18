@@ -150,6 +150,8 @@ class _CategoriesState extends State<Categories> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

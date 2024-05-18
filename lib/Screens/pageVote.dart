@@ -42,6 +42,8 @@ class _VotingPageState extends State<VotingPage1> {
             Navigator.pop(context);
           },
         ),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: Center(
         child: Column(

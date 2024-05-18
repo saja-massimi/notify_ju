@@ -27,6 +27,8 @@ class _HistoryReportsAdminAdminState extends State<HistoryReportsAdmin> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder(
         future: controller.viewAllHistoryReports(),
@@ -38,8 +40,7 @@ class _HistoryReportsAdminAdminState extends State<HistoryReportsAdmin> {
               return const Center(child: Text("Error fetching reports"));
             } else {
               if (snapshot.data == null || snapshot.data!.isEmpty) {
-                return const Center(
-                    child: Text("No Reports Yet"));
+                return const Center(child: Text("No Reports Yet"));
               } else {
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
@@ -53,7 +54,9 @@ class _HistoryReportsAdminAdminState extends State<HistoryReportsAdmin> {
                         title: Text(items[index]['report_type']),
                         subtitle: Text(items[index]['incident_description']),
                         onTap: () {
-                          Get.to(()=> ReportDetails(report: items[index],));
+                          Get.to(() => ReportDetails(
+                                report: items[index],
+                              ));
                         },
                       ),
                     );

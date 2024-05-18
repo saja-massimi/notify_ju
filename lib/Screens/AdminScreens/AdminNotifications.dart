@@ -27,32 +27,36 @@ class _AdminNotificationsState extends State<AdminNotifications> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder(
-        future: controller.getReportStatus('Pending'),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            if (snapshot.hasError) {
-              return const Center(child: Text("Error fetching reports"));
+          future: controller.getReportStatus('Pending'),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
             } else {
-              if (snapshot.data == null || snapshot.data!.isEmpty) {
-                return const Center(child: Text("No Reports Yet"));
+              if (snapshot.hasError) {
+                return const Center(child: Text("Error fetching reports"));
               } else {
-                return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      final items = snapshot.data!;
+                if (snapshot.data == null || snapshot.data!.isEmpty) {
+                  return const Center(child: Text("No Reports Yet"));
+                } else {
+                  return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final items = snapshot.data!;
 
                         return Dismissible(
                           key: UniqueKey(),
                           onDismissed: (direction) {
                             if (direction == DismissDirection.startToEnd ||
                                 direction == DismissDirection.endToStart) {
-                              
-                              controller.changeReportStatus('Under Review',items[index]['report_id'], items[index]['user_email']);
-                              Get.to(() =>ReportDetails(report: items[index]));
+                              controller.changeReportStatus(
+                                  'Under Review',
+                                  items[index]['report_id'],
+                                  items[index]['user_email']);
+                              Get.to(() => ReportDetails(report: items[index]));
                             }
                           },
                           child: Container(
@@ -68,7 +72,8 @@ class _AdminNotificationsState extends State<AdminNotifications> {
                               child: ListTile(
                                 title: Text(
                                   items[index]['report_type'],
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(
                                   items[index]['incident_description'],
@@ -77,17 +82,19 @@ class _AdminNotificationsState extends State<AdminNotifications> {
                                 ),
                                 trailing: Text(
                                   items[index]['user_email'],
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                onTap: () {
-                          
-                                },
+                                onTap: () {},
                               ),
                             ),
                           ),
                         );
-                      }
-  );}}}}),
+                      });
+                }
+              }
+            }
+          }),
       bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }

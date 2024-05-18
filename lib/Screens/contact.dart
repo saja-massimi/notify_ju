@@ -15,6 +15,8 @@ class contact_us extends StatelessWidget {
           'Contact Us',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       drawer: DrawerWidget(),
       body: ContactUs(
