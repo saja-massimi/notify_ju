@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Models/postModel.dart';
+import 'package:uuid/uuid.dart';
 
 class PostController extends GetxController {
   static PostController get instance => Get.find();
@@ -49,33 +50,22 @@ class PostController extends GetxController {
     }
   }
 
-  Future<void> deletePost(postModel model) async {
-    final docID = await getDocumentIdByEmail(auth?.email ?? "");
-
-    await _db
-        .collection('/users/$docID/post')
-        .doc(model.post_id)
-        .delete()
-        .then((value) => Get.snackbar("Success", "post Deleted Succesfully"))
-        .catchError(
-            (error) => Get.snackbar("Error", "post Deletion Failed: $error"));
+  Future<void> deletePost(String postId) async {
+    try {
+      final docID = await getDocumentIdByEmail(auth?.email ?? "");
+      await _db
+          .collection('users')
+          .doc(docID)
+          .collection('post')
+          .doc(postId)
+          .delete();
+      Get.snackbar("Success", "Comment deleted successfully");
+    } catch (error) {
+      Get.snackbar("Error", "Failed to delete comment: $error");
+    }
   }
 
   Future<List<Map<String, dynamic>>> getpost() async {
-    //
-    //   try {
-    //     final docID = await getDocumentIdByEmail(auth?.email ?? "");
-    //     final querySnapshot =
-    //         await _db.collection('users').doc(docID).collection('post').get();
-    //     return querySnapshot.docs
-    //         .map((e) => e.data())
-    //         .toList()
-    //         .cast<Map<String, dynamic>>();
-    //   } catch (error) {
-    //     Get.snackbar("Error", "Failed to get posts: $error");
-    //     return [];
-    //   }
-    // }
     try {
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
@@ -130,17 +120,24 @@ class PostController extends GetxController {
           .collection('post')
           .doc(model.post_id);
 
-      // Update the likes field in the post document
-      await postRef.update({
-        'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
-      });
-      // await postRef.update({
-      //   'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
-      // });
-
-      print('Post liked successfully');
+      print('comments added successfully');
     } catch (error) {
-      print('Error liking post: $error');
+      print('Error commenting post: $error');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> viewAllUserPosts() async {
+    final documentId = await getDocumentIdByEmail(auth?.email ?? "");
+
+    try {
+      final snapshot = await _db
+          .collection('/users/$documentId/post') // Adjust collection path
+          .get();
+
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      log("Error fetching user posts: $e");
+      return null;
     }
   }
 }

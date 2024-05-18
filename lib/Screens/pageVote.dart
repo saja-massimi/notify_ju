@@ -8,6 +8,7 @@ import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/The_wall.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
+import 'package:notify_ju/Widgets/drawer.dart';
 import 'package:random_string/random_string.dart';
 
 class VotingPage1 extends StatefulWidget {
@@ -32,16 +33,12 @@ class _VotingPageState extends State<VotingPage1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerWidget(),
+      backgroundColor: const Color(0xFFE5E5E5),
       appBar: AppBar(
-        title: const Text('Suggestions'),
-        backgroundColor: const Color.fromARGB(255, 195, 235, 197),
+        title: const Text('Suggestions', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF464A5E),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
       body: Center(
         child: Column(

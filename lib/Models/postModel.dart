@@ -3,24 +3,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class postModel {
-  final String post_id;
+  final String? post_id;
   final String description;
   final String email;
-  // final String? image;
   final List<String>? likesCount;
-  // final List<int>? DislikesCount;
-  // final String? comments;
   final DateTime? time;
+  // final String? comments;
 
   postModel({
-    required this.post_id,
+    this.post_id,
     required this.description,
     required this.email,
-    // this.image,
     this.likesCount,
-    // this.DislikesCount,
-    // this.comments,
     this.time,
+    // this.comments,
   });
 
   toJson() {
@@ -31,8 +27,8 @@ class postModel {
       // 'image': image,
       'likesCount': [],
       // 'DislikesCount': [],
-      // 'comments': comments,
       'TimeStamp': time,
+      // 'comments': comments,
     };
   }
 
@@ -46,8 +42,8 @@ class postModel {
       // image: data['image'],
       likesCount: data['likesCount'],
       // DislikesCount: data['DislikesCount'],
-      // comments: data['comments'],
       time: data['TimeStamp'],
+      // comments: doc.id,
     );
   }
 }
