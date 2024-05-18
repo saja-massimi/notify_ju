@@ -83,14 +83,12 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.contact_mail_rounded),
-            leading: const Icon(Icons.phone_android),
             title: const Text('Contact Us'),
             onTap: () {
               Get.to(() => contact_us());
             },
           ),
           ListTile(
-            leading: const Icon(Icons.logout),
             leading: const Icon(Icons.logout),
             title: const Text('Sign out'),
             onTap: () => controller.logout(),
