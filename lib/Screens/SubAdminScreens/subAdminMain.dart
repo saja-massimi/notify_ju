@@ -125,9 +125,9 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
 }
 
 class subAdminMain extends StatefulWidget {
-  subAdminMain({super.key,required this.reportTypes,required this.adminName});
-List<String> reportTypes;
-String adminName;
+  subAdminMain({super.key, required this.reportTypes, required this.adminName});
+  List<String> reportTypes;
+  String adminName;
   @override
   _subAdminMainState createState() => _subAdminMainState();
 }
@@ -148,11 +148,13 @@ class _subAdminMainState extends State<subAdminMain> {
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,
-        title:  Text(
+        title: Text(
           '${widget.adminName} Admin Dashboard',
           style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

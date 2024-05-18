@@ -27,6 +27,8 @@ class _HistoryReportsState extends State<HistoryReports> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder(
         future: controller.viewAllHistoryReports(),
@@ -53,7 +55,9 @@ class _HistoryReportsState extends State<HistoryReports> {
                         title: Text(items[index]['report_type']),
                         subtitle: Text(items[index]['incident_description']),
                         onTap: () {
-                          Get.to(()=> ReportDetails(report: items[index],));
+                          Get.to(() => ReportDetails(
+                                report: items[index],
+                              ));
                         },
                       ),
                     );

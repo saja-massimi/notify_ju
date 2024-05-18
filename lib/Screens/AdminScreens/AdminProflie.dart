@@ -43,6 +43,8 @@ class ProfileWidget extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       drawer: AdminDrawerWidget(),
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),

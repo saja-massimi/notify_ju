@@ -14,11 +14,11 @@ class IncidentData {
     required this.titleTxt,
   });
 }
+
 List<IncidentData> incidentsList = <IncidentData>[
   IncidentData(
     imagePath: 'images/amanzimgs/fire-truck.png',
     titleTxt: 'Fire',
-  
   ),
   IncidentData(
     imagePath: 'images/amanzimgs/car-accident.png',
@@ -31,21 +31,16 @@ List<IncidentData> incidentsList = <IncidentData>[
   IncidentData(
     imagePath: 'images/amanzimgs/fight.png',
     titleTxt: 'Fight',
-  
   ),
   IncidentData(
     imagePath: 'images/amanzimgs/leak.png',
     titleTxt: 'Infrastructural Damage',
-
   ),
   IncidentData(
     imagePath: 'images/amanzimgs/dog.png',
     titleTxt: 'Stray Animals',
-  
   ),
 ];
-
-
 
 Widget buildCategoryCard(BuildContext context, IncidentData data) {
   return Container(
@@ -58,8 +53,8 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
       color: Colors.white,
       elevation: 4,
       child: InkWell(
-        onTap: () async{
-  Navigator.push(
+        onTap: () async {
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => Incidents(
@@ -95,7 +90,6 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
-                
                     ],
                   ),
                 ),
@@ -116,8 +110,6 @@ class AdminMain extends StatefulWidget {
 }
 
 class _AdminMainState extends State<AdminMain> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,9 +122,10 @@ class _AdminMainState extends State<AdminMain> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
-      body:
-          Padding(
+      body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
           itemCount: incidentsList.length,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notify_ju/Screens/Home.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
 import 'package:notify_ju/Screens/pageVote.dart';
@@ -23,7 +24,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
             IconButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Categories()));
+                    MaterialPageRoute(builder: (context) => HomePage()));
               },
               icon: const Icon(Icons.home, color: Colors.white),
             ),
@@ -48,8 +49,10 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
             const Spacer(),
             IconButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const VotingPage1()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const VotingPage1()));
                 },
                 icon: const Icon(Icons.people, color: Colors.white)),
           ],

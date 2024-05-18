@@ -39,6 +39,14 @@ class _VotingPageState extends State<VotingPage1> {
         title: const Text('Suggestions', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF464A5E),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: Center(
         child: Column(
