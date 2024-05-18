@@ -6,6 +6,7 @@ import 'package:notify_ju/Controller/SignupController.dart';
 import 'package:notify_ju/Screens/contact.dart';
 import 'package:notify_ju/Screens/profile.dart';
 import 'package:notify_ju/Screens/reportHistory.dart';
+import 'package:notify_ju/Screens/viewMyPost.dart';
 
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({super.key});
@@ -82,7 +83,16 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
+<<<<<<< HEAD
+            title: const Text('My posts'),
+            onTap: () {
+              Get.to(ViewMyPost());
+            },
+          ),
+          ListTile(
+=======
             leading: const Icon(Icons.contact_mail_rounded),
+>>>>>>> 5f15ce7c673c2dd8ab96e9db64b21f21a4dba453
             title: const Text('Contact Us'),
             onTap: () {
               Get.to(() => contact_us());

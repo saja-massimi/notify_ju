@@ -3,14 +3,16 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/postController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
+import 'package:notify_ju/Screens/commentCard.dart';
+import 'package:notify_ju/Screens/comments_button.dart';
 import 'package:notify_ju/Screens/likes.dart';
+import 'package:notify_ju/Controller/commentController.dart';
 
 class wallpost extends StatefulWidget {
   final String description;
   final String email;
   final String post_id;
   final List<String> likesCount;
-
   const wallpost({
     Key? key,
     required this.description,
@@ -27,6 +29,7 @@ class _wallpostState extends State<wallpost> {
   final _authRepo = Get.put(AuthenticationRepository());
   final controller = Get.put(PostController());
   bool isLiked = false;
+  final CommController = Get.put(commentController());
 
   @override
   void initState() {
@@ -76,16 +79,9 @@ class _wallpostState extends State<wallpost> {
         right: 25,
       ),
       padding: const EdgeInsets.all(10),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            children: [
-              Likes(isLiked: isLiked, onTap: toggleLike),
-              const SizedBox(height: 10),
-              Text(widget.likesCount.length.toString(),
-                  style: const TextStyle(color: Colors.black26)),
-            ],
-          ),
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +103,35 @@ class _wallpostState extends State<wallpost> {
                       color: Colors.black,
                     )),
               ),
-              const SizedBox(height: 10),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Likes(isLiked: isLiked, onTap: toggleLike),
+                  const SizedBox(height: 10),
+                  Text(widget.likesCount.length.toString(),
+                      style: const TextStyle(color: Colors.black26)),
+                ],
+              ),
+              const SizedBox(width: 20),
+              Column(
+                children: [
+                  CommentsButton(onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CommentCard(
+                          post_id: widget.post_id,
+                        ),
+                      ),
+                    );
+                  }),
+                  const Text('', style: TextStyle(color: Colors.black26)),
+                ],
+              ),
             ],
           ),
         ],

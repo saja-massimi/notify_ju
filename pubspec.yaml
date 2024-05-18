@@ -65,6 +65,8 @@ dependencies:
   firebase_storage: ^11.7.4
   flutter_local_notifications: ^17.1.2
   shared_preferences: ^2.2.3
+  timeago: ^3.0.2
+  uuid: ^3.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

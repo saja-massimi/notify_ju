@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Models/postModel.dart';
+import 'package:uuid/uuid.dart';
 
 class PostController extends GetxController {
   static PostController get instance => Get.find();
@@ -49,20 +50,26 @@ class PostController extends GetxController {
     }
   }
 
-  Future<void> deletePost(postModel model) async {
-    final docID = await getDocumentIdByEmail(auth?.email ?? "");
-
-    await _db
-        .collection('/users/$docID/post')
-        .doc(model.post_id)
-        .delete()
-        .then((value) => Get.snackbar("Success", "post Deleted Succesfully"))
-        .catchError(
-            (error) => Get.snackbar("Error", "post Deletion Failed: $error"));
+  Future<void> deletePost(String postId) async {
+    try {
+      final docID = await getDocumentIdByEmail(auth?.email ?? "");
+      await _db
+          .collection('users')
+          .doc(docID)
+          .collection('post')
+          .doc(postId)
+          .delete();
+      Get.snackbar("Success", "Comment deleted successfully");
+    } catch (error) {
+      Get.snackbar("Error", "Failed to delete comment: $error");
+    }
   }
 
   Future<List<Map<String, dynamic>>> getpost() async {
+<<<<<<< HEAD
+=======
     
+>>>>>>> 5f15ce7c673c2dd8ab96e9db64b21f21a4dba453
     try {
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
@@ -136,6 +143,26 @@ Future<void> dislike(postModel model) async {
           .collection('post')
           .doc(model.post_id);
 
+<<<<<<< HEAD
+      print('comments added successfully');
+    } catch (error) {
+      print('Error commenting post: $error');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> viewAllUserPosts() async {
+    final documentId = await getDocumentIdByEmail(auth?.email ?? "");
+
+    try {
+      final snapshot = await _db
+          .collection('/users/$documentId/post') // Adjust collection path
+          .get();
+
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      log("Error fetching user posts: $e");
+      return null;
+=======
       // Update the comments field in the post document
       await postRef.update({
         'comments': FieldValue.arrayUnion([
@@ -150,6 +177,7 @@ Future<void> dislike(postModel model) async {
       print('Post commented successfully');
     } catch (error) {
       print('Error commenting post: $error');
+>>>>>>> 5f15ce7c673c2dd8ab96e9db64b21f21a4dba453
     }
   }
 }
