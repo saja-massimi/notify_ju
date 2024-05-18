@@ -221,6 +221,8 @@ class _addReportState extends State<addReport> {
                       await controller.createReport(report);
                       await notif.sendNotification(
                           'A new report', 'A new report has been sent', report);
+
+                      // Get.offAll(() => Home());
                     },
                     child: const Text('Submit'),
                   ),

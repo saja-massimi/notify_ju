@@ -43,7 +43,6 @@ class _MyReportsState extends State<MyReports> {
     if (result == true) {
       controller.deleteReport(reportId);
     } else {
-      // If the deletion was not confirmed, insert the item back into the list.
       setState(() {});
     }
   }
@@ -91,10 +90,11 @@ class _MyReportsState extends State<MyReports> {
                               ),
                             ),
                           ),
+                          direction: DismissDirection.startToEnd,
                           onDismissed: (direction) {
                             if (direction == DismissDirection.startToEnd &&
                                 items[index]["report_status"] == 'Pending') {
-                                  _confirmDelete(items[index]["report_id"]);
+                              _confirmDelete(items[index]["report_id"]);
                               // controller.deleteReport(items[index]["report_id"]);
                             }
                           },
@@ -111,7 +111,8 @@ class _MyReportsState extends State<MyReports> {
                               child: ListTile(
                                 title: Text(
                                   items[index]['report_type'],
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(
                                   items[index]['incident_description'],
