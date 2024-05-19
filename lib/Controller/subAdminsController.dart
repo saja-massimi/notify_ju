@@ -10,7 +10,7 @@ class SubAdminsController extends GetxController {
 
 
 
-  Future<List<Map<String, dynamic>>?> viewAllReportsReports(String reportType) async{
+  Future<List<Map<String, dynamic>>?> viewAllReports(String reportType) async{
   
     try {
       QuerySnapshot usersSnapshot =

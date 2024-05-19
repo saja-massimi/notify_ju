@@ -1,18 +1,20 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminRepDetails.dart';
+import 'package:notify_ju/Screens/ReportDetails.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
-import 'package:notify_ju/Widgets/AdminNavBar.dart';
 
-class AdminNotifications extends StatefulWidget {
-  const AdminNotifications({Key? key}) : super(key: key);
+class subAdminNotifications extends StatefulWidget {
+  const subAdminNotifications({super.key});
 
   @override
-  State<AdminNotifications> createState() => _AdminNotificationsState();
+  State<subAdminNotifications> createState() => _subAdminNotificationsState();
 }
 
-class _AdminNotificationsState extends State<AdminNotifications> {
+class _subAdminNotificationsState extends State<subAdminNotifications> {
   final controller = Get.put(AdminController());
 
   @override
@@ -56,7 +58,7 @@ class _AdminNotificationsState extends State<AdminNotifications> {
                                   'Under Review',
                                   items[index]['report_id'],
                                   items[index]['user_email']);
-                              Get.to(() => AdminReportDetails(report: items[index]));
+                              Get.to(() => ReportDetails(report: items[index]));
                             }
                           },
                           child: Container(
@@ -95,7 +97,7 @@ class _AdminNotificationsState extends State<AdminNotifications> {
               }
             }
           }),
-      bottomNavigationBar: AdminNavigationBarWidget(),
+      bottomNavigationBar: const subadminNavigationBarWidget(),
     );
   }
 }

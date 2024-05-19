@@ -1,9 +1,9 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, camel_case_types, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/AddReport.dart';
-import 'package:notify_ju/Widgets/bottomNavBar.dart';
-import 'package:notify_ju/Widgets/drawer.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminDrawer.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 
 class IncidentData {
   final String imagePath;
@@ -57,7 +57,7 @@ List<IncidentData> incidentsList = <IncidentData>[
 
 Widget buildCategoryCard(BuildContext context, IncidentData data) {
   return Container(
-    margin: EdgeInsets.only(bottom: 7),
+    margin: const EdgeInsets.only(bottom: 7),
     height: 135,
     child: Card(
       shape: RoundedRectangleBorder(
@@ -77,7 +77,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
           );
         },
         child: Container(
-          decoration: BoxDecoration(),
+          decoration: const BoxDecoration(),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -144,7 +144,7 @@ class _subAdminMainState extends State<subAdminMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _myKey,
-      drawer: DrawerWidget(),
+      drawer: subsAdminDrawerWidget(),
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,
@@ -170,7 +170,7 @@ class _subAdminMainState extends State<subAdminMain> {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const subadminNavigationBarWidget(),
     );
   }
 }
