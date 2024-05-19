@@ -49,16 +49,22 @@ class _AdminNotificationsState extends State<AdminNotifications> {
 
                         return Dismissible(
                           key: UniqueKey(),
-                          onDismissed: (direction) {
-                            if (direction == DismissDirection.startToEnd ||
-                                direction == DismissDirection.endToStart) {
-                              controller.changeReportStatus(
-                                  'Under Review',
-                                  items[index]['report_id'],
-                                  items[index]['user_email']);
-                              Get.to(() => AdminReportDetails(report: items[index]));
-                            }
-                          },
+                  onDismissed: (direction) async {
+                    if (direction == DismissDirection.startToEnd ||
+                        direction == DismissDirection.endToStart) {
+                      await controller.changeReportStatus(
+                        'Under Review',
+                        items[index]['report_id'],
+                        items[index]['user_email'],
+                      );
+                      
+                      setState(() {
+                        items[index]['report_status'] = 'Under Review';
+                      });
+
+                      Get.to(() => AdminReportDetails(report: items[index]));
+                    }
+          },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
                                 vertical: 4, horizontal: 8),

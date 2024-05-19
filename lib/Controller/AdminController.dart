@@ -56,7 +56,7 @@ super.onInit();
     }
   }
 
-Future<void> receiveNotification() async {
+  Future<void> receiveNotification() async {
 
       if(await isAdmin()) {
       FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
@@ -69,10 +69,7 @@ Future<void> receiveNotification() async {
       snackPosition: SnackPosition.BOTTOM,
     );
 
-    // Get current notification count from shared preferences
     int notif = await SharedPrefController.getNotif('notifs');
-
-    // Increment the notification count and save it back to shared preferences
     await SharedPrefController.setNotif('notifs', notif + 1);
   });
 }
@@ -108,7 +105,7 @@ Future<void> receiveNotification() async {
   }
 }
 
- Future<List<Map<String, dynamic>>> getReportStatus(String status) async {
+  Future<List<Map<String, dynamic>>> getReportStatus(String status) async {
   try {
     QuerySnapshot usersSnapshot =
         await FirebaseFirestore.instance.collection('users').get();
@@ -134,8 +131,6 @@ Future<void> receiveNotification() async {
     throw e;
   }
 }
-
-
 
   Future<List<Map<String, dynamic>>> getReports(String reportType) async {
     try {
