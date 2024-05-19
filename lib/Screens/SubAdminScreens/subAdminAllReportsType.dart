@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, camel_case_types
+// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,16 +7,18 @@ import 'package:notify_ju/Screens/SubAdminScreens/subAdminDetails.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminDrawer.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 
-class subAdminHistory extends StatefulWidget {
-  const subAdminHistory({super.key});
+
+class subAdminIncidents extends StatefulWidget {
+  final String reportType;
+
+  const subAdminIncidents({super.key, required this.reportType});
 
   @override
-  State<subAdminHistory> createState() => _subAdminHistoryAdminState();
+  State<subAdminIncidents> createState() => _subAdminIncidentsState();
 }
 
-final controller = Get.put(AdminController());
-
-class _subAdminHistoryAdminState extends State<subAdminHistory> {
+class _subAdminIncidentsState extends State<subAdminIncidents> {
+  final controller = Get.put(AdminController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,30 +26,27 @@ class _subAdminHistoryAdminState extends State<subAdminHistory> {
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'Report History',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xFF464A5E),
+        title: Text('${widget.reportType} Reports'),
         iconTheme:
             const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
-      body: FutureBuilder(
-        future: controller.getHistoryReports(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
+      body: StreamBuilder<dynamic>(
+          stream: Stream.fromFuture(controller.getReports(widget.reportType)),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
             if (snapshot.hasError) {
               return const Center(child: Text("Error fetching reports"));
             } else {
-              if (snapshot.data == null || snapshot.data!.isEmpty) {
-                return const Center(child: Text("No Reports Yet"));
+              if (snapshot.data == null) {
+                return const Center(
+                    child: Text("No reports for this category yet"));
               } else {
                 return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final items = snapshot.data!;
+                    itemCount: (snapshot.data as List).length,
+                    itemBuilder: (context, index) {
+                      final items = snapshot.data!;
 
                       return Card(
                         shape: RoundedRectangleBorder(
@@ -76,13 +75,10 @@ class _subAdminHistoryAdminState extends State<subAdminHistory> {
                           },
                         ),
                       );
-                  },
-                );
+                    });
               }
             }
-          }
-        },
-      ),
+          }),
       bottomNavigationBar: const subadminNavigationBarWidget(),
     );
   }

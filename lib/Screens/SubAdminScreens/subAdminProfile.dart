@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Models/adminModel.dart';
-import 'package:notify_ju/Widgets/AdminDrawer.dart';
-import 'package:notify_ju/Widgets/AdminNavBar.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminDrawer.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
+
 
 class ProfileModel extends ChangeNotifier {
   TextEditingController nameController = TextEditingController();
@@ -27,10 +28,10 @@ class ProfileModel extends ChangeNotifier {
 final AdminController adminController = Get.put(AdminController());
 final controller = Get.put(ProfileController());
 
-class ProfileWidget extends StatelessWidget {
+class subsAdminProfile extends StatelessWidget {
   final Future<bool> isAdminFuture;
 
-  const ProfileWidget({super.key, required this.isAdminFuture});
+  const subsAdminProfile({super.key, required this.isAdminFuture});
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +46,13 @@ class ProfileWidget extends StatelessWidget {
         iconTheme:
             const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
-      drawer: AdminDrawerWidget(),
+      drawer: subsAdminDrawerWidget(),
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       body: const SingleChildScrollView(
         padding: EdgeInsets.all(16),
   child: AdminPage(),
       ),
-      bottomNavigationBar: const AdminNavigationBarWidget(),
+      bottomNavigationBar: const subadminNavigationBarWidget(),
     );
   }
 }
