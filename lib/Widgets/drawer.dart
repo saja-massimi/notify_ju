@@ -83,12 +83,14 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.linear_scale_sharp),
             title: const Text('My posts'),
             onTap: () {
               Get.to(ViewMyPost());
             },
           ),
           ListTile(
+            leading: const Icon(Icons.contact_mail_rounded),
             title: const Text('Contact Us'),
             onTap: () {
               Get.to(() => contact_us());
