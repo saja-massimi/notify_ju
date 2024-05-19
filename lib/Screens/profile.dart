@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Models/userModel.dart';
+import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import '../Controller/profileController.dart';
 
 class ProfileModel extends ChangeNotifier {
@@ -26,11 +27,16 @@ final AdminController adminController = Get.put(AdminController());
 final controller = Get.put(ProfileController());
 
 class UserPage extends StatelessWidget {
-  UserPage({super.key});
+  const UserPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+      centerTitle: true,
+          title:
+              const Text('My Profile', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color(0xFF464A5E),      ),
       body: Container(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -86,7 +92,9 @@ class UserPage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar:const BottomNavigationBarWidget() ,
     );
+    
     
   }
 }

@@ -47,20 +47,33 @@ class _HistoryReportsState extends State<HistoryReports> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final items = snapshot.data!;
-
-                    return Container(
-                      key: Key(index.toString()),
-                      child: ListTile(
-                        tileColor: const Color.fromARGB(255, 202, 253, 198),
-                        title: Text(items[index]['report_type']),
-                        subtitle: Text(items[index]['incident_description']),
-                        onTap: () {
-                          Get.to(() => ReportDetails(
-                                report: items[index],
-                              ));
-                        },
-                      ),
-                    );
+                    return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        color: const Color.fromARGB(185, 227, 226, 226),
+                        elevation: 5,
+                        child: ListTile(
+                          title: Text(
+                            items[index]['report_type'],
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            items[index]['incident_description'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ReportDetails(report: items[index]),
+                              ),
+                            );
+                          },
+                        ),
+                      );
                   },
                 );
               }

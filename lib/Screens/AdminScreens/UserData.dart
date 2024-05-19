@@ -70,7 +70,7 @@ class userData extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: AdminNavigationBarWidget(),
+      bottomNavigationBar: const AdminNavigationBarWidget(),
     );
   }
 }

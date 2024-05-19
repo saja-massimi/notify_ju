@@ -103,7 +103,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
 }
 
 class AdminMain extends StatefulWidget {
-  const AdminMain({Key? key}) : super(key: key);
+  const AdminMain({super.key});
 
   @override
   _AdminMainState createState() => _AdminMainState();
@@ -134,7 +134,7 @@ class _AdminMainState extends State<AdminMain> {
           },
         ),
       ),
-      bottomNavigationBar: AdminNavigationBarWidget(),
+      bottomNavigationBar: const AdminNavigationBarWidget(),
     );
   }
 }

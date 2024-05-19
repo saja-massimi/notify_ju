@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
+import 'package:notify_ju/Widgets/AdminDrawer.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
-import 'package:notify_ju/Widgets/drawer.dart';
 
 class Warnings extends StatefulWidget {
   const Warnings({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _WarningsAdminState extends State<Warnings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
+      drawer: AdminDrawerWidget(),
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,

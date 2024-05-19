@@ -27,13 +27,13 @@ class _MyReportsState extends State<MyReports> {
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: Text('Delete'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -97,7 +97,6 @@ class _MyReportsState extends State<MyReports> {
                             if (direction == DismissDirection.startToEnd &&
                                 items[index]["report_status"] == 'Pending') {
                               _confirmDelete(items[index]["report_id"]);
-                              // controller.deleteReport(items[index]["report_id"]);
                             }
                           },
                           child: Container(

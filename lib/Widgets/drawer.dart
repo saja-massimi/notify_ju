@@ -72,7 +72,7 @@ class DrawerWidget extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text('My Profile'),
             onTap: () {
-              Get.to(() => UserPage());
+              Get.to(() => const UserPage());
             },
           ),
           ListTile(
@@ -86,7 +86,7 @@ class DrawerWidget extends StatelessWidget {
             leading: const Icon(Icons.linear_scale_sharp),
             title: const Text('My posts'),
             onTap: () {
-              Get.to(ViewMyPost());
+              Get.to(const ViewMyPost());
             },
           ),
           ListTile(

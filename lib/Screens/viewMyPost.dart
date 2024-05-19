@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/postController.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
-import 'package:notify_ju/Widgets/drawer.dart';
-import 'package:notify_ju/repository/authentication_repository.dart'; // Import your authentication repository
 
 class ViewMyPost extends StatefulWidget {
   final String? post_id;

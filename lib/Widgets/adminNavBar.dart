@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminNotifications.dart';
@@ -13,7 +15,7 @@ class AdminNavigationBarWidget extends StatefulWidget {
 }
 
 class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
-  int notifCount = 0;
+  int notifCount = 1;
 
 @override
   void initState() {
@@ -24,6 +26,7 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
 Future<void> _fetchNotifCount() async {
     int notif = await SharedPrefController.getNotif('notifs');
     setState(() {
+      log('notif: $notif');
       notifCount = notif;
     });
   }
@@ -36,11 +39,14 @@ Future<void> _fetchNotifCount() async {
       child: Row(
         children: [
           IconButton(
-            onPressed: () {
+            onPressed: () async{
+      
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const AdminNotifications()));
+            
+                      await SharedPrefController.setNotif('notifs', 0);
             },
             icon: Stack(
               children: [

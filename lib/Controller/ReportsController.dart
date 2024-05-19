@@ -36,9 +36,6 @@ Future<String?> getDocumentIdByEmail(String email) async {
   }
 }
 
-
-
-
 Future<void> createReport(reportModel report) async {
   try {
     final documentId = await getDocumentIdByEmail(auth?.email ?? "");
@@ -114,8 +111,8 @@ Future<List<Map<String, dynamic>>?> viewAllHistoryReports() async{
     } catch (e) {
       
       log("Error fetching reports: $e");
-      return null;
     }
+  return null;
   
 }
 
