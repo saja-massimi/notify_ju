@@ -8,7 +8,8 @@ import 'package:notify_ju/Screens/SubAdminScreens/subAdminDrawer.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 
 class subAdminHistory extends StatefulWidget {
-  const subAdminHistory({super.key});
+   subAdminHistory({super.key,required this.report_type});
+final  List<String> report_type;
 
   @override
   State<subAdminHistory> createState() => _subAdminHistoryAdminState();
@@ -33,7 +34,7 @@ class _subAdminHistoryAdminState extends State<subAdminHistory> {
             const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder(
-        future: controller.getHistoryReports(),
+        future: controller.getReportsHistorySub(widget.report_type),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

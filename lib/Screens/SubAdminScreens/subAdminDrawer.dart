@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
@@ -84,7 +85,21 @@ class subsAdminDrawerWidget extends StatelessWidget {
           ListTile(
         leading: const Icon(Icons.list_rounded),
             title: const Text('History Reports'),
-            onTap: () => Get.to(const subAdminHistory()),
+            onTap: () {
+                final user = FirebaseAuth.instance.currentUser;
+              
+              switch (user!.email) {
+                case 'ama0193677@ju.edu.jo':
+                  Get.to(subAdminHistory(report_type: const ['Infrastructural Damage']));
+                  break;
+                  case 'hla0207934@ju.edu.jo' :
+                  Get.to(subAdminHistory(report_type: const ['Fire','Injury']));
+                  break;
+                  case 'gad0200681@ju.edu.jo' :
+                  Get.to(subAdminHistory(report_type: const ['Fight','Stray Animals','Car Accident']));
+                  break;
+              }
+            },
           ),
           ListTile(
             leading: const Icon(Icons.warning_rounded),
