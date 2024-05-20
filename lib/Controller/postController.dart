@@ -150,7 +150,7 @@ class PostController extends GetxController {
 
     try {
       final snapshot = await _db
-          .collection('/users/$documentId/post') // Adjust collection path
+          .collection('/users/$documentId/post') 
           .get();
 
       return snapshot.docs.map((doc) => doc.data()).toList();
@@ -159,4 +159,8 @@ class PostController extends GetxController {
       return null;
     }
   }
+
+
+
+  
 }
