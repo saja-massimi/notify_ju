@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, camel_case_types, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:notify_ju/Screens/AddReport.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminAllReportsType.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminDrawer.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 
@@ -70,7 +70,7 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => addReport(
+              builder: (context) => subAdminIncidents(
                 reportType: data.titleTxt,
               ),
             ),

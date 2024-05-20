@@ -5,9 +5,10 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Controller/SignupController.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminProflie.dart';
- import 'package:notify_ju/Screens/AdminScreens/stats.dart';
-import 'package:notify_ju/Screens/AdminScreens/warningsPage.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminHistory.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminProfile.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminStats.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminWarning.dart';
 
 class subsAdminDrawerWidget extends StatelessWidget {
   subsAdminDrawerWidget({super.key});
@@ -77,23 +78,23 @@ class subsAdminDrawerWidget extends StatelessWidget {
             onTap: () {
               final adminData = Get.put(AdminController());
               final isAdminFuture = adminData.isAdmin();
-              Get.to(ProfileWidget(isAdminFuture: isAdminFuture));
+              Get.to(subsAdminProfile(isAdminFuture: isAdminFuture));
             },
           ),
           ListTile(
         leading: const Icon(Icons.list_rounded),
             title: const Text('History Reports'),
-            onTap: () => Get.to(const ()),
+            onTap: () => Get.to(const subAdminHistory()),
           ),
           ListTile(
             leading: const Icon(Icons.warning_rounded),
             title: const Text('Warnings'),
-            onTap: () =>  Get.to(const Warnings()),
+            onTap: () =>  Get.to(const subsAdminWarning()),
           ),
           ListTile(
             leading: const Icon(Icons.bar_chart),
             title: const Text('Statistics'),
-            onTap: () => Get.to(const stats()),
+            onTap: () => Get.to(const subsAdminStats()),
           ),
           ListTile(
             leading: const Icon(Icons.logout),

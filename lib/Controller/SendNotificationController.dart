@@ -65,7 +65,7 @@ Future<void> sendNotification(title, message, reportModel rep) async {
   String token = await GetToken();
 
   var body = {
-    "to": token, // Use the retrieved token here
+    "to": token, 
     "notification": {
       "title": title,
       "body": message,

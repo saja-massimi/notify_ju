@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
-import 'package:notify_ju/Screens/ReportDetails.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminDetails.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
@@ -51,16 +51,22 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
 
                         return Dismissible(
                           key: UniqueKey(),
-                          onDismissed: (direction) {
-                            if (direction == DismissDirection.startToEnd ||
-                                direction == DismissDirection.endToStart) {
-                              controller.changeReportStatus(
-                                  'Under Review',
-                                  items[index]['report_id'],
-                                  items[index]['user_email']);
-                              Get.to(() => ReportDetails(report: items[index]));
-                            }
-                          },
+                          onDismissed: (direction) async {
+                    if (direction == DismissDirection.startToEnd ||
+                        direction == DismissDirection.endToStart) {
+                      await controller.changeReportStatus(
+                        'Under Review',
+                        items[index]['report_id'],
+                        items[index]['user_email'],
+                      );
+                      
+                      setState(() {
+                        items[index]['report_status'] = 'Under Review';
+                      });
+
+                      Get.to(() => subAdminReportDetails(report: items[index]));
+                    }
+          },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
                                 vertical: 4, horizontal: 8),

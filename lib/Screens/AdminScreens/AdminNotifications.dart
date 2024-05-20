@@ -6,7 +6,7 @@ import 'package:notify_ju/Widgets/AdminDrawer.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 
 class AdminNotifications extends StatefulWidget {
-  const AdminNotifications({Key? key}) : super(key: key);
+  const AdminNotifications({super.key});
 
   @override
   State<AdminNotifications> createState() => _AdminNotificationsState();
