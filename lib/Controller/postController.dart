@@ -104,15 +104,30 @@ class PostController extends GetxController {
 
   Future<void> likePost(postModel model) async {
     try {
-      final docID = await getDocumentIdByEmail(auth?.email ?? "");
+      final email = auth?.email ?? "";
+      print('Liking post for email: $email');
+      final docID = await getDocumentIdByEmail(email);
+      print('Document ID: $docID');
       DocumentReference postRef = FirebaseFirestore.instance
           .collection('users')
           .doc(docID)
           .collection('post')
           .doc(model.post_id);
 
+      // Check if the document exists
+      DocumentSnapshot docSnapshot = await postRef.get();
+      if (!docSnapshot.exists) {
+        // If the document doesn't exist, create it with initial data
+        await postRef.set({
+          'likesCount': [],
+          'description': model.description,
+          'email': model.email,
+          'post_id': model.post_id,
+        });
+      }
+
       await postRef.update({
-        'likesCount': FieldValue.arrayUnion([auth?.email ?? ""])
+        'likesCount': FieldValue.arrayUnion([email])
       });
       print('Post liked successfully');
     } catch (error) {
@@ -122,19 +137,26 @@ class PostController extends GetxController {
 
   Future<void> dislike(postModel model) async {
     try {
-      final docID = await getDocumentIdByEmail(auth?.email ?? "");
-      // Get a reference to the post document
+      final email = auth?.email ?? "";
+      print('Disliking post for email: $email');
+      final docID = await getDocumentIdByEmail(email);
+      print('Document ID: $docID');
       DocumentReference postRef = FirebaseFirestore.instance
           .collection('users')
           .doc(docID)
           .collection('post')
           .doc(model.post_id);
 
-      // Update the likes field in the post document
-      await postRef.update({
-        'likesCount': FieldValue.arrayRemove([auth?.email ?? ""])
-      });
+      // Check if the document exists
+      DocumentSnapshot docSnapshot = await postRef.get();
+      if (!docSnapshot.exists) {
+        print('Error disliking post: Document does not exist');
+        return;
+      }
 
+      await postRef.update({
+        'likesCount': FieldValue.arrayRemove([email])
+      });
       print('Post disliked successfully');
     } catch (error) {
       print('Error disliking post: $error');
@@ -161,9 +183,7 @@ class PostController extends GetxController {
     final documentId = await getDocumentIdByEmail(auth?.email ?? "");
 
     try {
-      final snapshot = await _db
-          .collection('/users/$documentId/post') 
-          .get();
+      final snapshot = await _db.collection('/users/$documentId/post').get();
 
       return snapshot.docs.map((doc) => doc.data()).toList();
     } catch (e) {
@@ -171,8 +191,4 @@ class PostController extends GetxController {
       return null;
     }
   }
-
-
-
-  
 }

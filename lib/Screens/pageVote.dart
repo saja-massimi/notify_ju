@@ -64,7 +64,7 @@ class _VotingPageState extends State<VotingPage1> {
                         return wallpost(
                           description: post['description'],
                           email: post['email'],
-                          post_id: post['post_id'],
+                          postId: post['post_id'],
                           likesCount:
                               List<String>.from(post['likesCount'] ?? []),
                         );
@@ -97,13 +97,24 @@ class _VotingPageState extends State<VotingPage1> {
                   ),
                   IconButton(
                     onPressed: () async {
+                      if (TextController.text.trim().isEmpty) {
+                        // Show a message to the user that the post cannot be empty
+                        Get.snackbar(
+                          'Error',
+                          'Post cannot be empty',
+                          snackPosition: SnackPosition.TOP,
+                        );
+                        return;
+                      }
+
                       log(TextController.text);
                       log(_authRepo.firebaseUser.value!.email!);
                       log(DateTime.now().toString());
+
                       await controller.addPost(
                         postModel(
                           post_id: randomAlphaNumeric(20),
-                          description: TextController.text,
+                          description: TextController.text.trim(),
                           email: _authRepo.firebaseUser.value!.email!,
                           time: DateTime.now(),
                           likesCount: [],
