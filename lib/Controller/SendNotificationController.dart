@@ -61,7 +61,6 @@ Future<void> sendNotification(title, message, reportModel rep) async {
   };
   var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
 
-  // Get the token asynchronously
   String token = await GetToken();
 
   var body = {

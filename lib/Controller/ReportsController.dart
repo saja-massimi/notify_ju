@@ -120,7 +120,7 @@ Future<List<Map<String, dynamic>>?> viewAllHistoryReports() async{
 
 Future viewCurrentReports() async{
     final documentId = await getDocumentIdByEmail(auth?.email ?? "");
-
+    log (documentId.toString());
   try {
     final snapshot = await _db.collection('/users/$documentId/reports')
       .where("report_status", isNotEqualTo: ["Resolved", "Rejected"])
@@ -178,7 +178,6 @@ Future<String> downloadAndHashImage(String imageUrl) async {
   return digest.toString();
 }
 
-
 Future<bool> areImagesSame(String url1) async {
   try {
     final hash1 = await downloadAndHashImage(url1);
@@ -199,13 +198,12 @@ Future<bool> areImagesSame(String url1) async {
       }
     }
 
-    return false; // If no match is found, return false
+    return false; 
   } catch (e) {
     print(e);
     return false;
   }
 }
-
 
 Future<bool> areDescriptionsSame(String desc) async {
   try {
@@ -219,12 +217,12 @@ Future<bool> areDescriptionsSame(String desc) async {
       for (var reportDoc in reportsSnapshot.docs) {
         var data = reportDoc.data() as Map<String, dynamic>;
         if (desc == data['report_description']) {
-          return true; // If a match is found, return true immediately
+          return true; 
         }
       }
     }
 
-    return false; // If no match is found, return false
+    return false; 
   } catch (e) {
     print(e);
     return false;
@@ -232,6 +230,7 @@ Future<bool> areDescriptionsSame(String desc) async {
 }
 
 Future<bool> canSubmitReport() async {
+
       final documentId = await getDocumentIdByEmail(auth?.email ?? "");
 
   final oneWeekAgo = Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 7)));
@@ -245,6 +244,7 @@ Future<bool> canSubmitReport() async {
 
   return reportsSnapshot.docs.length < 5;
 }
+
 Future<bool> canSubmitSpam() async {
   
       final documentId = await getDocumentIdByEmail(auth?.email ?? "");

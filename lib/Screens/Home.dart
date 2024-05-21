@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
@@ -7,11 +9,16 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+
 class _HomePageState extends State<HomePage> {
+  final controller = Get.put(ProfileController());
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(), // Add the drawer here
+      drawer: DrawerWidget(),
       body: Builder(
         builder: (context) => Container(
           decoration: const BoxDecoration(
@@ -30,33 +37,43 @@ class _HomePageState extends State<HomePage> {
                 top: 40,
                 left: 10,
                 child: IconButton(
-                  icon: Icon(Icons.menu),
+                  icon: const Icon(Icons.menu),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
                 ),
               ),
-              const Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(top: 77.0), // Adjust top padding here
-                  child: Text(
-                    'Welcome aman aloudat!',
-                    style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 255, 255, 255),
-                    ),
-                  ),
-                ),
+              FutureBuilder(
+                future: controller.getUserName(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 77.0),
+                        child: Text(
+                          'Welcome ${snapshot.data}!',
+                          style: const TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
               ),
               const Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
                   padding: EdgeInsets.only(
                       top:
-                          110.0), // Adjust top padding here to position below the first text
+                          110.0),
                   child: Text(
                     'Your voice matters here.',
                     style: TextStyle(
@@ -68,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Positioned.fill(
-                top: 160, // Adjust the top position to make space for the text
+                top: 160, 
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -77,20 +94,20 @@ class _HomePageState extends State<HomePage> {
                       topRight: Radius.circular(20.0),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'How satisfied are you with JU services?',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10),
 
                           SizedBox(height: 20),
                           Text(

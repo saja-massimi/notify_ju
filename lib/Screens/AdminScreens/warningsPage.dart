@@ -13,6 +13,8 @@ class Warnings extends StatefulWidget {
 
 final controller = Get.put(ReportsController());
 
+
+
 class _WarningsAdminState extends State<Warnings> {
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class _WarningsAdminState extends State<Warnings> {
           }
         },
       ),
-      bottomNavigationBar: AdminNavigationBarWidget(),
+      bottomNavigationBar: const AdminNavigationBarWidget(),
     );
   }
 }
