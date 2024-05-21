@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/commentController.dart';
 import 'package:notify_ju/Models/commentModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
+import 'package:notify_ju/Screens/TimeStamp.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
 import 'package:notify_ju/Screens/comments.dart';
@@ -125,7 +126,7 @@ class _CommentCardState extends State<CommentCard> {
                           text:
                               comment['commentDescription'] ?? 'No description',
                           email: comment['email'] ?? 'No email',
-                          time: comment['time'] ?? 'No time',
+                          time: formatData(comment['Timestamp']),
                           comment_id: comment['comment_id'] ?? 'No ID',
                           onEdit: () => showEditDialog(
                             comment['comment_id'],

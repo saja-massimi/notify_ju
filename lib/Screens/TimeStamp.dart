@@ -10,6 +10,6 @@ String formatData(Timestamp time) {
       .toString()
       .padLeft(2, '0'); // Pad left with zero if single digit
 
-  String formattedData = '$day/$month/$year';
+  String formattedData = '$day/$month';
   return formattedData;
 }

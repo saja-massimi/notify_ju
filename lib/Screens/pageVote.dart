@@ -7,6 +7,7 @@ import 'package:notify_ju/Controller/postController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/The_wall.dart';
+import 'package:notify_ju/Screens/TimeStamp.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 import 'package:random_string/random_string.dart';

@@ -69,7 +69,6 @@ class commentController extends GetxController {
     }
   }
 
-
   Future<void> deleteComment(String postId, String commentId) async {
     try {
       final docID = await getDocumentIdByEmail(auth?.email ?? "");
@@ -86,7 +85,6 @@ class commentController extends GetxController {
       Get.snackbar("Error", "Failed to delete comment: $error");
     }
   }
-
 
   Future<List<Map<String, dynamic>>> getComments(String post_id) async {
     try {
@@ -111,5 +109,4 @@ class commentController extends GetxController {
       throw e;
     }
   }
- 
 }
