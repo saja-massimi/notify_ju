@@ -42,8 +42,17 @@ return subAdminMain(reportTypes: const ['Fight','Stray Animals','Car Accident'],
           children: [
             IconButton(
               onPressed: () {
-              Get.to(() => const subAdminNotifications());
-              },
+              final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      print('User is currently signed out!');
+    } else if(user.email == 'ama0193677@ju.edu.jo') {
+      Get.to(subAdminNotifications( reportType:const ['Infrastructural Damage']));  
+    }else if(user.email == 'hla0207934@ju.edu.jo'){
+          Get.to(subAdminNotifications(reportType: const ['Fire','Injury']));
+    }else if(user.email == 'gad0200681@ju.edu.jo'){
+      Get.to(  subAdminNotifications(reportType: const ['Fight','Stray Animals','Car Accident']));
+    
+              } },
               icon: const Icon(Icons.notifications, color: Colors.white),
             ),
             const Spacer(),

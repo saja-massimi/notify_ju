@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/SendNotificationController.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Models/reportModel.dart';
@@ -205,6 +206,13 @@ class _addReportState extends State<addReport> {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
+                      final ad = Get.put(AdminController());
+                      if(description.text=="" && _imageUrl==null){
+                        Get.rawSnackbar(
+                            title: "Warning",
+                            messageText: const Text("Please fill the description or add a picture"));
+                        return;
+                      }
                       final rand = randomAlphaNumeric(20);
                       final report = reportModel(
                         report_id: rand,
@@ -217,10 +225,34 @@ class _addReportState extends State<addReport> {
                         user_email: widget._authRepo.firebaseUser.value?.email,
                         incident_picture: _imageUrl,
                       );
+
+                      if(!await controller.canSubmitSpam()){
+                        Get.rawSnackbar(
+                            title: "Warning",
+                            messageText: const Text("Spam detected, you should wait 30 seconds to submit a report"));
+                            return;
+                      }
+
+                      if(!await controller.canSubmitReport()){
+                        Get.rawSnackbar(
+                            title: "Warning",
+                            messageText: const Text("You reached the maximum number of reports"));
+                            return;
+                      }
                       Get.back();
                       await controller.createReport(report);
                       await notif.sendNotification('A new report', 'A new report has been sent', report);
-
+                      
+                      if(_imageUrl!=null){
+                      if(await controller.areImagesSame(_imageUrl!) ){
+                      ad.changeReportStatus('Rejected', rand, widget._authRepo.firebaseUser.value!.email!);
+                      }}
+                      else 
+                      if(await controller.areDescriptionsSame(description.text)){
+                      ad.changeReportStatus('Rejected', rand, widget._authRepo.firebaseUser.value!.email!);
+                      
+                      }
+                  
                     },
                     child: const Text('Submit'),
                   ),

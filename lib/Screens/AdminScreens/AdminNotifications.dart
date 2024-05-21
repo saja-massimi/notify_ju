@@ -31,7 +31,7 @@ class _AdminNotificationsState extends State<AdminNotifications> {
             const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder(
-          future: controller.getReportStatus('Pending'),
+          future: controller.getReportStatus('Pending',['Infrastructural Damage','Fire','Injury','Fight','Stray Animals','Car Accident']),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());

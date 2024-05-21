@@ -8,8 +8,8 @@ import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
 class subAdminNotifications extends StatefulWidget {
-  const subAdminNotifications({super.key});
-
+  subAdminNotifications({super.key,required this.reportType});
+  final List<String> reportType;
   @override
   State<subAdminNotifications> createState() => _subAdminNotificationsState();
 }
@@ -33,7 +33,9 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
             const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder(
-          future: controller.getReportStatus('Pending'),
+          future: controller.getReportStatus('Pending',widget.reportType),
+
+
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());

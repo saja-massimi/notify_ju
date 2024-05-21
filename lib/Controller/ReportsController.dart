@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Models/reportModel.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:crypto/crypto.dart';
 
 class ReportsController extends GetxController{
 static ReportsController get instance => Get.find();
@@ -164,8 +166,107 @@ Future<int> viewCurrentReportsCount() async {
   }
 }
 
+Future<String> downloadAndHashImage(String imageUrl) async {
+  final ref = FirebaseStorage.instance.refFromURL(imageUrl);
+  final data = await ref.getData();
+  if (data == null) {
+    throw Exception('Failed to download image');
+  }
+
+  final digest = sha256.convert(data);
+
+  return digest.toString();
+}
 
 
+Future<bool> areImagesSame(String url1) async {
+  try {
+    final hash1 = await downloadAndHashImage(url1);
+    QuerySnapshot usersSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
 
+    for (var userDoc in usersSnapshot.docs) {
+      QuerySnapshot reportsSnapshot =
+          await userDoc.reference.collection('reports').get();
+
+      for (var reportDoc in reportsSnapshot.docs) {
+        var data = reportDoc.data() as Map<String, dynamic>;
+        final hash2 = await downloadAndHashImage(data['image_url']);
+
+        if (hash1 == hash2) {
+          return true; 
+        }
+      }
+    }
+
+    return false; // If no match is found, return false
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}
+
+
+Future<bool> areDescriptionsSame(String desc) async {
+  try {
+    QuerySnapshot usersSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+
+    for (var userDoc in usersSnapshot.docs) {
+      QuerySnapshot reportsSnapshot =
+          await userDoc.reference.collection('reports').get();
+
+      for (var reportDoc in reportsSnapshot.docs) {
+        var data = reportDoc.data() as Map<String, dynamic>;
+        if (desc == data['report_description']) {
+          return true; // If a match is found, return true immediately
+        }
+      }
+    }
+
+    return false; // If no match is found, return false
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}
+
+Future<bool> canSubmitReport() async {
+      final documentId = await getDocumentIdByEmail(auth?.email ?? "");
+
+  final oneWeekAgo = Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 7)));
+
+  QuerySnapshot reportsSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(documentId)
+      .collection('reports')
+      .where('report_date', isGreaterThan: oneWeekAgo)
+      .get();
+
+  return reportsSnapshot.docs.length < 5;
+}
+Future<bool> canSubmitSpam() async {
+  
+      final documentId = await getDocumentIdByEmail(auth?.email ?? "");
+log(documentId.toString());
+   QuerySnapshot reportsSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(documentId)
+      .collection('reports')
+      .orderBy('report_date', descending: true)
+      .limit(1)
+      .get();
+
+  if (reportsSnapshot.docs.isEmpty) {
+    return true;
+  }
+
+  var lastReportTimestamp = reportsSnapshot.docs.first['report_date'] as Timestamp;
+  log(lastReportTimestamp.toString());
+  var now = Timestamp.now();
+  var difference = now.seconds - lastReportTimestamp.seconds;
+
+  return difference >= 30; 
+}
 
 }
