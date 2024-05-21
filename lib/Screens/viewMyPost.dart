@@ -18,9 +18,44 @@ class ViewMyPost extends StatefulWidget {
 
 class _ViewMyPostState extends State<ViewMyPost> {
   final controller = Get.put(PostController());
+  final TextEditingController textController = TextEditingController();
   Future<void> deletePost(String post_id) async {
     await controller.deletePost(post_id);
     setState(() {});
+  }
+
+  Future<void> editPost(String post_id, String newText) async {
+    await controller.updatePost(post_id, newText);
+    setState(() {});
+  }
+
+  void showEditDialog(String post_id, String currentText) {
+    textController.text = '';
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Edit Post'),
+          content: TextField(
+            controller: textController,
+            decoration: const InputDecoration(hintText: 'Edit your Post'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await editPost(post_id, textController.text);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void showDeleteConfirmationDialog(String post_id) {
@@ -28,8 +63,8 @@ class _ViewMyPostState extends State<ViewMyPost> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Delete Comment'),
-          content: const Text('Are you sure you want to delete this comment?'),
+          title: const Text('Delete Post'),
+          content: const Text('Are you sure you want to delete this Post?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -89,13 +124,16 @@ class _ViewMyPostState extends State<ViewMyPost> {
                     children: [
                       IconButton(
                         icon: Icon(Icons.edit),
-                        onPressed: () {},
+                        onPressed: () => showEditDialog(
+                          post['post_id'] ?? '',
+                          post['description'] ?? '',
+                        ),
                       ),
                       IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () => showDeleteConfirmationDialog(
                           post['post_id'] ?? '',
-                        ), // Update UI after deletion
+                        ),
                       ),
                     ],
                   ),

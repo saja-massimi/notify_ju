@@ -66,6 +66,21 @@ class PostController extends GetxController {
     }
   }
 
+  Future<void> updatePost(String postId, String newText) async {
+    try {
+      final docID = await getDocumentIdByEmail(auth?.email ?? "");
+      await _db
+          .collection('users')
+          .doc(docID)
+          .collection('post')
+          .doc(postId)
+          .update({'description': newText});
+      Get.snackbar("Success", "post updated successfully");
+    } catch (error) {
+      Get.snackbar("Error", "Failed to update post: $error");
+    }
+  }
+
   Future<List<Map<String, dynamic>>> getpost() async {
     try {
       QuerySnapshot usersSnapshot =
@@ -90,18 +105,15 @@ class PostController extends GetxController {
   Future<void> likePost(postModel model) async {
     try {
       final docID = await getDocumentIdByEmail(auth?.email ?? "");
-      // Get a reference to the post document
       DocumentReference postRef = FirebaseFirestore.instance
           .collection('users')
           .doc(docID)
           .collection('post')
           .doc(model.post_id);
 
-      // Update the likes field in the post document
       await postRef.update({
         'likesCount': FieldValue.arrayUnion([auth?.email ?? ""])
       });
-
       print('Post liked successfully');
     } catch (error) {
       print('Error liking post: $error');
