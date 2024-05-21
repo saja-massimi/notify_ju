@@ -8,12 +8,13 @@ import 'package:notify_ju/Screens/comments_button.dart';
 import 'package:notify_ju/Screens/likes.dart';
 import 'package:notify_ju/Controller/commentController.dart';
 
-class wallpost extends StatefulWidget {
+class wallPost extends StatefulWidget {
   final String description;
   final String email;
   final String postId;
   final List<String> likesCount;
-  const wallpost({
+
+  const wallPost({
     Key? key,
     required this.description,
     required this.email,
@@ -22,44 +23,55 @@ class wallpost extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<wallpost> createState() => _wallpostState();
+  State<wallPost> createState() => _WallPostState();
 }
 
-class _wallpostState extends State<wallpost> {
+class _WallPostState extends State<wallPost> {
   final _authRepo = Get.put(AuthenticationRepository());
-  final controller = Get.put(PostController());
+  final _postController = Get.put(PostController());
+  final _commentController = Get.put(commentController());
   bool isLiked = false;
-  final CommController = Get.put(commentController());
+
+  @override
+  void initState() {
+    super.initState();
+    isLiked = widget.likesCount.contains(_authRepo.firebaseUser.value!.email);
+  }
 
   void toggleLike() async {
-    setState(() {
-      isLiked = !isLiked;
-    });
-
+    final userEmail = _authRepo.firebaseUser.value!.email!;
     postModel model = postModel(
       post_id: widget.postId,
       description: widget.description,
       email: widget.email,
     );
 
+    setState(() {
+      isLiked = !isLiked;
+      if (isLiked) {
+        widget.likesCount.add(userEmail);
+      } else {
+        widget.likesCount.remove(userEmail);
+      }
+    });
+
     try {
       if (isLiked) {
-        await controller.likePost(model);
-        print('Called likePost');
+        await _postController.likePost(model, userEmail);
       } else {
-        await controller.dislike(model);
-        print('Called dislike');
+        await _postController.dislike(model, userEmail);
       }
-
-      setState(() {
-        if (isLiked) {
-          widget.likesCount.add(_authRepo.firebaseUser.value!.email!);
-        } else {
-          widget.likesCount.remove(_authRepo.firebaseUser.value!.email!);
-        }
-      });
     } catch (error) {
       print('Error toggling like: $error');
+      // Revert the state change in case of error
+      setState(() {
+        if (isLiked) {
+          widget.likesCount.remove(userEmail);
+        } else {
+          widget.likesCount.add(userEmail);
+        }
+        isLiked = !isLiked;
+      });
     }
   }
 
@@ -78,11 +90,7 @@ class _wallpostState extends State<wallpost> {
           ),
         ],
       ),
-      margin: const EdgeInsets.only(
-        top: 25,
-        left: 25,
-        right: 25,
-      ),
+      margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
       padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,13 +108,13 @@ class _wallpostState extends State<wallpost> {
                 width: 250,
                 height: 60,
                 color: const Color.fromARGB(255, 255, 255, 255),
-                child: Text(widget.description,
-                    maxLines: 5,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    )),
+                child: Text(
+                  widget.description,
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(color: Colors.black),
+                ),
               ),
             ],
           ),
@@ -117,24 +125,32 @@ class _wallpostState extends State<wallpost> {
                 children: [
                   Likes(isLiked: isLiked, onTap: toggleLike),
                   const SizedBox(height: 10),
-                  Text(widget.likesCount.length.toString(),
-                      style: const TextStyle(color: Colors.black26)),
+                  Text(
+                    widget.likesCount.length.toString(),
+                    style: const TextStyle(color: Colors.black26),
+                  ),
                 ],
               ),
               const SizedBox(width: 20),
               Column(
                 children: [
-                  CommentsButton(onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CommentCard(
-                          post_id: widget.postId,
+                  CommentsButton(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CommentCard(
+                            post_id: widget.postId,
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-                  const Text('', style: TextStyle(color: Colors.black26)),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Comments',
+                    style: TextStyle(color: Colors.black26),
+                  ),
                 ],
               ),
             ],

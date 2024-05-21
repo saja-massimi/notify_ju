@@ -60,9 +60,9 @@ class PostController extends GetxController {
           .collection('post')
           .doc(postId)
           .delete();
-      Get.snackbar("Success", "Comment deleted successfully");
+      Get.snackbar("Success", "post deleted successfully");
     } catch (error) {
-      Get.snackbar("Error", "Failed to delete comment: $error");
+      Get.snackbar("Error", "Failed to delete post: $error");
     }
   }
 
@@ -102,29 +102,18 @@ class PostController extends GetxController {
     }
   }
 
-  Future<void> likePost(postModel model) async {
+  Future<void> likePost(postModel model, String email) async {
     try {
-      final email = auth?.email ?? "";
-      print('Liking post for email: $email');
-      final docID = await getDocumentIdByEmail(email);
-      print('Document ID: $docID');
-      DocumentReference postRef = FirebaseFirestore.instance
+      final docID = await getDocumentIdByEmail(model.email);
+      if (docID == null) {
+        print('Document ID not found for email: ${model.email}');
+        return;
+      }
+      DocumentReference postRef = _db
           .collection('users')
           .doc(docID)
           .collection('post')
           .doc(model.post_id);
-
-      // Check if the document exists
-      DocumentSnapshot docSnapshot = await postRef.get();
-      if (!docSnapshot.exists) {
-        // If the document doesn't exist, create it with initial data
-        await postRef.set({
-          'likesCount': [],
-          'description': model.description,
-          'email': model.email,
-          'post_id': model.post_id,
-        });
-      }
 
       await postRef.update({
         'likesCount': FieldValue.arrayUnion([email])
@@ -135,24 +124,18 @@ class PostController extends GetxController {
     }
   }
 
-  Future<void> dislike(postModel model) async {
+  Future<void> dislike(postModel model, String email) async {
     try {
-      final email = auth?.email ?? "";
-      print('Disliking post for email: $email');
-      final docID = await getDocumentIdByEmail(email);
-      print('Document ID: $docID');
-      DocumentReference postRef = FirebaseFirestore.instance
+      final docID = await getDocumentIdByEmail(model.email);
+      if (docID == null) {
+        print('Document ID not found for email: ${model.email}');
+        return;
+      }
+      DocumentReference postRef = _db
           .collection('users')
           .doc(docID)
           .collection('post')
           .doc(model.post_id);
-
-      // Check if the document exists
-      DocumentSnapshot docSnapshot = await postRef.get();
-      if (!docSnapshot.exists) {
-        print('Error disliking post: Document does not exist');
-        return;
-      }
 
       await postRef.update({
         'likesCount': FieldValue.arrayRemove([email])
@@ -160,22 +143,6 @@ class PostController extends GetxController {
       print('Post disliked successfully');
     } catch (error) {
       print('Error disliking post: $error');
-    }
-  }
-
-  Future<void> commentPost(postModel model, String comment) async {
-    try {
-      final docID = await getDocumentIdByEmail(auth?.email ?? "");
-      // Get a reference to the post document
-      DocumentReference postRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(docID)
-          .collection('post')
-          .doc(model.post_id);
-
-      log('comments added successfully');
-    } catch (error) {
-      log('Error commenting post: $error');
     }
   }
 

@@ -36,7 +36,7 @@ class _VotingPageState extends State<VotingPage1> {
       drawer: DrawerWidget(),
       backgroundColor: const Color(0xFFE5E5E5),
       appBar: AppBar(
-        title: const Text('Suggestions', style: TextStyle(color: Colors.white)),
+        title: const Text('Posts', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF464A5E),
         centerTitle: true,
         leading: IconButton(
@@ -56,12 +56,17 @@ class _VotingPageState extends State<VotingPage1> {
                 stream: Stream.fromFuture(controller.getpost()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    if (snapshot.data!.isEmpty) {
+                      return Center(
+                        child: Text('No posts yet'),
+                      );
+                    }
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         final post = snapshot.data![index];
 
-                        return wallpost(
+                        return wallPost(
                           description: post['description'],
                           email: post['email'],
                           postId: post['post_id'],
@@ -98,7 +103,6 @@ class _VotingPageState extends State<VotingPage1> {
                   IconButton(
                     onPressed: () async {
                       if (TextController.text.trim().isEmpty) {
-                        // Show a message to the user that the post cannot be empty
                         Get.snackbar(
                           'Error',
                           'Post cannot be empty',
@@ -120,9 +124,7 @@ class _VotingPageState extends State<VotingPage1> {
                           likesCount: [],
                         ),
                       );
-                      // Force rebuild the widget tree to reflect changes
                       setState(() {});
-                      // Clear the text field after adding the post
                       TextController.clear();
                     },
                     icon: const Icon(Icons.arrow_upward),
