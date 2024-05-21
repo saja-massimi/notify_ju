@@ -8,7 +8,7 @@ import 'package:notify_ju/Repository/authentication_repository.dart';
 
 class MailAuthenticationController extends GetxController {
   late Timer _timer;
-   final auth_repo= Get.put(AuthenticationRepository()); // Initialize AuthenticationRepository
+   final auth_repo= Get.put(AuthenticationRepository()); 
 
   @override
   void onInit() {

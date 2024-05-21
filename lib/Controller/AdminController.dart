@@ -58,21 +58,23 @@ super.onInit();
 
   Future<void> receiveNotification() async {
 
-      if(await isAdmin()) {
+      
       FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
 
     log('message received');
-
+    
+if(await isAdmin()) {
     Get.snackbar(
       'New Report',
       'A new ${message.data["report_type"]} report has been submitted',
       snackPosition: SnackPosition.BOTTOM,
     );
-
+}
     int notif = await SharedPrefController.getNotif('notifs');
     await SharedPrefController.setNotif('notifs', notif + 1);
   });
-}
+
+
 }
 
   Future<void> changeReportStatus(String type, String reportID, String email) async {

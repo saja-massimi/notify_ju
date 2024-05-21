@@ -6,8 +6,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
+import 'package:notify_ju/Screens/Home.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminMain.dart';
-import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/email_OTP.dart';
 import 'package:notify_ju/Screens/email_auth.dart';
 import 'package:notify_ju/Screens/splashScreen.dart';
@@ -61,7 +61,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         Get.offAll(() =>  subAdminMain(reportTypes: const ['Fight','Stray Animals','Car Accident'], adminName: 'Security',)); 
         break;
       default:
-      Get.offAll(() => const Categories()); break;
+      Get.offAll(() =>  HomePage()); break;
     }
     }
   } else {
