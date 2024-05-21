@@ -16,15 +16,11 @@ class AdminDrawerWidget extends StatelessWidget {
 
   Future<String> getName() async {
     final profileData = Get.put(ProfileController());
-    
-    
-      return await profileData.getAdminName();
-    
-    
+
+    return await profileData.getAdminName();
   }
 
   final controller = Get.put(SignupController());
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,23 +77,23 @@ class AdminDrawerWidget extends StatelessWidget {
             onTap: () {
               final adminData = Get.put(AdminController());
               final isAdminFuture = adminData.isAdmin();
-              Get.to(ProfileWidget(isAdminFuture: isAdminFuture));
+              Get.to(() => ProfileWidget(isAdminFuture: isAdminFuture));
             },
           ),
           ListTile(
-        leading: const Icon(Icons.list_rounded),
+            leading: const Icon(Icons.list_rounded),
             title: const Text('History Reports'),
-            onTap: () => Get.to(const HistoryReportsAdmin()),
+            onTap: () => Get.to(() => const HistoryReportsAdmin()),
           ),
           ListTile(
             leading: const Icon(Icons.warning_rounded),
             title: const Text('Warnings'),
-            onTap: () =>  Get.to(const Warnings()),
+            onTap: () => Get.to(() => const Warnings()),
           ),
           ListTile(
             leading: const Icon(Icons.bar_chart),
             title: const Text('Statistics'),
-            onTap: () => Get.to(const stats()),
+            onTap: () => Get.to(() => const stats()),
           ),
           ListTile(
             leading: const Icon(Icons.logout),
@@ -105,7 +101,6 @@ class AdminDrawerWidget extends StatelessWidget {
             onTap: () => controller.logout(),
           ),
         ],
-        
       ),
     );
   }

@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class postModel {
-  final String? post_id;
+  final String post_id;
   final String description;
   final String email;
   final List<String>? likesCount;
@@ -11,7 +11,7 @@ class postModel {
   // final String? comments;
 
   postModel({
-    this.post_id,
+    required this.post_id,
     required this.description,
     required this.email,
     this.likesCount,

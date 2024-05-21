@@ -11,13 +11,13 @@ import 'package:notify_ju/Controller/commentController.dart';
 class wallpost extends StatefulWidget {
   final String description;
   final String email;
-  final String post_id;
+  final String postId;
   final List<String> likesCount;
   const wallpost({
     Key? key,
     required this.description,
     required this.email,
-    required this.post_id,
+    required this.postId,
     required this.likesCount,
   }) : super(key: key);
 
@@ -31,30 +31,35 @@ class _wallpostState extends State<wallpost> {
   bool isLiked = false;
   final CommController = Get.put(commentController());
 
-  @override
-  void initState() {
-    super.initState();
-    isLiked = widget.likesCount.contains(_authRepo.firebaseUser.value!.email);
-  }
-
-  void toggleLike() {
+  void toggleLike() async {
     setState(() {
       isLiked = !isLiked;
     });
-    if (isLiked) {
-      controller.likePost(postModel(
-        post_id: widget.post_id,
-        description: widget.description,
-        email: widget.email,
-      ));
-      widget.likesCount.add(_authRepo.firebaseUser.value!.email!);
-    } else {
-      controller.dislike(postModel(
-        post_id: widget.post_id,
-        description: widget.description,
-        email: widget.email,
-      ));
-      widget.likesCount.remove(_authRepo.firebaseUser.value!.email!);
+
+    postModel model = postModel(
+      post_id: widget.postId,
+      description: widget.description,
+      email: widget.email,
+    );
+
+    try {
+      if (isLiked) {
+        await controller.likePost(model);
+        print('Called likePost');
+      } else {
+        await controller.dislike(model);
+        print('Called dislike');
+      }
+
+      setState(() {
+        if (isLiked) {
+          widget.likesCount.add(_authRepo.firebaseUser.value!.email!);
+        } else {
+          widget.likesCount.remove(_authRepo.firebaseUser.value!.email!);
+        }
+      });
+    } catch (error) {
+      print('Error toggling like: $error');
     }
   }
 
@@ -124,7 +129,7 @@ class _wallpostState extends State<wallpost> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => CommentCard(
-                          post_id: widget.post_id,
+                          post_id: widget.postId,
                         ),
                       ),
                     );
