@@ -81,26 +81,47 @@ class PostController extends GetxController {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getPost() async {
-    try {
-      // Fetch all posts from all users, ordering by likesCount in descending order
-      QuerySnapshot postsSnapshot = await FirebaseFirestore.instance
-          .collectionGroup(
-              'post') // Using collectionGroup to fetch all subcollection posts
-          .orderBy('likesCount', descending: true)
+ Future<List<Map<String, dynamic>>> getPost() async {
+  try {
+    // Fetch all users
+    QuerySnapshot usersSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+    List<Map<String, dynamic>> allReports = [];
+
+    // Iterate over each user document
+    for (var userDoc in usersSnapshot.docs) {
+      // Fetch posts for each user
+      QuerySnapshot postsSnapshot = await userDoc.reference
+          .collection('post')
           .get();
 
-      // Convert the documents to a list of maps
-      List<Map<String, dynamic>> allPosts = postsSnapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
+      // Iterate over each post document and calculate the likesCount size
+      for (var postDoc in postsSnapshot.docs) {
+        Map<String, dynamic> postData = postDoc.data() as Map<String, dynamic>;
 
-      return allPosts;
-    } catch (e) {
-      log("Error fetching posts: $e");
-      throw e;
+        // Ensure likesCount exists and is an array
+        if (postData.containsKey('likesCount') && postData['likesCount'] is List) {
+          List<dynamic> likesCountArray = postData['likesCount'];
+          postData['totalLikes'] = likesCountArray.length;
+        } else {
+          postData['totalLikes'] = 0; // Handle the case where likesCount does not exist or is not an array
+        }
+
+        allReports.add(postData);
+      }
     }
+
+    // Sort allReports by likesCountSize in descending order
+    allReports.sort((a, b) => b['totalLikes'].compareTo(a['totalLikes']));
+
+    return allReports;
+  } catch (e) {
+    log("Error fetching posts: $e");
+    throw e;
   }
+}
+
+
 
   Future<void> likePost(postModel model, String email) async {
     try {

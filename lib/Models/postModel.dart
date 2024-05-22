@@ -8,7 +8,7 @@ class postModel {
   final String email;
   final List<String>? likesCount;
   final DateTime? time;
-  // final String? comments;
+   final String? totalLikes;
 
   postModel({
     required this.post_id,
@@ -16,7 +16,8 @@ class postModel {
     required this.email,
     this.likesCount,
     this.time,
-    // this.comments,
+     this.totalLikes
+,
   });
 
   toJson() {
@@ -29,6 +30,7 @@ class postModel {
       // 'DislikesCount': [],
       'TimeStamp': time,
       // 'comments': comments,
+      'totalLikes': 0
     };
   }
 
@@ -43,6 +45,7 @@ class postModel {
       likesCount: data['likesCount'],
       // DislikesCount: data['DislikesCount'],
       time: data['TimeStamp'],
+      totalLikes: data['totalLikes'],
       // comments: doc.id,
     );
   }
