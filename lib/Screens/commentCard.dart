@@ -26,17 +26,25 @@ class _CommentCardState extends State<CommentCard> {
   final AuthenticationRepository _authRepo =
       Get.put(AuthenticationRepository());
   final TextEditingController textController = TextEditingController();
+  final TextEditingController editTextController =
+      TextEditingController(); // Separate controller for edit dialog
 
   @override
   void dispose() {
     textController.dispose();
+    editTextController.dispose(); // Dispose of the edit dialog controller
     super.dispose();
   }
 
   Future<void> editComment(
       String post_id, String commentId, String newText) async {
-    await controller1.updateComment(post_id, commentId, newText);
-    setState(() {});
+    if (newText.isNotEmpty) {
+      // Check if the new text is not empty
+      await controller1.updateComment(post_id, commentId, newText);
+      setState(() {});
+    } else {
+      log('Edit text is empty');
+    }
   }
 
   Future<void> deleteComment(String post_id, String commentId) async {
@@ -45,14 +53,15 @@ class _CommentCardState extends State<CommentCard> {
   }
 
   void showEditDialog(String commentId, String currentText) {
-    textController.text = ''; // Clear textController
+    editTextController
+        .clear(); // Clear the text controller before showing the dialog
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Edit Comment'),
           content: TextField(
-            controller: textController,
+            controller: editTextController,
             decoration: const InputDecoration(hintText: 'Edit your comment'),
           ),
           actions: [
@@ -62,9 +71,13 @@ class _CommentCardState extends State<CommentCard> {
             ),
             TextButton(
               onPressed: () async {
-                await editComment(
-                    widget.post_id, commentId, textController.text);
-                Navigator.of(context).pop();
+                final newText = editTextController.text;
+                if (newText.isNotEmpty) {
+                  await editComment(widget.post_id, commentId, newText);
+                  Navigator.of(context).pop();
+                } else {
+                  log('Edit text is empty'); // Log if the text is empty
+                }
               },
               child: const Text('Save'),
             ),
@@ -117,23 +130,30 @@ class _CommentCardState extends State<CommentCard> {
                     Stream.fromFuture(controller1.getComments(widget.post_id)),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    final currentUserEmail =
+                        _authRepo.firebaseUser.value?.email ?? '';
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         final comment = snapshot.data![index];
+                        final commentEmail = comment['email'] ?? 'No email';
+                        final isOwner = commentEmail == currentUserEmail;
 
                         return Comments(
                           text:
                               comment['commentDescription'] ?? 'No description',
-                          email: comment['email'] ?? 'No email',
+                          email: commentEmail,
                           time: formatData(comment['Timestamp']),
                           comment_id: comment['comment_id'] ?? 'No ID',
-                          onEdit: () => showEditDialog(
-                            comment['comment_id'],
-                            comment['commentDescription'],
-                          ),
-                          onDelete: () => showDeleteConfirmationDialog(
-                              comment['comment_id']),
+                          isOwner: isOwner,
+                          onEdit: isOwner
+                              ? () => showEditDialog(comment['comment_id'],
+                                  comment['commentDescription'])
+                              : () {},
+                          onDelete: isOwner
+                              ? () => showDeleteConfirmationDialog(
+                                  comment['comment_id'])
+                              : () {},
                         );
                       },
                     );
