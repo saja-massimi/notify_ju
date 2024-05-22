@@ -63,7 +63,6 @@ class _WallPostState extends State<wallPost> {
       }
     } catch (error) {
       print('Error toggling like: $error');
-      // Revert the state change in case of error
       setState(() {
         if (isLiked) {
           widget.likesCount.remove(userEmail);

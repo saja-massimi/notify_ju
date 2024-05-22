@@ -7,6 +7,7 @@ class Comments extends StatelessWidget {
   final String comment_id;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final bool isOwner;
 
   const Comments({
     super.key,
@@ -16,6 +17,7 @@ class Comments extends StatelessWidget {
     required this.comment_id,
     required this.onEdit,
     required this.onDelete,
+    required this.isOwner,
   });
 
   @override
@@ -66,14 +68,16 @@ class Comments extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: onEdit,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: onDelete,
-                ),
+                if (isOwner) ...[
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: onEdit,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: onDelete,
+                  ),
+                ],
               ],
             ),
           ],
