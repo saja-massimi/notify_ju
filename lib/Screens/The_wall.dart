@@ -6,7 +6,7 @@ import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/commentCard.dart';
 import 'package:notify_ju/Screens/comments_button.dart';
 import 'package:notify_ju/Screens/likes.dart';
-import 'package:notify_ju/Controller/commentController.dart';
+// import 'package:notify_ju/Controller/commentController.dart';
 
 class wallPost extends StatefulWidget {
   final String description;
@@ -29,7 +29,7 @@ class wallPost extends StatefulWidget {
 class _WallPostState extends State<wallPost> {
   final _authRepo = Get.put(AuthenticationRepository());
   final _postController = Get.put(PostController());
-  final _commentController = Get.put(commentController());
+  // final _commentController = Get.put(commentController());
   bool isLiked = false;
 
   @override
