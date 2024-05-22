@@ -54,7 +54,7 @@ class _VotingPageState extends State<VotingPage1> {
           children: [
             Expanded(
               child: StreamBuilder<List<Map<String, dynamic>>>(
-                stream: Stream.fromFuture(controller.getPost()),
+                stream: Stream.fromFuture(controller.getpost()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.isEmpty) {
