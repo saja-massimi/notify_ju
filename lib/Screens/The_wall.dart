@@ -34,7 +34,7 @@ class _WallPostState extends State<wallPost> {
 
   @override
   void initState() {
-    super.initState();
+    super.initState();    
     isLiked = widget.likesCount.contains(_authRepo.firebaseUser.value!.email);
   }
 
@@ -45,6 +45,8 @@ class _WallPostState extends State<wallPost> {
       description: widget.description,
       email: widget.email,
     );
+
+
 
     setState(() {
       isLiked = !isLiked;

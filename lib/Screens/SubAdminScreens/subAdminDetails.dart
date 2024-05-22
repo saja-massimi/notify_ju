@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMap.dart';
-import 'package:notify_ju/Screens/AdminScreens/UserData.dart';
 import 'package:intl/intl.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/SubAdminUserData.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 
 class subAdminReportDetails
@@ -222,7 +221,7 @@ class _subAdminReportDetailsState extends State<subAdminReportDetails> {
               ElevatedButton(
                 onPressed: () {
                   Get.to(
-                      () => userData(userEmail: widget.report['user_email']));
+                      () => SubAdminUserData(userEmail: widget.report['user_email']));
                 },
                 child: const Text('View User Data'),
               ),
