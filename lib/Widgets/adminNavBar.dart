@@ -2,14 +2,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminNotifications.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminVoting.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
+import 'package:notify_ju/Screens/AdminScreens/adminpostscreen.dart';
 
 class AdminNavigationBarWidget extends StatefulWidget {
   const AdminNavigationBarWidget({super.key});
 
   @override
-  State<AdminNavigationBarWidget> createState() => _AdminNavigationBarWidgetState();
+  State<AdminNavigationBarWidget> createState() =>
+      _AdminNavigationBarWidgetState();
 }
 
 class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
@@ -96,10 +97,8 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
           const Spacer(),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AdminVoting()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminPostsScreen()));
             },
             icon: const Icon(Icons.people, color: Colors.white),
           ),

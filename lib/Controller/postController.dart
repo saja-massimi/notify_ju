@@ -81,25 +81,38 @@ class PostController extends GetxController {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getpost() async {
+  Future<List<Map<String, dynamic>>> getPost() async {
     try {
+      // Fetch all users
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
-
-      List<Map<String, dynamic>> allposts = [];
+      List<Map<String, dynamic>> allReports = [];
 
       for (var userDoc in usersSnapshot.docs) {
-        QuerySnapshot reportsSnapshot = await userDoc.reference
-            .collection('post')
-            .orderBy('likesCount', descending: true)
-            .get();
+        QuerySnapshot postsSnapshot =
+            await userDoc.reference.collection('post').get();
 
-        allposts.addAll(reportsSnapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>));
+        for (var postDoc in postsSnapshot.docs) {
+          Map<String, dynamic> postData =
+              postDoc.data() as Map<String, dynamic>;
+
+          if (postData.containsKey('likesCount') &&
+              postData['likesCount'] is List) {
+            List<dynamic> likesCountArray = postData['likesCount'];
+            postData['totalLikes'] = likesCountArray.length;
+          } else {
+            postData['totalLikes'] = 0;
+          }
+
+          allReports.add(postData);
+        }
       }
-      return allposts;
+
+      allReports.sort((a, b) => b['totalLikes'].compareTo(a['totalLikes']));
+
+      return allReports;
     } catch (e) {
-      log("Error fetching reports: $e");
+      log("Error fetching posts: $e");
       throw e;
     }
   }
