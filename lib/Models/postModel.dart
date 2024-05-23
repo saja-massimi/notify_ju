@@ -8,7 +8,7 @@ class postModel {
   final String email;
   final List<String>? likesCount;
   final DateTime? time;
-   final String? totalLikes;
+  final String? totalLikes;
 
   postModel({
     required this.post_id,
@@ -16,7 +16,7 @@ class postModel {
     required this.email,
     this.likesCount,
     this.time,
-     this.totalLikes
+    this.totalLikes
 ,
   });
 
