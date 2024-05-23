@@ -12,7 +12,7 @@ class Likes extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Icon(
-        isLiked ? Icons.favorite : Icons.favorite_border,
+        isLiked ? Icons.keyboard_double_arrow_up : Icons.arrow_upward,
         color: isLiked ? Colors.red : Colors.grey,
       ),
     );

@@ -1,11 +1,8 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Controller/SignupController.dart';
-
 import 'package:notify_ju/Screens/AdminScreens/AdminProflie.dart';
 import 'package:notify_ju/Screens/AdminScreens/HistoryReports.dart';
 import 'package:notify_ju/Screens/AdminScreens/stats.dart';

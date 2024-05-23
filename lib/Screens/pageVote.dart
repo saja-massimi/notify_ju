@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/postController.dart';
@@ -21,7 +20,6 @@ class VotingPage1 extends StatefulWidget {
 class _VotingPageState extends State<VotingPage1> {
   final controller = Get.put(PostController());
   final _authRepo = Get.put(AuthenticationRepository());
-  // ignore: non_constant_identifier_names
   final TextController = TextEditingController();
 
   @override
@@ -57,7 +55,7 @@ class _VotingPageState extends State<VotingPage1> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Text('No posts yet'),
                       );
                     }
