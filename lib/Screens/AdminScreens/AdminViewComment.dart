@@ -92,6 +92,11 @@ class _AdminViewCommentState extends State<AdminViewComment> {
                 stream:
                     Stream.fromFuture(controller1.getComments(widget.post_id)),
                 builder: (context, snapshot) {
+                  if (snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text('No comments for this post'),
+                    );
+                  }
                   if (snapshot.hasData) {
                     List<Map<String, dynamic>> comments = snapshot.data!;
                     return ListView.builder(
