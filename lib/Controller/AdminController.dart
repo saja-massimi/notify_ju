@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/ReportsController.dart';
 import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Models/postModel.dart';
 
 class AdminController extends GetxController {
   AdminController get instance => Get.find();
