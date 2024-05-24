@@ -68,6 +68,7 @@ dependencies:
   timeago: ^3.0.2
   uuid: ^3.0.4
   crypto: ^3.0.3
+  flutter_emoji_feedback: ^0.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

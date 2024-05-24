@@ -4,16 +4,72 @@ import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 
+class EmojiFeedbackWidget extends StatefulWidget {
+  final Function(int) onChanged;
+  final int initialRating;
+
+  const EmojiFeedbackWidget({
+    Key? key,
+    required this.onChanged,
+    this.initialRating = 5,
+  }) : super(key: key);
+
+  @override
+  _EmojiFeedbackWidgetState createState() => _EmojiFeedbackWidgetState();
+}
+
+class _EmojiFeedbackWidgetState extends State<EmojiFeedbackWidget> {
+  late int _rating;
+
+  @override
+  void initState() {
+    super.initState();
+    _rating = widget.initialRating;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(5, (index) {
+        final isSelected = index + 1 == _rating;
+        final imagePaths = [
+          'angry.png',
+          'bad.png',
+          'neutral.png',
+          'good.png',
+          'happy.png'
+        ];
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              _rating = index + 1;
+              widget.onChanged(_rating);
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'images/amanzimgs/${imagePaths[index]}',
+              width: 49, // Adjust the size as needed
+              height: 49,
+              color: isSelected ? null : null,
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-
 class _HomePageState extends State<HomePage> {
   final controller = Get.put(ProfileController());
-
-
+  int _userSatisfaction = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +127,7 @@ class _HomePageState extends State<HomePage> {
               const Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                      top:
-                          110.0),
+                  padding: EdgeInsets.only(top: 110.0),
                   child: Text(
                     'Your voice matters here.',
                     style: TextStyle(
@@ -85,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Positioned.fill(
-                top: 160, 
+                top: 160,
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -94,41 +148,37 @@ class _HomePageState extends State<HomePage> {
                       topRight: Radius.circular(20.0),
                     ),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'How satisfied are you with JU services?',
+                          const Text(
+                            'How satisfied are you with JU services?\n',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(height: 10),
-
+                          EmojiFeedbackWidget(
+                            initialRating: _userSatisfaction,
+                            onChanged: (rating) {
+                              setState(() {
+                                _userSatisfaction = rating;
+                              });
+                            },
+                          ),
                           SizedBox(height: 20),
-                          Text(
-                            'Be part of the solution! Report any campus issues and help us improve the environment.',
+                          const Text(
+                            '\nBe part of the solution! Report any campus issues and help us improve the environment.',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(height: 10),
-                          // Add more widgets as needed
-                          /*  Container(
-                            height: 100,
-                            color: Colors.grey[300],
-                            child: Center(
-                              child: Text(
-                                'Placeholder for more content',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ),*/
                         ],
                       ),
                     ),
