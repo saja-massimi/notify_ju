@@ -10,10 +10,6 @@ import 'package:random_string/random_string.dart';
 class SubAdminsController extends GetxController {
   static SubAdminsController get instance => Get.find();
 
-
-
-
-
   Future<List<Map<String, dynamic>>?> viewAllReports(String reportType) async{
   
     try {
@@ -39,12 +35,7 @@ class SubAdminsController extends GetxController {
       throw e;
     }
 
-
-
-
-
 }
-
 
   Future<void> changeReportStatusSubAdmin(String type, String reportID, String email) async {
     
@@ -78,7 +69,7 @@ class SubAdminsController extends GetxController {
 }
 
 
-Future<void> OverTime(reportId,subAdminEmail) async{
+Future<void> unchnagedStatus(reportId,subAdminEmail) async{
 
 
 final controller = Get.put(ReportsController());
@@ -87,7 +78,7 @@ final rand = randomAlphaNumeric(20);
 
 controller.viewReport(reportId).then((value) {
   if(value!=null){
-    if(value['report_status']=='pending'){
+    if(value['report_status']=='Pending'){
       DateTime reportTime = DateTime.parse(value['report_time']);
       DateTime currentTime = DateTime.now();
       if(currentTime.difference(reportTime).inHours>5){

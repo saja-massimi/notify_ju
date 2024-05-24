@@ -83,7 +83,6 @@ class PostController extends GetxController {
 
   Future<List<Map<String, dynamic>>> getPost() async {
     try {
-      // Fetch all users
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
       List<Map<String, dynamic>> allReports = [];

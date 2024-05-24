@@ -59,20 +59,33 @@ class AdminController extends GetxController {
       log('message received');
 
       if (await isAdmin()) {
+        
         Get.snackbar(
           'New Report',
           'A new ${message.data["report_type"]} report has been submitted',
           snackPosition: SnackPosition.BOTTOM,
         );
       }
+
       int notif = await SharedPrefController.getNotif('notifs');
       await SharedPrefController.setNotif('notifs', notif + 1);
+if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'Car Accident'){
+  int publicUnitNotif = await SharedPrefController.getNotif('publicUnitNotif');
+  await SharedPrefController.setNotif('publicUnitNotif', publicUnitNotif + 1);
+  }
+  else if(message.data['type'] == 'Gire' || message.data['type'] == 'Injury'){
+  int emergencyUnitNotif = await SharedPrefController.getNotif('mergencyUnitNotif');
+  await SharedPrefController.setNotif('emergencyUnitNotif', emergencyUnitNotif + 1);}
+  else if(message.data['type'] == 'Fight' || message.data['type'] == 'Stray Animals' ){
+  int securityUnitNotif = await SharedPrefController.getNotif('securityUnitNotif');
+  await SharedPrefController.setNotif('securityUnitNotif', securityUnitNotif + 1);
+}
+      
     });
   }
 
   Future<List<Map<String, dynamic>>> getPost() async {
     try {
-      // Fetch all users
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
       List<Map<String, dynamic>> allReports = [];
