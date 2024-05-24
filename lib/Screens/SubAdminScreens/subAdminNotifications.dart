@@ -51,52 +51,44 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
                       itemBuilder: (context, index) {
                         final items = snapshot.data!;
 
-                        return Dismissible(
-                          key: UniqueKey(),
-                          onDismissed: (direction) async {
-                    if (direction == DismissDirection.startToEnd ||
-                        direction == DismissDirection.endToStart) {
-                      await controller.changeReportStatus(
-                        'Under Review',
-                        items[index]['report_id'],
-                        items[index]['user_email'],
-                      );
-                      
-                      setState(() {
-                        items[index]['report_status'] = 'Under Review';
-                      });
-
-                      Get.to(() => subAdminReportDetails(report: items[index]));
-                    }
-          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 8),
-                            height: 80,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          height: 80,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            color: const Color.fromARGB(185, 227, 226, 226),
+                            elevation: 6,
+                            child: ListTile(
+                              title: Text(
+                                items[index]['report_type'],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
-                              color: const Color.fromARGB(185, 227, 226, 226),
-                              elevation: 6,
-                              child: ListTile(
-                                title: Text(
-                                  items[index]['report_type'],
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                  items[index]['incident_description'],
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                trailing: Text(
-                                  items[index]['user_email'],
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onTap: () {},
+                              subtitle: Text(
+                                items[index]['incident_description'],
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
+                              trailing: Text(
+                                items[index]['user_email'],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onTap: () async{
+                                await controller.changeReportStatus(
+                                      'Under Review',
+                                      items[index]['report_id'],
+                                      items[index]['user_email'],);
+                                              
+                                              setState(() {
+                                                items[index]['report_status'] = 'Under Review';
+                                              });
+                        
+                                              Get.to(() => subAdminReportDetails(report: items[index]));
+                              },
                             ),
                           ),
                         );

@@ -59,50 +59,58 @@ class AdminController extends GetxController {
       log('message received');
 
       if (await isAdmin()) {
+        
         Get.snackbar(
           'New Report',
           'A new ${message.data["report_type"]} report has been submitted',
           snackPosition: SnackPosition.BOTTOM,
         );
       }
+
       int notif = await SharedPrefController.getNotif('notifs');
       await SharedPrefController.setNotif('notifs', notif + 1);
+if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'Car Accident'){
+  int publicUnitNotif = await SharedPrefController.getNotif('publicUnitNotif');
+  await SharedPrefController.setNotif('publicUnitNotif', publicUnitNotif + 1);
+  }
+  else if(message.data['type'] == 'Gire' || message.data['type'] == 'Injury'){
+  int emergencyUnitNotif = await SharedPrefController.getNotif('mergencyUnitNotif');
+  await SharedPrefController.setNotif('emergencyUnitNotif', emergencyUnitNotif + 1);}
+  else if(message.data['type'] == 'Fight' || message.data['type'] == 'Stray Animals' ){
+  int securityUnitNotif = await SharedPrefController.getNotif('securityUnitNotif');
+  await SharedPrefController.setNotif('securityUnitNotif', securityUnitNotif + 1);
+}
+      
     });
   }
 
   Future<List<Map<String, dynamic>>> getPost() async {
     try {
-      // Fetch all users
       QuerySnapshot usersSnapshot =
           await FirebaseFirestore.instance.collection('users').get();
       List<Map<String, dynamic>> allReports = [];
 
-      // Iterate over each user document
       for (var userDoc in usersSnapshot.docs) {
-        // Fetch posts for each user
         QuerySnapshot postsSnapshot =
             await userDoc.reference.collection('post').get();
 
-        // Iterate over each post document and calculate the likesCount size
         for (var postDoc in postsSnapshot.docs) {
           Map<String, dynamic> postData =
               postDoc.data() as Map<String, dynamic>;
 
-          // Ensure likesCount exists and is an array
           if (postData.containsKey('likesCount') &&
               postData['likesCount'] is List) {
             List<dynamic> likesCountArray = postData['likesCount'];
             postData['totalLikes'] = likesCountArray.length;
           } else {
             postData['totalLikes'] =
-                0; // Handle the case where likesCount does not exist or is not an array
+                0;
           }
 
           allReports.add(postData);
         }
       }
 
-      // Sort allReports by likesCountSize in descending order
       allReports.sort((a, b) => b['totalLikes'].compareTo(a['totalLikes']));
 
       return allReports;

@@ -13,9 +13,10 @@ class AdminNavigationBarWidget extends StatefulWidget {
       _AdminNavigationBarWidgetState();
 }
 
+
 class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
   int notifCount = 0;
-
+  
   @override
   void initState() {
     super.initState();
@@ -29,6 +30,7 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
 
   Future<void> _fetchNotifCount() async {
     int notif = SharedPrefController.getNotif('notifs');
+
     setState(() {
       log('notif: $notif');
       notifCount = notif;
@@ -50,11 +52,15 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
                   MaterialPageRoute(
                       builder: (context) => const AdminNotifications()));
               await SharedPrefController.setNotif('notifs', 0);
+
+          
+              
+
             },
             icon: Stack(
               children: [
                 const Icon(
-                  Icons.notification_important_outlined,
+                  Icons.notifications,
                   color: Colors.white,
                 ),
                 if (notifCount > 0)

@@ -33,8 +33,7 @@ class WarningsController extends GetxController {
   }
 
   Future <void> createWarning(WarningModel warning) async{
-try {
-
+    try {
     final documentId = await getDocumentIdByEmail(warning.subAdminEmail);
     if (documentId != null) {
       await _db
@@ -60,5 +59,9 @@ try {
 
 
 // }
+
+//edit warning
+//delete warning
+
 
 }
