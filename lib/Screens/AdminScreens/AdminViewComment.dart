@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/commentController.dart';
-import 'package:notify_ju/Repository/authentication_repository.dart';
 import 'package:notify_ju/Screens/TimeStamp.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 import 'package:notify_ju/Screens/comments.dart';
@@ -129,7 +128,6 @@ class _AdminViewComment extends State<AdminViewComment> {
           ],
         ),
       ),
-      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }

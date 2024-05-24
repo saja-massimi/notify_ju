@@ -91,19 +91,6 @@ class AdminController extends GetxController {
           } else {
             postData['totalLikes'] = 0;
           }
-          QuerySnapshot commentsSnapshot =
-              await postDoc.reference.collection('comments').get();
-          for (var commentDoc in commentsSnapshot.docs) {
-            List<Map<String, dynamic>> comments = commentsSnapshot.docs
-                .map((commentDoc) => {
-                      'commentDescription': (commentDoc.data()
-                              as Map<String, dynamic>)?['commentDescription']
-                          as String,
-                      'comment_id': commentDoc.id,
-                    })
-                .toList();
-            postData['comments'] = comments;
-          }
 
           allReports.add(postData);
         }

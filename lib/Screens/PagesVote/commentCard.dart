@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/commentController.dart';
 import 'package:notify_ju/Models/commentModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Screens/TimeStamp.dart';
+import 'package:notify_ju/Screens/PagesVote/TimeStamp.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
-import 'package:notify_ju/Screens/comments.dart';
+import 'package:notify_ju/Screens/PagesVote/comments.dart';
 
 class CommentCard extends StatefulWidget {
   final String post_id;
@@ -26,20 +26,18 @@ class _CommentCardState extends State<CommentCard> {
   final AuthenticationRepository _authRepo =
       Get.put(AuthenticationRepository());
   final TextEditingController textController = TextEditingController();
-  final TextEditingController editTextController =
-      TextEditingController(); // Separate controller for edit dialog
+  final TextEditingController editTextController = TextEditingController();
 
   @override
   void dispose() {
     textController.dispose();
-    editTextController.dispose(); // Dispose of the edit dialog controller
+    editTextController.dispose();
     super.dispose();
   }
 
   Future<void> editComment(
       String post_id, String commentId, String newText) async {
     if (newText.isNotEmpty) {
-      // Check if the new text is not empty
       await controller1.updateComment(post_id, commentId, newText);
       setState(() {});
     } else {
@@ -216,7 +214,7 @@ class _CommentCardState extends State<CommentCard> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }
