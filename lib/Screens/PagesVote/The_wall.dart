@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/postController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Screens/commentCard.dart';
-import 'package:notify_ju/Screens/comments_button.dart';
-import 'package:notify_ju/Screens/likes.dart';
+import 'package:notify_ju/Screens/PagesVote/commentCard.dart';
+import 'package:notify_ju/Screens/PagesVote/comments_button.dart';
+import 'package:notify_ju/Screens/PagesVote/likes_button.dart';
 
 class wallPost extends StatefulWidget {
   final String description;

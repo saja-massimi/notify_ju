@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notify_ju/Screens/Home.dart';
 import 'package:notify_ju/Screens/categories.dart';
 import 'package:notify_ju/Screens/myReports.dart';
-import 'package:notify_ju/Screens/pageVote.dart';
+import 'package:notify_ju/Screens/PagesVote/pageVote.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
   const BottomNavigationBarWidget({super.key});

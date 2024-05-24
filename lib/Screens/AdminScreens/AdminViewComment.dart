@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/commentController.dart';
-import 'package:notify_ju/Screens/TimeStamp.dart';
+import 'package:notify_ju/Screens/PagesVote/TimeStamp.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
-import 'package:notify_ju/Screens/comments.dart';
+import 'package:notify_ju/Screens/PagesVote/comments.dart';
 
 class AdminViewComment extends StatefulWidget {
   final String post_id;
@@ -16,10 +16,10 @@ class AdminViewComment extends StatefulWidget {
   });
 
   @override
-  State<AdminViewComment> createState() => _AdminViewComment();
+  State<AdminViewComment> createState() => _AdminViewCommentState();
 }
 
-class _AdminViewComment extends State<AdminViewComment> {
+class _AdminViewCommentState extends State<AdminViewComment> {
   final controller1 = Get.put(commentController());
   final controller2 = Get.put(AdminController());
   final TextEditingController textController = TextEditingController();
@@ -107,9 +107,10 @@ class _AdminViewComment extends State<AdminViewComment> {
                           email: commentEmail,
                           time: formatData(comment['Timestamp']),
                           comment_id: commentId,
-                          isOwner: true,
+                          isOwner: false,
                           onDelete: () =>
                               showDeleteConfirmationDialog(commentId, comments),
+                          isAdmin: true,
                         );
                       },
                     );
@@ -128,6 +129,7 @@ class _AdminViewComment extends State<AdminViewComment> {
           ],
         ),
       ),
+      bottomNavigationBar: AdminNavigationBarWidget(),
     );
   }
 }
