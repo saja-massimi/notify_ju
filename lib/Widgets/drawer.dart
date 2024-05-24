@@ -6,7 +6,7 @@ import 'package:notify_ju/Controller/SignupController.dart';
 import 'package:notify_ju/Screens/contact.dart';
 import 'package:notify_ju/Screens/profile.dart';
 import 'package:notify_ju/Screens/reportHistory.dart';
-import 'package:notify_ju/Screens/viewMyPost.dart';
+import 'package:notify_ju/Screens/PagesVote/viewMyPost.dart';
 
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({super.key});

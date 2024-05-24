@@ -97,14 +97,12 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
         for (var postDoc in postsSnapshot.docs) {
           Map<String, dynamic> postData =
               postDoc.data() as Map<String, dynamic>;
-
           if (postData.containsKey('likesCount') &&
               postData['likesCount'] is List) {
             List<dynamic> likesCountArray = postData['likesCount'];
             postData['totalLikes'] = likesCountArray.length;
           } else {
-            postData['totalLikes'] =
-                0;
+            postData['totalLikes'] = 0;
           }
 
           allReports.add(postData);
@@ -125,13 +123,30 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
       var postDoc = await _firestore
           .collectionGroup('post')
           .where('post_id', isEqualTo: postId)
-          .where('post_id', isEqualTo: postId)
+          .where('email', isNotEqualTo: _authRepo.firebaseUser.value?.email)
           .get();
       for (var doc in postDoc.docs) {
         await doc.reference.delete();
       }
     } catch (e) {
       print('Error deleting post: $e');
+      throw e;
+    }
+  }
+
+  Future<void> deleteComment(String postId, String commentId) async {
+    try {
+      var commentDoc = await _firestore
+          .collectionGroup('comments')
+          .where('comment_id', isEqualTo: commentId)
+          .where('post_id', isEqualTo: postId)
+          .where('email', isNotEqualTo: _authRepo.firebaseUser.value?.email)
+          .get();
+      for (var doc in commentDoc.docs) {
+        await doc.reference.delete();
+      }
+    } catch (e) {
+      print('Error deleting comment: $e');
       throw e;
     }
   }

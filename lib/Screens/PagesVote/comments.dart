@@ -5,9 +5,10 @@ class Comments extends StatelessWidget {
   final String email;
   final String time;
   final String comment_id;
-  final VoidCallback onEdit;
+  final VoidCallback? onEdit;
   final VoidCallback onDelete;
   final bool isOwner;
+  final bool isAdmin;
 
   const Comments({
     super.key,
@@ -15,9 +16,10 @@ class Comments extends StatelessWidget {
     required this.email,
     required this.time,
     required this.comment_id,
-    required this.onEdit,
+    this.onEdit,
     required this.onDelete,
     required this.isOwner,
+    this.isAdmin = false,
   });
 
   @override
@@ -73,6 +75,11 @@ class Comments extends StatelessWidget {
                     icon: const Icon(Icons.edit),
                     onPressed: onEdit,
                   ),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: onDelete,
+                  ),
+                ] else if (isAdmin) ...[
                   IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: onDelete,

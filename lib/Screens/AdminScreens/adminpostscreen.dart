@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
+import 'package:notify_ju/Screens/AdminScreens/AdminViewComment.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 
 class AdminPostsScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _AdminPostsScreenState extends State<AdminPostsScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Delete Post'),
-          content: const Text('Are you sure you want to delete this Post?'),
+          content: const Text('Are you sure you want to delete this post?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -64,18 +65,60 @@ class _AdminPostsScreenState extends State<AdminPostsScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final post = snapshot.data![index];
-                return ListTile(
-                  title: Text(post['description']),
-                  subtitle: Text(
-                      'By: ${post['email']}\nLikes: ${post['likesCount']?.length.toString()}'),
-                  trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => showDeleteConfirmationDialog(
-                        post['post_id'] ?? '',
-                      ),
+
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          post['description'],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'By: ${post['email']}',
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Likes: ${post['likesCount']?.length.toString()}',
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AdminViewComment(
+                                      post_id: post['post_id'] ?? '',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Text('View Comments'),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () => showDeleteConfirmationDialog(
+                                  post['post_id'] ?? ''),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ]),
+                  ),
                 );
               },
             );
