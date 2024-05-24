@@ -22,17 +22,14 @@ class AdminViewComment extends StatefulWidget {
 
 class _AdminViewComment extends State<AdminViewComment> {
   final controller1 = Get.put(commentController());
-  final AuthenticationRepository _authRepo =
-      Get.put(AuthenticationRepository());
   final controller2 = Get.put(AdminController());
   final TextEditingController textController = TextEditingController();
-  final TextEditingController editTextController =
-      TextEditingController(); // Separate controller for edit dialog
+  final TextEditingController editTextController = TextEditingController();
 
   @override
   void dispose() {
     textController.dispose();
-    editTextController.dispose(); // Dispose of the edit dialog controller
+    editTextController.dispose();
     super.dispose();
   }
 
@@ -46,13 +43,10 @@ class _AdminViewComment extends State<AdminViewComment> {
   Future<void> deleteComment(String post_id, String commentId,
       List<Map<String, dynamic>> comments) async {
     try {
-      deleteCommentLocally(
-          comments, commentId); // Immediately remove the comment locally
-      await controller2.deleteComment(
-          post_id, commentId); // Proceed with server deletion
+      deleteCommentLocally(comments, commentId);
+      await controller2.deleteComment(post_id, commentId);
     } catch (error) {
       log('Error deleting comment: $error');
-      // Optionally, show an error message and revert the local deletion
     }
   }
 
@@ -71,7 +65,7 @@ class _AdminViewComment extends State<AdminViewComment> {
             ),
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop(); // Close the dialog first
+                Navigator.of(context).pop();
                 await deleteComment(widget.post_id, commentId, comments);
               },
               child: const Text('Delete'),
@@ -114,7 +108,7 @@ class _AdminViewComment extends State<AdminViewComment> {
                           email: commentEmail,
                           time: formatData(comment['Timestamp']),
                           comment_id: commentId,
-                          isOwner: true, // Admin can delete any comment
+                          isOwner: true,
                           onDelete: () =>
                               showDeleteConfirmationDialog(commentId, comments),
                         );

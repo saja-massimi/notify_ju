@@ -65,8 +65,6 @@ class _AdminPostsScreenState extends State<AdminPostsScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final post = snapshot.data![index];
-                final List<Map<String, String>> comments =
-                    post['comments'] ?? [];
 
                 return Card(
                   margin:
