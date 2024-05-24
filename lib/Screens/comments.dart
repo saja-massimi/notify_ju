@@ -5,7 +5,7 @@ class Comments extends StatelessWidget {
   final String email;
   final String time;
   final String comment_id;
-  final VoidCallback onEdit;
+  final VoidCallback? onEdit;
   final VoidCallback onDelete;
   final bool isOwner;
 
@@ -15,7 +15,7 @@ class Comments extends StatelessWidget {
     required this.email,
     required this.time,
     required this.comment_id,
-    required this.onEdit,
+    this.onEdit,
     required this.onDelete,
     required this.isOwner,
   });

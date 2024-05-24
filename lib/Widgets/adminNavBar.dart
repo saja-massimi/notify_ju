@@ -100,7 +100,7 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AdminPostsScreen()));
             },
-            icon: const Icon(Icons.people, color: Colors.white),
+            icon: const Icon(Icons.book, color: Colors.white),
           ),
         ],
       ),

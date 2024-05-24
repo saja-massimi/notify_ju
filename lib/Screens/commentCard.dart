@@ -53,8 +53,7 @@ class _CommentCardState extends State<CommentCard> {
   }
 
   void showEditDialog(String commentId, String currentText) {
-    editTextController
-        .clear(); // Clear the text controller before showing the dialog
+    editTextController.clear();
     showDialog(
       context: context,
       builder: (context) {
@@ -76,7 +75,7 @@ class _CommentCardState extends State<CommentCard> {
                   await editComment(widget.post_id, commentId, newText);
                   Navigator.of(context).pop();
                 } else {
-                  log('Edit text is empty'); // Log if the text is empty
+                  log('Edit text is empty');
                 }
               },
               child: const Text('Save'),

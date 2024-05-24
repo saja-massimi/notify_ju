@@ -78,32 +78,38 @@ class AdminController extends GetxController {
           await FirebaseFirestore.instance.collection('users').get();
       List<Map<String, dynamic>> allReports = [];
 
-      // Iterate over each user document
       for (var userDoc in usersSnapshot.docs) {
-        // Fetch posts for each user
         QuerySnapshot postsSnapshot =
             await userDoc.reference.collection('post').get();
 
-        // Iterate over each post document and calculate the likesCount size
         for (var postDoc in postsSnapshot.docs) {
           Map<String, dynamic> postData =
               postDoc.data() as Map<String, dynamic>;
-
-          // Ensure likesCount exists and is an array
           if (postData.containsKey('likesCount') &&
               postData['likesCount'] is List) {
             List<dynamic> likesCountArray = postData['likesCount'];
             postData['totalLikes'] = likesCountArray.length;
           } else {
-            postData['totalLikes'] =
-                0; // Handle the case where likesCount does not exist or is not an array
+            postData['totalLikes'] = 0;
+          }
+          QuerySnapshot commentsSnapshot =
+              await postDoc.reference.collection('comments').get();
+          for (var commentDoc in commentsSnapshot.docs) {
+            List<Map<String, dynamic>> comments = commentsSnapshot.docs
+                .map((commentDoc) => {
+                      'commentDescription': (commentDoc.data()
+                              as Map<String, dynamic>)?['commentDescription']
+                          as String,
+                      'comment_id': commentDoc.id,
+                    })
+                .toList();
+            postData['comments'] = comments;
           }
 
           allReports.add(postData);
         }
       }
 
-      // Sort allReports by likesCountSize in descending order
       allReports.sort((a, b) => b['totalLikes'].compareTo(a['totalLikes']));
 
       return allReports;
@@ -118,13 +124,30 @@ class AdminController extends GetxController {
       var postDoc = await _firestore
           .collectionGroup('post')
           .where('post_id', isEqualTo: postId)
-          .where('post_id', isEqualTo: postId)
+          .where('email', isNotEqualTo: _authRepo.firebaseUser.value?.email)
           .get();
       for (var doc in postDoc.docs) {
         await doc.reference.delete();
       }
     } catch (e) {
       print('Error deleting post: $e');
+      throw e;
+    }
+  }
+
+  Future<void> deleteComment(String postId, String commentId) async {
+    try {
+      var commentDoc = await _firestore
+          .collectionGroup('comments')
+          .where('comment_id', isEqualTo: commentId)
+          .where('post_id', isEqualTo: postId)
+          .where('email', isNotEqualTo: _authRepo.firebaseUser.value?.email)
+          .get();
+      for (var doc in commentDoc.docs) {
+        await doc.reference.delete();
+      }
+    } catch (e) {
+      print('Error deleting comment: $e');
       throw e;
     }
   }
