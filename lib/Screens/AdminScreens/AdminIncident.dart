@@ -25,7 +25,9 @@ class _IncidentsState extends State<Incidents> {
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,
-        title: Text('${widget.reportType} Reports'),
+        title: Text('${widget.reportType} Reports',
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF464A5E),
         iconTheme:
             const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
