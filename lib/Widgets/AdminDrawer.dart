@@ -5,7 +5,7 @@ import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Controller/SignupController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminProflie.dart';
 import 'package:notify_ju/Screens/AdminScreens/HistoryReports.dart';
-import 'package:notify_ju/Screens/AdminScreens/stats.dart';
+import 'package:notify_ju/Screens/AdminScreens/statitstics.dart';
 import 'package:notify_ju/Screens/AdminScreens/warningsPage.dart';
 
 class AdminDrawerWidget extends StatelessWidget {
@@ -90,7 +90,7 @@ class AdminDrawerWidget extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.bar_chart),
             title: const Text('Statistics'),
-            onTap: () => Get.to(() => const stats()),
+            onTap: () => Get.to(() => StatisticsScreen()),
           ),
           ListTile(
             leading: const Icon(Icons.logout),
