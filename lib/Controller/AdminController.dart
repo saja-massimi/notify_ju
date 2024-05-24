@@ -15,7 +15,7 @@ class AdminController extends GetxController {
   final _db = FirebaseFirestore.instance;
   final _authRepo = Get.put(AuthenticationRepository());
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
@@ -73,8 +73,8 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
   int publicUnitNotif = await SharedPrefController.getNotif('publicUnitNotif');
   await SharedPrefController.setNotif('publicUnitNotif', publicUnitNotif + 1);
   }
-  else if(message.data['type'] == 'Gire' || message.data['type'] == 'Injury'){
-  int emergencyUnitNotif = await SharedPrefController.getNotif('mergencyUnitNotif');
+  else if(message.data['type'] == 'Fire' || message.data['type'] == 'Injury'){
+  int emergencyUnitNotif = await SharedPrefController.getNotif('emergencyUnitNotif');
   await SharedPrefController.setNotif('emergencyUnitNotif', emergencyUnitNotif + 1);}
   else if(message.data['type'] == 'Fight' || message.data['type'] == 'Stray Animals' ){
   int securityUnitNotif = await SharedPrefController.getNotif('securityUnitNotif');
@@ -294,6 +294,7 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
   }
 
   Future<List<Map<String, dynamic>>> getReportsHistorySub(
+
       List<String> reportType) async {
     try {
       QuerySnapshot usersSnapshot =
@@ -302,7 +303,7 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
       List<Map<String, dynamic>> allReports = [];
 
       for (var userDoc in usersSnapshot.docs) {
-        getAllPosts() {}
+    
 
         deletePost(String postId) {}
         QuerySnapshot reportsSnapshot = await userDoc.reference
@@ -321,4 +322,19 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
       throw e;
     }
   }
+
+  Future<List<Map<String, dynamic>>> getAllAdmins() async {
+    try {
+      QuerySnapshot snapshot = await _db.collection('users')
+          .where('role', isEqualTo: 'admin')
+          .where('user_email', isNotEqualTo: 'sja0202385@ju.edu.jo')
+          .get();
+
+      return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    } catch (e) {
+      print('Error fetching admins: $e');
+      return [];
+    }
+  }
+
 }

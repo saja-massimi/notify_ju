@@ -125,7 +125,7 @@ class _AdminPostsScreenState extends State<AdminPostsScreen> {
           }
         },
       ),
-      bottomNavigationBar: AdminNavigationBarWidget(),
+      bottomNavigationBar: const AdminNavigationBarWidget(),
     );
   }
 }

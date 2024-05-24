@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminDetails.dart';
+import 'package:notify_ju/Screens/SubAdminScreens/subAdminDrawer.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
-import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
 class subAdminNotifications extends StatefulWidget {
   subAdminNotifications({super.key,required this.reportType});
@@ -20,7 +20,7 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: AdminDrawerWidget(),
+      drawer: subsAdminDrawerWidget(),
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,

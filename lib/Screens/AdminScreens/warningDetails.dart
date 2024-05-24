@@ -1,35 +1,32 @@
-// ignore_for_file: camel_case_types
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:notify_ju/Controller/WarningsController.dart';
-import 'package:notify_ju/Screens/SubAdminScreens/subAdminDrawer.dart';
-import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
+import 'package:notify_ju/Widgets/AdminDrawer.dart';
+import 'package:notify_ju/Widgets/AdminNavBar.dart';
 
-class subAdminWarnings extends StatelessWidget {
-    const subAdminWarnings({super.key});
+class WarningDetails extends StatelessWidget {
+  WarningDetails({super.key, required this.adminDetails});
+  final Map<String, dynamic> adminDetails;
+
   @override
   Widget build(BuildContext context) {
+    final cont = Get.put(WarningsController());
 
-final cont = Get.put(WarningsController());
-final currentUser = FirebaseAuth.instance.currentUser!.email;
     return Scaffold(
-drawer: subsAdminDrawerWidget(),
+      drawer: AdminDrawerWidget(),
       backgroundColor: const Color.fromARGB(255, 233, 234, 238),
       appBar: AppBar(
         centerTitle: true,
-        title:  const Text(
-        "All Warnings",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          "${adminDetails['admin_name']} Warnings",
+          style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
         iconTheme: const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
-
-        body: FutureBuilder<List<Map<String, dynamic>>?>(
-        future: cont.getAllWarnings(currentUser!),
+      body: FutureBuilder<List<Map<String, dynamic>>?>(
+        future: cont.getAllWarnings(adminDetails['user_email']),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -54,13 +51,12 @@ drawer: subsAdminDrawerWidget(),
                   color: const Color.fromARGB(255, 163, 167, 189),
                   elevation: 4,
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         const Icon(Icons.warning, color: Colors.black, size: 30),
                         const SizedBox(width: 16),
                         Expanded(
-                          
                           child: Text(
                             data['message'],
                             style: const TextStyle(
@@ -72,10 +68,14 @@ drawer: subsAdminDrawerWidget(),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                      
                         Column(
+                          
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.end,
+                          
                           children: [
+                          const  SizedBox(height: 50,),
                             Text(
                               data['subAdminEmail'],
                               style: const TextStyle(
@@ -106,9 +106,7 @@ drawer: subsAdminDrawerWidget(),
           );
         },
       ),
-
-      bottomNavigationBar: const subadminNavigationBarWidget(),
-
+      bottomNavigationBar: const AdminNavigationBarWidget(),
     );
   }
 }

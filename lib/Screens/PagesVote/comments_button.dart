@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CommentsButton extends StatelessWidget {
-  void Function()? onTap;
-  CommentsButton({
-    Key? key,
+  final void Function()? onTap;
+  const CommentsButton({
+    super.key,
     this.onTap,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

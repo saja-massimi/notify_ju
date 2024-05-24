@@ -31,8 +31,8 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
   int publicUnitNotif = await SharedPrefController.getNotif('publicUnitNotif');
   await SharedPrefController.setNotif('publicUnitNotif', publicUnitNotif + 1);
   }
-  else if(message.data['type'] == 'Gire' || message.data['type'] == 'Injury'){
-  int emergencyUnitNotif = await SharedPrefController.getNotif('mergencyUnitNotif');
+  else if(message.data['type'] == 'Fire' || message.data['type'] == 'Injury'){
+  int emergencyUnitNotif = await SharedPrefController.getNotif('emergencyUnitNotif');
   await SharedPrefController.setNotif('emergencyUnitNotif', emergencyUnitNotif + 1);}
   else if(message.data['type'] == 'Fight' || message.data['type'] == 'Stray Animals' ){
   int securityUnitNotif = await SharedPrefController.getNotif('securityUnitNotif');
@@ -56,7 +56,7 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
   Future<void> setInitialScreen(User? user) async{
 
   Get.to(() => const SplashScreen()); 
-
+  await Future.delayed(const Duration(seconds: 3));
 
   if (user == null) {
     Get.offAll(() => const email_auth());

@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/ReportsController.dart';
-import 'package:notify_ju/Controller/WarningsController.dart';
-import 'package:notify_ju/Models/warningModel.dart';
-import 'package:random_string/random_string.dart';
+// import 'package:notify_ju/Controller/ReportsController.dart';
+// import 'package:notify_ju/Controller/WarningsController.dart';
+// import 'package:notify_ju/Models/warningModel.dart';
+// import 'package:random_string/random_string.dart';
 
 class SubAdminsController extends GetxController {
   static SubAdminsController get instance => Get.find();
@@ -69,33 +69,38 @@ class SubAdminsController extends GetxController {
 }
 
 
-Future<void> unchnagedStatus(reportId,subAdminEmail) async{
+// Future<void> unchnagedStatus(reportId,subAdminEmail) async{
 
 
-final controller = Get.put(ReportsController());
-final warningController = Get.put(WarningsController());
-final rand = randomAlphaNumeric(20);
+// final controller = Get.put(ReportsController());
+// final warningController = Get.put(WarningsController());
+// final rand = randomAlphaNumeric(20);
 
-controller.viewReport(reportId).then((value) {
-  if(value!=null){
-    if(value['report_status']=='Pending'){
-      DateTime reportTime = DateTime.parse(value['report_time']);
-      DateTime currentTime = DateTime.now();
-      if(currentTime.difference(reportTime).inHours>5){
+// controller.viewReport(reportId).then((value) {
+//   if(value!=null){
+//     if(value['report_status']=='Pending'){
+//       DateTime reportTime = DateTime.parse(value['report_time']);
+//       DateTime currentTime = DateTime.now();
+
+//     log(value.toString());  
+
+
+
+//       if(currentTime.difference(reportTime).inMinutes>5){
         
-      warningController.createWarning(WarningModel(
-        id: rand,
-        subAdminEmail: subAdminEmail,
-        message:  "You have not responded to the report for more than 5 hours", 
-        timestamp: DateTime.now()
-      ));
-      }
-    }
-  }
-});
+//       warningController.createWarning(WarningModel(
+//         id: rand,
+//         subAdminEmail: subAdminEmail,
+//         message:  "You have not responded to the report for more than 5 hours", 
+//         timestamp: DateTime.now()
+//       ));
+//       }
+//     }
+//   }
+// });
 
 
-}
+// }
 
 
 

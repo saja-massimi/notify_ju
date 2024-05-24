@@ -104,7 +104,7 @@ class subsAdminDrawerWidget extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.warning_rounded),
             title: const Text('Warnings'),
-            onTap: () =>  Get.to(const subsAdminWarning()),
+            onTap: () =>  Get.to( const subAdminWarnings()),
           ),
           ListTile(
             leading: const Icon(Icons.bar_chart),
