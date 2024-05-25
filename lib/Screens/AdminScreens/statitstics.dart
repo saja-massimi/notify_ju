@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Controller/statisticsController.dart';
 
 class StatisticsScreen extends StatefulWidget {
@@ -16,7 +15,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Statistics', style: TextStyle(color: Colors.white)),
+        title:const Text('Dashboard', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF464A5E),
       ),
