@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:notify_ju/Controller/AdminController.dart';
+import 'package:notify_ju/Controller/statisticsController.dart';
 
 class StatisticsScreen extends StatefulWidget {
   @override
@@ -8,52 +12,7 @@ class StatisticsScreen extends StatefulWidget {
 }
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
-  Future<Map<String, dynamic>> fetchReportData() async {
-    final _db = FirebaseFirestore.instance;
-    int allReports = 0;
-    int underviewReports = 0;
-    int pendingReports = 0;
-    int onHoldReports = 0;
-    int rejectedReports = 0;
-    int resolvedReports = 0;
-
-    try {
-      final reportsSnapshot = await _db.collectionGroup('reports').get();
-      for (var report in reportsSnapshot.docs) {
-        allReports++;
-        switch (report['report_status']) {
-          case 'Under Review':
-            underviewReports++;
-            break;
-          case 'Pending':
-            pendingReports++;
-            break;
-          case 'On Hold':
-            onHoldReports++;
-            break;
-          case 'Rejected':
-            rejectedReports++;
-            break;
-          case 'Resolved':
-            resolvedReports++;
-            break;
-          default:
-            break;
-        }
-      }
-    } catch (e) {
-      print('Error fetching report data: $e');
-    }
-
-    return {
-      'allReports': allReports,
-      'underviewReports': underviewReports,
-      'pendingReports': pendingReports,
-      'onHoldReports': onHoldReports,
-      'rejectedReports': rejectedReports,
-      'resolvedReports': resolvedReports,
-    };
-  }
+  final controller = Get.put(statisticsController());
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +23,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         backgroundColor: const Color(0xFF464A5E),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
-        future: fetchReportData(),
+        future: controller.ReportData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -75,8 +34,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           }
 
           final data = snapshot.data!;
-          return ListView(
-            padding: EdgeInsets.all(16),
+          return Column(
             children: [
               Text(
                 'Total Reports: ${data['allReports']}',
@@ -88,10 +46,30 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 data: data,
               ),
               SizedBox(height: 16),
-              AdminStatsCard(
-                adminName: 'Admin 1',
-                totalAdminWarnings: 8,
-                averageResponseTime: 15,
+              Expanded(
+                child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: controller.getAllAdmins(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error fetching admins'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No admins found'));
+                    }
+
+                    final admins = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: admins.length,
+                      itemBuilder: (context, index) {
+                        final data = admins[index];
+                        return AdminStatsCard(
+                          adminDetails: data,
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ],
           );
@@ -122,7 +100,7 @@ class PieChartCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
@@ -130,7 +108,7 @@ class PieChartCard extends StatelessWidget {
             SizedBox(height: 12),
             Container(
               width: double.infinity,
-              height: 200,
+              height: 250,
               child: PieChart(
                 PieChartData(
                   sections: [
@@ -198,16 +176,110 @@ class PieChartCard extends StatelessWidget {
 }
 
 class AdminStatsCard extends StatelessWidget {
-  final String adminName;
-  final int totalAdminWarnings;
-  final int averageResponseTime;
+  final Map<String, dynamic> adminDetails;
 
   const AdminStatsCard({
     Key? key,
-    required this.adminName,
-    required this.totalAdminWarnings,
-    required this.averageResponseTime,
+    required this.adminDetails,
   }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.put(statisticsController());
+    final user_email = adminDetails['user_email'];
+
+    if (user_email == null) {
+      return Container();
+    }
+
+    return FutureBuilder<List<Map<String, dynamic>>?>(
+      future: controller.getAllWarnings(user_email),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching warnings'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Container();
+        }
+
+        final warnings = snapshot.data!;
+        final warningTypes = <String, int>{};
+        warnings.forEach((warning) {
+          final type = warning['type'] as String?;
+          if (type != null) {
+            warningTypes[type] = (warningTypes[type] ?? 0) + 1;
+          }
+        });
+
+        // Calculate average response time
+        final averageResponseTime = warnings
+                .map((e) => e['responseTime'] as double? ?? 0)
+                .reduce((a, b) => a + b) /
+            warnings.length;
+
+        return Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  adminDetails['admin_name'] ?? '',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  user_email,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF464A5E),
+                  ),
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Total Warnings: ${warnings.length}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Average Response Time: ${averageResponseTime.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // Pass warning data to PieChartCard
+                adminCard(
+                    // warningTypes: warningTypes,
+                    ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class adminCard extends StatelessWidget {
+  const adminCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -219,37 +291,37 @@ class AdminStatsCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              adminName,
-              style: TextStyle(
+              'Dummy Pie Chart',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
             ),
             SizedBox(height: 12),
-            Text('Total Admin Warnings: $totalAdminWarnings'),
-            SizedBox(height: 8),
-            Text('Average Response Time: $averageResponseTime minutes'),
-            SizedBox(height: 12),
             Container(
               width: double.infinity,
-              height: 200,
+              height: 250,
               child: PieChart(
                 PieChartData(
                   sections: [
                     PieChartSectionData(
-                      color: Colors.green,
-                      value: totalAdminWarnings.toDouble(),
-                      title: '$totalAdminWarnings',
+                      color: Colors.red,
+                      value: 25,
+                      title: 'Red',
                     ),
                     PieChartSectionData(
                       color: Colors.blue,
-                      value: 60 - totalAdminWarnings.toDouble(),
-                      title: '${60 - totalAdminWarnings}',
+                      value: 50,
+                      title: 'Blue',
+                    ),
+                    PieChartSectionData(
+                      color: Colors.green,
+                      value: 75,
+                      title: 'Green',
                     ),
                   ],
-                  borderData: FlBorderData(show: false),
-                  centerSpaceRadius: 40,
                   sectionsSpace: 0,
+                  centerSpaceRadius: 40,
                 ),
               ),
             ),

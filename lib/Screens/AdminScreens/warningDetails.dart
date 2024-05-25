@@ -23,7 +23,8 @@ class WarningDetails extends StatelessWidget {
           style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
-        iconTheme: const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>?>(
         future: cont.getAllWarnings(adminDetails['user_email']),
@@ -54,7 +55,8 @@ class WarningDetails extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        const Icon(Icons.warning, color: Colors.black, size: 30),
+                        const Icon(Icons.warning,
+                            color: Colors.black, size: 30),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
@@ -68,14 +70,13 @@ class WarningDetails extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      
                         Column(
-                          
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.end,
-                          
                           children: [
-                          const  SizedBox(height: 50,),
+                            const SizedBox(
+                              height: 50,
+                            ),
                             Text(
                               data['subAdminEmail'],
                               style: const TextStyle(
@@ -87,7 +88,9 @@ class WarningDetails extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              DateFormat.yMMMd().add_jm().format(data['timestamp'].toDate()),
+                              DateFormat.yMMMd()
+                                  .add_jm()
+                                  .format(data['timestamp'].toDate()),
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Color(0xFF464A5E),
