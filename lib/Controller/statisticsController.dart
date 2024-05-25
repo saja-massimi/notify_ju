@@ -134,11 +134,27 @@ class statisticsController extends GetxController {
     }
   }
 
-  Future<double?> AllReportResponceTime(String subAdminEmail) async {
+  Future<double?> allReportResponseTime(String subAdminEmail) async {
+
+List<String> reportTypes = [];
+      switch (subAdminEmail) {
+      case 'ama0193677@ju.edu.jo':
+      reportTypes=['Infrastructural Damage'];
+      
+        break;
+      case 'hla0207934@ju.edu.jo':
+      reportTypes=['Fire','Injury'];
+        break;
+      case 'gad0200681@ju.edu.jo':
+      reportTypes=['Fight','Stray Animals','Car Accident'];
+        break;
+      default:
+      break;
+    }
+
     try {
       QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
           .collection('users')
-          .where('role', isEqualTo: 'admin')
           .get();
 
       List<int> allResponseTimes = [];
@@ -146,26 +162,25 @@ class statisticsController extends GetxController {
       for (var userDoc in usersSnapshot.docs) {
         QuerySnapshot reportsSnapshot = await userDoc.reference
             .collection('reports')
-            .where('subAdminEmail', isEqualTo: subAdminEmail)
+            .where('report_type', whereIn:reportTypes )
             .get();
 
         for (var doc in reportsSnapshot.docs) {
           var data = doc.data() as Map<String, dynamic>;
-          log('Report data: $data'); // Add logging here
-          if (data['under_review_timestamp'] != null &&
-              data['report_date'] != null) {
+
+          if (data['under_review_timestamp'] != null && data['report_date'] != null) {
             DateTime underReviewTimestamp =
                 data['under_review_timestamp'].toDate();
             DateTime reportDate = data['report_date'].toDate();
             int responseTime =
                 underReviewTimestamp.difference(reportDate).inMinutes;
-            log('Calculated response time: $responseTime minutes'); // Add logging here
+            log('Calculated response time: $responseTime minutes'); 
             allResponseTimes.add(responseTime);
           }
         }
       }
 
-      log('All response times: $allResponseTimes'); // Add logging here
+      log('All response times: $allResponseTimes'); 
 
       if (allResponseTimes.isNotEmpty) {
         double averageResponseTime =

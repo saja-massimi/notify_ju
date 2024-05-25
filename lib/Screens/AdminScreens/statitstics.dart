@@ -3,7 +3,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/statisticsController.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminProflie.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
 class StatisticsScreen extends StatefulWidget {
@@ -316,7 +315,7 @@ class AdminStatsCard extends StatelessWidget {
           } else {
             List<Map<String, dynamic>> warnings = snapshot.data ?? [];
             return FutureBuilder<double?>(
-              future: controller.AllReportResponceTime(user_email),
+              future: controller.allReportResponseTime(user_email),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
