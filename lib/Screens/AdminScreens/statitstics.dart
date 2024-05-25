@@ -1,8 +1,14 @@
+// ignore_for_file: library_private_types_in_public_api
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StatisticsScreen extends StatefulWidget {
+  const StatisticsScreen({super.key});
+
   @override
   _StatisticsScreenState createState() => _StatisticsScreenState();
 }
@@ -10,6 +16,7 @@ class StatisticsScreen extends StatefulWidget {
 class _StatisticsScreenState extends State<StatisticsScreen> {
   Future<Map<String, dynamic>> fetchReportData() async {
     final _db = FirebaseFirestore.instance;
+    
     int allReports = 0;
     int underviewReports = 0;
     int pendingReports = 0;
@@ -42,7 +49,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         }
       }
     } catch (e) {
-      print('Error fetching report data: $e');
+      log('Error fetching report data: $e');
     }
 
     return {
@@ -59,7 +66,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Statistics', style: TextStyle(color: Colors.white)),
+        title: const Text('Statistics', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF464A5E),
       ),
@@ -67,23 +74,23 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         future: fetchReportData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error fetching data'));
+            return const Center(child: Text('Error fetching data'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data available'));
+            return const Center(child: Text('No data available'));
           }
 
           final data = snapshot.data!;
           return ListView(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             children: [
               PieChartCard(
                 title: 'Report Distribution',
                 data: data,
               ),
-              SizedBox(height: 16),
-              AdminStatsCard(
+              const SizedBox(height: 16),
+              const AdminStatsCard(
                 adminName: 'Admin 1',
                 totalAdminWarnings: 8,
                 averageResponseTime: 15,
@@ -117,12 +124,12 @@ class PieChartCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               width: double.infinity,
               height: 200,
@@ -130,63 +137,63 @@ class PieChartCard extends StatelessWidget {
                 PieChartData(
                   sections: [
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 28, 0, 79),
+                      color: const Color.fromARGB(255, 28, 0, 79),
                       value: data['allReports'].toDouble(),
                       title: 'All Reports',
                       titlePositionPercentageOffset: 1.8,
                       badgeWidget: Text(
                         '${data['allReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 241, 108, 206),
+                      color: const Color.fromARGB(255, 241, 108, 206),
                       value: data['underviewReports'].toDouble(),
                       title: 'Underview',
                       titlePositionPercentageOffset: 1.8,
                       badgeWidget: Text(
                         '${data['underviewReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 255, 154, 46),
+                      color: const Color.fromARGB(255, 255, 154, 46),
                       value: data['pendingReports'].toDouble(),
                       title: 'Pending',
                       titlePositionPercentageOffset: 1.2,
                       badgeWidget: Text(
                         '${data['pendingReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 134, 129, 133),
+                      color: const Color.fromARGB(255, 134, 129, 133),
                       value: data['onHoldReports'].toDouble(),
                       title: 'On Hold',
                       titlePositionPercentageOffset: 1.6,
                       badgeWidget: Text(
                         '${data['onHoldReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 233, 35, 35),
+                      color: const Color.fromARGB(255, 233, 35, 35),
                       value: data['rejectedReports'].toDouble(),
                       title: 'Rejected',
                       titlePositionPercentageOffset: 1.8,
                       badgeWidget: Text(
                         '${data['rejectedReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 41, 221, 62),
+                      color: const Color.fromARGB(255, 41, 221, 62),
                       value: data['resolvedReports'].toDouble(),
                       title: 'Resolved',
                       titlePositionPercentageOffset: 1.8,
                       badgeWidget: Text(
                         '${data['resolvedReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ],
@@ -225,16 +232,16 @@ class AdminStatsCard extends StatelessWidget {
           children: [
             Text(
               adminName,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Text('Total Admin Warnings: $totalAdminWarnings'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text('Average Response Time: $averageResponseTime minutes'),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               width: double.infinity,
               height: 200,
