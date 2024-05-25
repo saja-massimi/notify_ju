@@ -54,7 +54,7 @@ class WarningsController extends GetxController {
 
 }
 
-Future<List<Map<String, dynamic>>?> getAllWarnings(String subAdminEmail) async {
+  Future<List<Map<String, dynamic>>?> getAllWarnings(String subAdminEmail) async {
   try {
     QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -82,8 +82,23 @@ Future<List<Map<String, dynamic>>?> getAllWarnings(String subAdminEmail) async {
   }
 }
 
-//edit warning
-//delete warning
+Future<void> deleteWarning(String subAdminEmail, String warningId) async {
+  try {
+    final documentId = await getDocumentIdByEmail(subAdminEmail);
+    if (documentId != null) {
+      await _db
+          .collection('users')
+          .doc(documentId)
+          .collection('warnings')
+          .doc(warningId)
+          .delete();
+    } else {
+      log("User not found");
+    }
+  } catch (error) {
+    log('Failed to delete warning: $error');
+  }
+  }
 
 
 }

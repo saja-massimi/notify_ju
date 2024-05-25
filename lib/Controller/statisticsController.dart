@@ -2,12 +2,12 @@ import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:notify_ju/Repository/authentication_repository.dart';
 
 class statisticsController extends GetxController {
   final _db = FirebaseFirestore.instance;
-  final _authRepo = Get.put(AuthenticationRepository());
+  final User? auth = FirebaseAuth.instance.currentUser!;
 
   Future<List<Map<String, dynamic>>> getAllAdmins() async {
     try {

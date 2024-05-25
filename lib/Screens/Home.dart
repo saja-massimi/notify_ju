@@ -1,6 +1,9 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/profileController.dart';
+import 'package:notify_ju/Controller/statisticsController.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 import 'package:notify_ju/Screens/categories.dart';
@@ -12,10 +15,10 @@ class EmojiFeedbackWidget extends StatefulWidget {
   final int initialRating;
 
   const EmojiFeedbackWidget({
-    Key? key,
+    super.key,
     required this.onChanged,
     this.initialRating = 5,
-  }) : super(key: key);
+  });
 
   @override
   _EmojiFeedbackWidgetState createState() => _EmojiFeedbackWidgetState();
@@ -76,6 +79,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final controller = Get.put(ProfileController());
+  final feedbackController = Get.put(statisticsController());
   int _userSatisfaction = 5;
   final PageController _pageController = PageController();
 
@@ -110,9 +114,7 @@ class _HomePageState extends State<HomePage> {
               FutureBuilder(
                 future: controller.getUserName(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
+                  if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     return Align(
@@ -163,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         const Center(
                           child: Text(
-                            '\nHow satisfied are you with JU services?',
+                            '\nHow satisfied are you with UJ services?',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
@@ -176,6 +178,7 @@ class _HomePageState extends State<HomePage> {
                           initialRating: _userSatisfaction,
                           onChanged: (rating) {
                             setState(() {
+                              feedbackController.getFeedback(rating);
                               _userSatisfaction = rating;
                             });
                           },
