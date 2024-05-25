@@ -1,5 +1,5 @@
-
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -101,60 +101,37 @@ class statisticsController extends GetxController {
     }
   }
 
-
-  Future<String?> getDocumentIdByEmail(String email) async {
+  Future<List<int>?> AllReportResponceTime(String subAdminEmail) async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
           .collection('users')
-          .where('user_email', isEqualTo: email)
-          .limit(1)
+          .where('role', isEqualTo: 'admin')
           .get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.first.id;
-      } else {
-        return null;
+      List<int> allReports = [];
+
+      for (var userDoc in usersSnapshot.docs) {
+        QuerySnapshot reportsSnapshot = await userDoc.reference
+            .collection('reports')
+            .where('subAdminEmail', isEqualTo: subAdminEmail)
+            .get();
+
+        for (var doc in reportsSnapshot.docs) {
+          var data = doc.data() as Map<String, dynamic>;
+          if (data['under_review_timestamp'] != null) {
+            var responseTime = data['under_review_timestamp']
+                .toDate()
+                .difference(data['report_date'].toDate())
+                .inMinutes;
+            allReports.add(responseTime);
+          }
+        }
       }
-    } catch (error) {
-      log('Error getting document ID by email: $error');
-      return null;
-    }
-  }
-
-  Future<void> getFeedback(int index)async {
-  String feedback="";
-switch(index){
-  case 1: feedback="Very Bad"; break;
-  case 2: feedback="Bad"; break;
-  case 3: feedback="Good"; break;
-  case 4: feedback="Very Good"; break;
-  case 5: feedback="Excellent"; break;
-}
-
-  
-final docID = await getDocumentIdByEmail(auth?.email ?? "");
-    try {
-      
-      await _db.collection('users').doc(docID).update({'feedback': feedback});
-      log('Field added to user $docID');
+      log(allReports.toString());
+      return allReports;
     } catch (e) {
-      log('Error updating user: $e');
+      log("Error fetching reports: $e");
+      throw e;
     }
-}
-
-int totalFeedbacks(String feedback){
-  int totalFeedbacks=0;
-  try {
-    QuerySnapshot snapshot =  _db.collection('users').where('feedback', isEqualTo: feedback).get() as QuerySnapshot<Object?>;
-    totalFeedbacks=snapshot.docs.length;
-    log( 'jioji $totalFeedbacks.toString()');
-    return totalFeedbacks;
-  } catch (e) {
-    print('Error fetching admins: $e');
-    return 0;
   }
-}
-
-
-
 }

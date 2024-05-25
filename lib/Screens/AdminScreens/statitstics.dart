@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/statisticsController.dart';
+import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
 class StatisticsScreen extends StatefulWidget {
   @override
@@ -14,8 +17,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AdminDrawerWidget(),
       appBar: AppBar(
-        title:const Text('Dashboard', style: TextStyle(color: Colors.white)),
+        title: Text('Dashboard', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF464A5E),
       ),
@@ -288,108 +292,86 @@ class AdminStatsCard extends StatelessWidget {
     }
 
     return FutureBuilder<List<Map<String, dynamic>>?>(
-      future: controller.getAllWarnings(user_email),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error fetching warnings'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Container();
-        }
+        future: controller.getAllWarnings(user_email),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error fetching warnings'));
+          } else {
+            List<Map<String, dynamic>> warnings = snapshot.data ?? [];
+            return FutureBuilder<List<int>?>(
+              future: controller.AllReportResponceTime(user_email),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error fetching response times'));
+                } else {
+                  List<int> responseTimes = snapshot.data ?? [];
 
-        final warnings = snapshot.data!;
-        final warningTypes = <String, int>{};
-        warnings.forEach((warning) {
-          final type = warning['type'] as String?;
-          if (type != null) {
-            warningTypes[type] = (warningTypes[type] ?? 0) + 1;
+                  final averageResponseTime = responseTimes.isNotEmpty
+                      ? responseTimes.reduce((a, b) => a + b) /
+                          responseTimes.length
+                      : null;
+
+                  return Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            adminDetails['admin_name'] ?? '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            user_email,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF464A5E),
+                            ),
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Total Warnings: ${warnings.length}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            averageResponseTime != null
+                                ? 'Average Response Time: ${averageResponseTime.toStringAsFixed(2)} minutes'
+                                : 'No response times available',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              },
+            );
           }
         });
-
-        // Calculate average response time
-        final averageResponseTime = warnings
-                .map((e) => e['responseTime'] as double? ?? 0)
-                .reduce((a, b) => a + b) /
-            warnings.length;
-
-        return Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  adminDetails['admin_name'] ?? '',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  user_email,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF464A5E),
-                  ),
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Total Warnings: ${warnings.length}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Average Response Time: ${averageResponseTime.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  height: 200,
-                  child: PieChart(
-                    PieChartData(
-                      sections: warningTypes.entries.map((entry) {
-                        // Use distinct colors for each warning type
-                        final color = Colors.primaries[
-                            warningTypes.keys.toList().indexOf(entry.key)];
-
-                        return PieChartSectionData(
-                          color: color,
-                          value: entry.value.toDouble(),
-                          title: entry.key,
-                          titlePositionPercentageOffset: 1.2,
-                          badgeWidget: Text(
-                            '${entry.value}',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        );
-                      }).toList(),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 }
