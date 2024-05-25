@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +7,25 @@ import 'package:get/get.dart';
 class statisticsController extends GetxController {
   final _db = FirebaseFirestore.instance;
   final User? auth = FirebaseAuth.instance.currentUser!;
+
+  Future<String?> getDocumentIdByEmail(String email) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('user_email', isEqualTo: email)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.id;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      log('Error getting document ID by email: $error');
+      return null;
+    }
+  }
 
   Future<List<Map<String, dynamic>>> getAllAdmins() async {
     try {
@@ -101,59 +119,121 @@ class statisticsController extends GetxController {
     }
   }
 
-
-  Future<String?> getDocumentIdByEmail(String email) async {
+  int totalFeedbacks(String feedback) {
+    int totalFeedbacks = 0;
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      QuerySnapshot snapshot = _db
           .collection('users')
-          .where('user_email', isEqualTo: email)
-          .limit(1)
+          .where('feedback', isEqualTo: feedback)
+          .get() as QuerySnapshot<Object?>;
+      totalFeedbacks = snapshot.docs.length;
+      return totalFeedbacks;
+    } catch (e) {
+      print('Error fetching admins: $e');
+      return 0;
+    }
+  }
+
+  Future<double?> allReportResponseTime(String subAdminEmail) async {
+
+List<String> reportTypes = [];
+      switch (subAdminEmail) {
+      case 'ama0193677@ju.edu.jo':
+      reportTypes=['Infrastructural Damage'];
+      
+        break;
+      case 'hla0207934@ju.edu.jo':
+      reportTypes=['Fire','Injury'];
+        break;
+      case 'gad0200681@ju.edu.jo':
+      reportTypes=['Fight','Stray Animals','Car Accident'];
+        break;
+      default:
+      break;
+    }
+
+    try {
+      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+          .collection('users')
           .get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.first.id;
+      List<int> allResponseTimes = [];
+
+      for (var userDoc in usersSnapshot.docs) {
+        QuerySnapshot reportsSnapshot = await userDoc.reference
+            .collection('reports')
+            .where('report_type', whereIn:reportTypes )
+            .get();
+
+        for (var doc in reportsSnapshot.docs) {
+          var data = doc.data() as Map<String, dynamic>;
+
+          if (data['under_review_timestamp'] != null && data['report_date'] != null) {
+            DateTime underReviewTimestamp =
+                data['under_review_timestamp'].toDate();
+            DateTime reportDate = data['report_date'].toDate();
+            int responseTime =
+                underReviewTimestamp.difference(reportDate).inMinutes;
+            log('Calculated response time: $responseTime minutes'); 
+            allResponseTimes.add(responseTime);
+          }
+        }
+      }
+
+      log('All response times: $allResponseTimes'); 
+
+      if (allResponseTimes.isNotEmpty) {
+        double averageResponseTime =
+            allResponseTimes.reduce((a, b) => a + b) / allResponseTimes.length;
+        log('Average response time: $averageResponseTime minutes'); // Add logging here
+        return averageResponseTime;
       } else {
         return null;
       }
-    } catch (error) {
-      log('Error getting document ID by email: $error');
-      return null;
+    } catch (e) {
+      log("Error fetching reports: $e");
+      throw e;
     }
   }
 
-  Future<void> getFeedback(int index)async {
-  String feedback="";
-switch(index){
-  case 1: feedback="Very Bad"; break;
-  case 2: feedback="Bad"; break;
-  case 3: feedback="Good"; break;
-  case 4: feedback="Very Good"; break;
-  case 5: feedback="Excellent"; break;
-}
+  Future<Map<String, dynamic>> getFeedback(int index) async {
+    String feedback = "";
+    switch (index) {
+      case 1:
+        feedback = "Very Bad";
+        break;
+      case 2:
+        feedback = "Bad";
+        break;
+      case 3:
+        feedback = "Good";
+        break;
+      case 4:
+        feedback = "Very Good";
+        break;
+      case 5:
+        feedback = "Excellent";
+        break;
+      default:
+        throw ArgumentError("Invalid feedback index");
+    }
 
-  
-final docID = await getDocumentIdByEmail(auth?.email ?? "");
+    final docID = await getDocumentIdByEmail(auth?.email ?? "");
     try {
-      
       await _db.collection('users').doc(docID).update({'feedback': feedback});
       log('Field added to user $docID');
+      return {
+        'status': 'success',
+        'message': 'Feedback updated successfully',
+        'feedback': feedback
+      };
     } catch (e) {
       log('Error updating user: $e');
+      return {
+        'status': 'error',
+        'message': 'Error updating feedback',
+        'error': e.toString()
+      };
     }
-}
-
-int totalFeedbacks(String feedback){
-  int totalFeedbacks=0;
-  try {
-    QuerySnapshot snapshot =  _db.collection('users').where('feedback', isEqualTo: feedback).get() as QuerySnapshot<Object?>;
-    totalFeedbacks=snapshot.docs.length;
-    return totalFeedbacks;
-  } catch (e) {
-    print('Error fetching admins: $e');
-    return 0;
   }
-}
-
-
-
 }

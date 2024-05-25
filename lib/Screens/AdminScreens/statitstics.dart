@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/statisticsController.dart';
+import 'package:notify_ju/Widgets/AdminDrawer.dart';
 
 class StatisticsScreen extends StatefulWidget {
   @override
@@ -10,69 +12,81 @@ class StatisticsScreen extends StatefulWidget {
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
   final controller = Get.put(statisticsController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:const Text('Dashboard', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF464A5E),
-      ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: controller.ReportData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error fetching data'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data available'));
-          }
+        drawer: AdminDrawerWidget(),
+        appBar: AppBar(
+          title: const Text('Dashboard', style: TextStyle(color: Colors.white)),
+          centerTitle: true,
+          backgroundColor: const Color(0xFF464A5E),
+        ),
+        body: Column(children: [
+          Expanded(
+            child: FutureBuilder<Map<String, dynamic>>(
+              future: controller.ReportData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Error fetching data'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No data available'));
+                }
 
-          final data = snapshot.data!;
-          return Column(
-            children: [
-              Text(
-                'Total Reports: ${data['allReports']}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              PieChartCard(
-                title: 'Report Distribution',
-                data: data,
-              ),
-              SizedBox(height: 16),
-              Expanded(
-                child: FutureBuilder<List<Map<String, dynamic>>>(
-                  future: controller.getAllAdmins(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error fetching admins'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(child: Text('No admins found'));
-                    }
+                final data = snapshot.data!;
+                return Column(
+                  children: [
+                    Text(
+                      'Total Reports: ${data['allReports']}',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    PieChartCard(
+                      title: 'Report Distribution',
+                      data: data,
+                    ),
+                    AllFeedbacks(
+                      title: 'Feedback Distribution',
+                    ),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: FutureBuilder<List<Map<String, dynamic>>>(
+                        future: controller.getAllAdmins(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return const Center(
+                                child: Text('Error fetching admins'));
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return const Center(child: Text('No admins found'));
+                          }
 
-                    final admins = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: admins.length,
-                      itemBuilder: (context, index) {
-                        final data = admins[index];
-                        return AdminStatsCard(
-                          adminDetails: data,
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
+                          final admins = snapshot.data!;
+                          return ListView.builder(
+                            itemCount: admins.length,
+                            itemBuilder: (context, index) {
+                              final data = admins[index];
+                              return AdminStatsCard(
+                                adminDetails: data,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+        ]));
   }
 }
 
@@ -102,7 +116,7 @@ class PieChartCard extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               width: double.infinity,
               height: 250,
@@ -110,53 +124,53 @@ class PieChartCard extends StatelessWidget {
                 PieChartData(
                   sections: [
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 75, 9, 92),
+                      color: const Color.fromARGB(255, 75, 9, 92),
                       value: data['underviewReports'].toDouble(),
                       title: 'Underview',
                       titlePositionPercentageOffset: 1.8,
                       badgeWidget: Text(
                         '${data['underviewReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 255, 154, 46),
+                      color: const Color.fromARGB(255, 255, 154, 46),
                       value: data['pendingReports'].toDouble(),
                       title: 'Pending',
                       titlePositionPercentageOffset: 1.2,
                       badgeWidget: Text(
                         '${data['pendingReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 134, 129, 133),
+                      color: const Color.fromARGB(255, 134, 129, 133),
                       value: data['onHoldReports'].toDouble(),
                       title: 'On Hold',
                       titlePositionPercentageOffset: 1.6,
                       badgeWidget: Text(
                         '${data['onHoldReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 233, 35, 35),
+                      color: const Color.fromARGB(255, 233, 35, 35),
                       value: data['rejectedReports'].toDouble(),
                       title: 'Rejected',
                       titlePositionPercentageOffset: 1.8,
                       badgeWidget: Text(
                         '${data['rejectedReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 41, 221, 62),
+                      color: const Color.fromARGB(255, 41, 221, 62),
                       value: data['resolvedReports'].toDouble(),
                       title: 'Resolved',
                       titlePositionPercentageOffset: 1.8,
                       badgeWidget: Text(
                         '${data['resolvedReports']}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ],
@@ -164,6 +178,108 @@ class PieChartCard extends StatelessWidget {
                   centerSpaceRadius: 40,
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AllFeedbacks extends StatelessWidget {
+  final statisticsController controller = Get.put(statisticsController());
+  final String title;
+
+  AllFeedbacks({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(height: 12),
+            GetBuilder<statisticsController>(
+              builder: (controller) {
+                return Container(
+                  width: double.infinity,
+                  height: 250,
+                  child: PieChart(
+                    PieChartData(
+                      sections: [
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 75, 9, 92),
+                          value:
+                              controller.totalFeedbacks('Very Bad').toDouble(),
+                          title: 'Very Bad',
+                          titlePositionPercentageOffset: 1.8,
+                          badgeWidget: Text(
+                            'veryBadFeedback',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 255, 154, 46),
+                          value: controller.totalFeedbacks('Bad').toDouble(),
+                          title: 'Bad',
+                          titlePositionPercentageOffset: 1.2,
+                          badgeWidget: const Text(
+                            'badFeedback',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 134, 129, 133),
+                          value: controller.totalFeedbacks('Good').toDouble(),
+                          title: 'Good',
+                          titlePositionPercentageOffset: 1.6,
+                          badgeWidget: Text(
+                            'goodFeedback',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 233, 35, 35),
+                          value:
+                              controller.totalFeedbacks('Very Good').toDouble(),
+                          title: 'Very Good',
+                          titlePositionPercentageOffset: 1.8,
+                          badgeWidget: Text(
+                            'veryGoodFeedback',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 41, 221, 62),
+                          value:
+                              controller.totalFeedbacks('Excellent').toDouble(),
+                          title: 'Excellent',
+                          titlePositionPercentageOffset: 1.8,
+                          badgeWidget: Text(
+                            'excellentFeedback',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                      sectionsSpace: 0,
+                      centerSpaceRadius: 40,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -190,108 +306,82 @@ class AdminStatsCard extends StatelessWidget {
     }
 
     return FutureBuilder<List<Map<String, dynamic>>?>(
-      future: controller.getAllWarnings(user_email),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error fetching warnings'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Container();
-        }
+        future: controller.getAllWarnings(user_email),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Error fetching warnings'));
+          } else {
+            List<Map<String, dynamic>> warnings = snapshot.data ?? [];
+            return FutureBuilder<double?>(
+              future: controller.allReportResponseTime(user_email),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return const Center(
+                      child: Text('Error fetching response times'));
+                } else {
+                  double? averageResponseTime = snapshot.data;
 
-        final warnings = snapshot.data!;
-        final warningTypes = <String, int>{};
-        warnings.forEach((warning) {
-          final type = warning['type'] as String?;
-          if (type != null) {
-            warningTypes[type] = (warningTypes[type] ?? 0) + 1;
+                  return Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            adminDetails['admin_name'] ?? '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            user_email,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF464A5E),
+                            ),
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Total Warnings: ${warnings.length}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            averageResponseTime != null
+                                ? 'Average Response Time: ${averageResponseTime.toStringAsFixed(2)} minutes'
+                                : 'No response times available',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              },
+            );
           }
         });
-
-        // Calculate average response time
-        final averageResponseTime = warnings
-                .map((e) => e['responseTime'] as double? ?? 0)
-                .reduce((a, b) => a + b) /
-            warnings.length;
-
-        return Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  adminDetails['admin_name'] ?? '',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  user_email,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF464A5E),
-                  ),
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Total Warnings: ${warnings.length}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Average Response Time: ${averageResponseTime.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  height: 200,
-                  child: PieChart(
-                    PieChartData(
-                      sections: warningTypes.entries.map((entry) {
-                        // Use distinct colors for each warning type
-                        final color = Colors.primaries[
-                            warningTypes.keys.toList().indexOf(entry.key)];
-
-                        return PieChartSectionData(
-                          color: color,
-                          value: entry.value.toDouble(),
-                          title: entry.key,
-                          titlePositionPercentageOffset: 1.2,
-                          badgeWidget: Text(
-                            '${entry.value}',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        );
-                      }).toList(),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 }

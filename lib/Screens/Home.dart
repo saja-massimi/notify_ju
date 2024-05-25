@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
               FutureBuilder(
                 future: controller.getUserName(),
                 builder: (context, snapshot) {
-                if (snapshot.hasError) {
+                  if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     return Align(

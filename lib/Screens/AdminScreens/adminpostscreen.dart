@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminViewComment.dart';
+import 'package:notify_ju/Widgets/AdminDrawer.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
 
 class AdminPostsScreen extends StatefulWidget {
@@ -45,6 +46,7 @@ class _AdminPostsScreenState extends State<AdminPostsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AdminDrawerWidget(),
       appBar: AppBar(
         title: const Text('All Users Posts',
             style: TextStyle(color: Colors.white)),
