@@ -22,7 +22,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       for (var report in reportsSnapshot.docs) {
         allReports++;
         switch (report['report_status']) {
-          case 'Underview':
+          case 'Under Review':
             underviewReports++;
             break;
           case 'Pending':
@@ -78,6 +78,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           return ListView(
             padding: EdgeInsets.all(16),
             children: [
+              Text(
+                'Total Reports: ${data['allReports']}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
               PieChartCard(
                 title: 'Report Distribution',
                 data: data,
@@ -130,17 +135,7 @@ class PieChartCard extends StatelessWidget {
                 PieChartData(
                   sections: [
                     PieChartSectionData(
-                      color: Color.fromARGB(255, 28, 0, 79),
-                      value: data['allReports'].toDouble(),
-                      title: 'All Reports',
-                      titlePositionPercentageOffset: 1.8,
-                      badgeWidget: Text(
-                        '${data['allReports']}',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    PieChartSectionData(
-                      color: Color.fromARGB(255, 241, 108, 206),
+                      color: Color.fromARGB(255, 75, 9, 92),
                       value: data['underviewReports'].toDouble(),
                       title: 'Underview',
                       titlePositionPercentageOffset: 1.8,
