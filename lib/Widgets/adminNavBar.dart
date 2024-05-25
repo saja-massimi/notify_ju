@@ -2,19 +2,21 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminNotifications.dart';
-import 'package:notify_ju/Screens/AdminScreens/AdminVoting.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminMain.dart';
+import 'package:notify_ju/Screens/AdminScreens/adminpostscreen.dart';
 
 class AdminNavigationBarWidget extends StatefulWidget {
   const AdminNavigationBarWidget({super.key});
 
   @override
-  State<AdminNavigationBarWidget> createState() => _AdminNavigationBarWidgetState();
+  State<AdminNavigationBarWidget> createState() =>
+      _AdminNavigationBarWidgetState();
 }
+
 
 class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
   int notifCount = 0;
-
+  
   @override
   void initState() {
     super.initState();
@@ -28,6 +30,7 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
 
   Future<void> _fetchNotifCount() async {
     int notif = SharedPrefController.getNotif('notifs');
+
     setState(() {
       log('notif: $notif');
       notifCount = notif;
@@ -49,11 +52,15 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
                   MaterialPageRoute(
                       builder: (context) => const AdminNotifications()));
               await SharedPrefController.setNotif('notifs', 0);
+
+          
+              
+
             },
             icon: Stack(
               children: [
                 const Icon(
-                  Icons.notification_important_outlined,
+                  Icons.notifications,
                   color: Colors.white,
                 ),
                 if (notifCount > 0)
@@ -96,12 +103,10 @@ class _AdminNavigationBarWidgetState extends State<AdminNavigationBarWidget> {
           const Spacer(),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AdminVoting()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminPostsScreen()));
             },
-            icon: const Icon(Icons.people, color: Colors.white),
+            icon: const Icon(Icons.book, color: Colors.white),
           ),
         ],
       ),

@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:notify_ju/Controller/commentController.dart';
 import 'package:notify_ju/Models/commentModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Screens/TimeStamp.dart';
+import 'package:notify_ju/Screens/PagesVote/TimeStamp.dart';
+import 'package:notify_ju/Screens/PagesVote/comments.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:random_string/random_string.dart';
-import 'package:notify_ju/Screens/comments.dart';
 
 class CommentCard extends StatefulWidget {
   final String post_id;
@@ -26,33 +26,62 @@ class _CommentCardState extends State<CommentCard> {
   final AuthenticationRepository _authRepo =
       Get.put(AuthenticationRepository());
   final TextEditingController textController = TextEditingController();
+  final TextEditingController editTextController = TextEditingController();
+  List<Map<String, dynamic>> comments = [];
+  final bool isAdmin = true; // Set this according to your admin check logic
+
+  @override
+  void initState() {
+    super.initState();
+    fetchComments();
+  }
 
   @override
   void dispose() {
     textController.dispose();
+    editTextController.dispose();
     super.dispose();
+  }
+
+  Future<void> fetchComments() async {
+    try {
+      comments = await controller1.getComments(widget.post_id);
+      setState(() {});
+    } catch (error) {
+      log('Error fetching comments: $error');
+    }
   }
 
   Future<void> editComment(
       String post_id, String commentId, String newText) async {
-    await controller1.updateComment(post_id, commentId, newText);
-    setState(() {});
+    if (newText.isNotEmpty) {
+      await controller1.updateComment(post_id, commentId, newText);
+      fetchComments();
+    } else {
+      log('Edit text is empty');
+    }
   }
 
   Future<void> deleteComment(String post_id, String commentId) async {
-    await controller1.deleteComment(post_id, commentId);
-    setState(() {});
+    try {
+      comments.removeWhere((comment) => comment['comment_id'] == commentId);
+      setState(() {});
+      await controller1.deleteComment(post_id, commentId);
+    } catch (error) {
+      log('Error deleting comment: $error');
+      fetchComments();
+    }
   }
 
   void showEditDialog(String commentId, String currentText) {
-    textController.text = ''; // Clear textController
+    editTextController.clear();
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Edit Comment'),
           content: TextField(
-            controller: textController,
+            controller: editTextController,
             decoration: const InputDecoration(hintText: 'Edit your comment'),
           ),
           actions: [
@@ -62,9 +91,13 @@ class _CommentCardState extends State<CommentCard> {
             ),
             TextButton(
               onPressed: () async {
-                await editComment(
-                    widget.post_id, commentId, textController.text);
-                Navigator.of(context).pop();
+                final newText = editTextController.text;
+                if (newText.isNotEmpty) {
+                  await editComment(widget.post_id, commentId, newText);
+                  Navigator.of(context).pop();
+                } else {
+                  log('Edit text is empty');
+                }
               },
               child: const Text('Save'),
             ),
@@ -88,8 +121,8 @@ class _CommentCardState extends State<CommentCard> {
             ),
             TextButton(
               onPressed: () async {
-                await deleteComment(widget.post_id, commentId);
                 Navigator.of(context).pop();
+                await deleteComment(widget.post_id, commentId);
               },
               child: const Text('Delete'),
             ),
@@ -112,38 +145,30 @@ class _CommentCardState extends State<CommentCard> {
         child: Column(
           children: [
             Expanded(
-              child: StreamBuilder<List<Map<String, dynamic>>>(
-                stream:
-                    Stream.fromFuture(controller1.getComments(widget.post_id)),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        final comment = snapshot.data![index];
+              child: ListView.builder(
+                itemCount: comments.length,
+                itemBuilder: (context, index) {
+                  final comment = comments[index];
+                  final commentEmail = comment['email'] ?? 'No email';
+                  final currentUserEmail =
+                      _authRepo.firebaseUser.value?.email ?? '';
+                  final isOwner = commentEmail == currentUserEmail;
 
-                        return Comments(
-                          text:
-                              comment['commentDescription'] ?? 'No description',
-                          email: comment['email'] ?? 'No email',
-                          time: formatData(comment['Timestamp']),
-                          comment_id: comment['comment_id'] ?? 'No ID',
-                          onEdit: () => showEditDialog(
-                            comment['comment_id'],
-                            comment['commentDescription'],
-                          ),
-                          onDelete: () => showDeleteConfirmationDialog(
-                              comment['comment_id']),
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('Error: ${snapshot.error}'),
-                    );
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return Comments(
+                    text: comment['commentDescription'] ?? 'No description',
+                    email: commentEmail,
+                    time: formatData(comment['Timestamp']),
+                    comment_id: comment['comment_id'] ?? 'No ID',
+                    isOwner: isOwner,
+                    isAdmin: isAdmin,
+                    onEdit: isOwner
+                        ? () => showEditDialog(comment['comment_id'],
+                            comment['commentDescription'])
+                        : null,
+                    onDelete: (isOwner || isAdmin)
+                        ? () =>
+                            showDeleteConfirmationDialog(comment['comment_id'])
+                        : () {},
                   );
                 },
               ),
@@ -171,22 +196,29 @@ class _CommentCardState extends State<CommentCard> {
                         return;
                       }
 
-                      log(commentText);
-                      log(userEmail);
-                      log(DateTime.now().toString());
+                      final newComment = {
+                        'commentDescription': commentText,
+                        'email': userEmail,
+                        'comment_id': randomAlphaNumeric(20),
+                        'Timestamp': DateTime.now().toIso8601String(),
+                        'post_id': widget.post_id,
+                      };
+
+                      comments.add(newComment);
+                      setState(() {});
 
                       await controller1.addacomment(
                         commentModel(
                           commentDescription: commentText,
                           email: userEmail,
-                          comment_id: randomAlphaNumeric(20),
+                          comment_id: newComment['comment_id'],
                           time: DateTime.now(),
                           post_id: widget.post_id,
                         ),
                       );
 
-                      setState(() {});
                       textController.clear();
+                      fetchComments();
                     },
                     icon: const Icon(Icons.arrow_upward),
                   ),

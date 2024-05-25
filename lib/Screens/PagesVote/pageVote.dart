@@ -1,13 +1,11 @@
 import 'dart:developer';
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/postController.dart';
 import 'package:notify_ju/Models/postModel.dart';
 import 'package:notify_ju/Repository/authentication_repository.dart';
-import 'package:notify_ju/Screens/The_wall.dart';
-import 'package:notify_ju/Screens/TimeStamp.dart';
+import 'package:notify_ju/Screens/PagesVote/The_wall.dart';
 import 'package:notify_ju/Widgets/bottomNavBar.dart';
 import 'package:notify_ju/Widgets/drawer.dart';
 import 'package:random_string/random_string.dart';
@@ -22,7 +20,6 @@ class VotingPage1 extends StatefulWidget {
 class _VotingPageState extends State<VotingPage1> {
   final controller = Get.put(PostController());
   final _authRepo = Get.put(AuthenticationRepository());
-  // ignore: non_constant_identifier_names
   final TextController = TextEditingController();
 
   @override
@@ -54,11 +51,11 @@ class _VotingPageState extends State<VotingPage1> {
           children: [
             Expanded(
               child: StreamBuilder<List<Map<String, dynamic>>>(
-                stream: Stream.fromFuture(controller.getpost()),
+                stream: Stream.fromFuture(controller.getPost()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Text('No posts yet'),
                       );
                     }

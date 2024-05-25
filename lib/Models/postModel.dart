@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class postModel {
@@ -8,7 +6,7 @@ class postModel {
   final String email;
   final List<String>? likesCount;
   final DateTime? time;
-  // final String? comments;
+  final String? totalLikes;
 
   postModel({
     required this.post_id,
@@ -16,34 +14,30 @@ class postModel {
     required this.email,
     this.likesCount,
     this.time,
-    // this.comments,
+    this.totalLikes,
   });
 
-  toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'post_id': post_id,
       'email': email,
       'description': description,
-      // 'image': image,
-      'likesCount': [],
-      // 'DislikesCount': [],
+      'likesCount': likesCount ?? [],
       'TimeStamp': time,
-      // 'comments': comments,
+      'totalLikes': totalLikes ?? '0',
     };
   }
 
   factory postModel.fromJsonSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
-    final data = doc.data();
+    final data = doc.data()!;
     return postModel(
       post_id: doc.id,
-      description: data!['description'],
-      email: data['email'],
-      // image: data['image'],
-      likesCount: data['likesCount'],
-      // DislikesCount: data['DislikesCount'],
-      time: data['TimeStamp'],
-      // comments: doc.id,
+      description: data['description'] ?? '',
+      email: data['email'] ?? '',
+      likesCount: List<String>.from(data['likesCount'] ?? []),
+      time: (data['TimeStamp'] as Timestamp?)?.toDate(),
+      totalLikes: data['totalLikes']?.toString() ?? '0',
     );
   }
 }

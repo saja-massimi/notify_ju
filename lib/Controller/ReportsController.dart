@@ -118,24 +118,42 @@ Future<List<Map<String, dynamic>>?> viewAllHistoryReports() async{
   
 }
 
-Future viewCurrentReports() async{
-    final documentId = await getDocumentIdByEmail(auth?.email ?? "");
-    log (documentId.toString());
+Future<List<Map<String, dynamic>>> viewCurrentReports() async {
+  final documentId = await getDocumentIdByEmail(auth?.email ?? "");
+  log(documentId.toString());
+
   try {
-    final snapshot = await _db.collection('/users/$documentId/reports')
-      .where("report_status", isNotEqualTo: ["Resolved", "Rejected"])
-      .get();
+    final notResolvedSnapshot = await _db
+        .collection('/users/$documentId/reports')
+        .where('report_status', isNotEqualTo: 'Resolved')
+        .get();
 
-      return snapshot.docs.map((doc) => doc.data()).toList();
+    final notRejectedSnapshot = await _db
+        .collection('/users/$documentId/reports')
+        .where('report_status', isNotEqualTo: 'Rejected')
+        .get();
 
-    } catch (e) {
-      log("Error fetching reports: $e");
-      return [];
+    final allDocs = <String, DocumentSnapshot>{};
+
+    for (var doc in notResolvedSnapshot.docs) {
+      if (doc['report_status'] != 'Rejected') {
+        allDocs[doc.id] = doc;
+      }
     }
 
+    for (var doc in notRejectedSnapshot.docs) {
+      if (doc['report_status'] != 'Resolved') {
+        allDocs[doc.id] = doc;
+      }
+    }
 
+    return allDocs.values.map((doc) => doc.data() as Map<String, dynamic>).toList();
+
+  } catch (e) {
+    log("Error fetching reports: $e");
+    return [];
+  }
 }
-
 Future<int> viewAllHistoryReportsCount() async {
       final documentId = await getDocumentIdByEmail(auth?.email ?? "");
 
