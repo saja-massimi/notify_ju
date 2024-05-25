@@ -8,21 +8,22 @@ class WarningModel {
 
   WarningModel({
     required this.id,
-    required this.message, 
+    required this.message,
     required this.timestamp,
-    required this.subAdminEmail,});
-
+    required this.subAdminEmail,
+  });
 
   toJson() {
     return {
       'id': id,
       'message': message,
       'timestamp': timestamp.toIso8601String(),
-      'subAdminEmail': subAdminEmail
+      'subAdminEmail': subAdminEmail,
     };
   }
-  
-  factory WarningModel.fromJSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) {
+
+  factory WarningModel.fromJSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data();
     return WarningModel(
       id: data!['id'],
@@ -31,5 +32,4 @@ class WarningModel {
       subAdminEmail: data['subAdminEmail'],
     );
   }
-
 }

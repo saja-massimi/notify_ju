@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -94,6 +95,40 @@ class statisticsController extends GetxController {
       }
       log(allWarnings.toString());
       return allWarnings;
+    } catch (e) {
+      log("Error fetching reports: $e");
+      throw e;
+    }
+  }
+
+  Future<List<int>?> AllReportResponceTime(String subAdminEmail) async {
+    try {
+      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('role', isEqualTo: 'admin')
+          .get();
+
+      List<int> allReports = [];
+
+      for (var userDoc in usersSnapshot.docs) {
+        QuerySnapshot reportsSnapshot = await userDoc.reference
+            .collection('reports')
+            .where('subAdminEmail', isEqualTo: subAdminEmail)
+            .get();
+
+        for (var doc in reportsSnapshot.docs) {
+          var data = doc.data() as Map<String, dynamic>;
+          if (data['under_review_timestamp'] != null) {
+            var responseTime = data['under_review_timestamp']
+                .toDate()
+                .difference(data['report_date'].toDate())
+                .inMinutes;
+            allReports.add(responseTime);
+          }
+        }
+      }
+      log(allReports.toString());
+      return allReports;
     } catch (e) {
       log("Error fetching reports: $e");
       throw e;
