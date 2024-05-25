@@ -181,7 +181,7 @@ class statisticsController extends GetxController {
     }
   }
 
-  Future<void> getFeedback(int index) async {
+  Future<Map<String, dynamic>> getFeedback(int index) async {
     String feedback = "";
     switch (index) {
       case 1:
@@ -199,14 +199,26 @@ class statisticsController extends GetxController {
       case 5:
         feedback = "Excellent";
         break;
+      default:
+        throw ArgumentError("Invalid feedback index");
     }
 
     final docID = await getDocumentIdByEmail(auth?.email ?? "");
     try {
       await _db.collection('users').doc(docID).update({'feedback': feedback});
       log('Field added to user $docID');
+      return {
+        'status': 'success',
+        'message': 'Feedback updated successfully',
+        'feedback': feedback
+      };
     } catch (e) {
       log('Error updating user: $e');
+      return {
+        'status': 'error',
+        'message': 'Error updating feedback',
+        'error': e.toString()
+      };
     }
   }
 }
