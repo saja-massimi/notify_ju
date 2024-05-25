@@ -147,6 +147,7 @@ int totalFeedbacks(String feedback){
   try {
     QuerySnapshot snapshot =  _db.collection('users').where('feedback', isEqualTo: feedback).get() as QuerySnapshot<Object?>;
     totalFeedbacks=snapshot.docs.length;
+    log( 'jioji $totalFeedbacks.toString()');
     return totalFeedbacks;
   } catch (e) {
     print('Error fetching admins: $e');
