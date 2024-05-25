@@ -59,7 +59,6 @@ class AdminController extends GetxController {
       log('message received');
 
       if (await isAdmin()) {
-        
         Get.snackbar(
           'New Report',
           'A new ${message.data["report_type"]} report has been submitted',
@@ -69,18 +68,25 @@ class AdminController extends GetxController {
 
       int notif = await SharedPrefController.getNotif('notifs');
       await SharedPrefController.setNotif('notifs', notif + 1);
-if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'Car Accident'){
-  int publicUnitNotif = await SharedPrefController.getNotif('publicUnitNotif');
-  await SharedPrefController.setNotif('publicUnitNotif', publicUnitNotif + 1);
-  }
-  else if(message.data['type'] == 'Fire' || message.data['type'] == 'Injury'){
-  int emergencyUnitNotif = await SharedPrefController.getNotif('emergencyUnitNotif');
-  await SharedPrefController.setNotif('emergencyUnitNotif', emergencyUnitNotif + 1);}
-  else if(message.data['type'] == 'Fight' || message.data['type'] == 'Stray Animals' ){
-  int securityUnitNotif = await SharedPrefController.getNotif('securityUnitNotif');
-  await SharedPrefController.setNotif('securityUnitNotif', securityUnitNotif + 1);
-}
-      
+      if (message.data['type'] == 'Infrastructural Damage' ||
+          message.data['type'] == 'Car Accident') {
+        int publicUnitNotif =
+            await SharedPrefController.getNotif('publicUnitNotif');
+        await SharedPrefController.setNotif(
+            'publicUnitNotif', publicUnitNotif + 1);
+      } else if (message.data['type'] == 'Fire' ||
+          message.data['type'] == 'Injury') {
+        int emergencyUnitNotif =
+            await SharedPrefController.getNotif('emergencyUnitNotif');
+        await SharedPrefController.setNotif(
+            'emergencyUnitNotif', emergencyUnitNotif + 1);
+      } else if (message.data['type'] == 'Fight' ||
+          message.data['type'] == 'Stray Animals') {
+        int securityUnitNotif =
+            await SharedPrefController.getNotif('securityUnitNotif');
+        await SharedPrefController.setNotif(
+            'securityUnitNotif', securityUnitNotif + 1);
+      }
     });
   }
 
@@ -172,6 +178,11 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
         Map<String, dynamic> dataToUpdate = {
           'report_status': type,
         };
+
+        await reportDoc.reference.update(dataToUpdate);
+        if (type == "Under Review") {
+          dataToUpdate['under_review_timestamp'] = FieldValue.serverTimestamp();
+        }
 
         await reportDoc.reference.update(dataToUpdate);
       } else {
@@ -292,7 +303,6 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
   }
 
   Future<List<Map<String, dynamic>>> getReportsHistorySub(
-
       List<String> reportType) async {
     try {
       QuerySnapshot usersSnapshot =
@@ -301,8 +311,6 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
       List<Map<String, dynamic>> allReports = [];
 
       for (var userDoc in usersSnapshot.docs) {
-    
-
         deletePost(String postId) {}
         QuerySnapshot reportsSnapshot = await userDoc.reference
             .collection('reports')
@@ -323,16 +331,18 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
 
   Future<List<Map<String, dynamic>>> getAllAdmins() async {
     try {
-      QuerySnapshot snapshot = await _db.collection('users')
+      QuerySnapshot snapshot = await _db
+          .collection('users')
           .where('role', isEqualTo: 'admin')
           .where('user_email', isNotEqualTo: 'sja0202385@ju.edu.jo')
           .get();
 
-      return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      return snapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
     } catch (e) {
       print('Error fetching admins: $e');
       return [];
     }
   }
-
 }

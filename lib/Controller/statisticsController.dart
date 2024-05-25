@@ -101,14 +101,77 @@ class statisticsController extends GetxController {
     }
   }
 
-  Future<List<int>?> AllReportResponceTime(String subAdminEmail) async {
+  Future<String?> getDocumentIdByEmail(String email) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('user_email', isEqualTo: email)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.id;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      log('Error getting document ID by email: $error');
+      return null;
+    }
+  }
+
+  Future<void> getFeedback(int index) async {
+    String feedback = "";
+    switch (index) {
+      case 1:
+        feedback = "Very Bad";
+        break;
+      case 2:
+        feedback = "Bad";
+        break;
+      case 3:
+        feedback = "Good";
+        break;
+      case 4:
+        feedback = "Very Good";
+        break;
+      case 5:
+        feedback = "Excellent";
+        break;
+    }
+
+    final docID = await getDocumentIdByEmail(auth?.email ?? "");
+    try {
+      await _db.collection('users').doc(docID).update({'feedback': feedback});
+      log('Field added to user $docID');
+    } catch (e) {
+      log('Error updating user: $e');
+    }
+  }
+
+  int totalFeedbacks(String feedback) {
+    int totalFeedbacks = 0;
+    try {
+      QuerySnapshot snapshot = _db
+          .collection('users')
+          .where('feedback', isEqualTo: feedback)
+          .get() as QuerySnapshot<Object?>;
+      totalFeedbacks = snapshot.docs.length;
+      return totalFeedbacks;
+    } catch (e) {
+      print('Error fetching admins: $e');
+      return 0;
+    }
+  }
+
+  Future<double?> AllReportResponceTime(String subAdminEmail) async {
     try {
       QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'admin')
           .get();
 
-      List<int> allReports = [];
+      List<int> allResponseTimes = [];
 
       for (var userDoc in usersSnapshot.docs) {
         QuerySnapshot reportsSnapshot = await userDoc.reference
@@ -118,17 +181,30 @@ class statisticsController extends GetxController {
 
         for (var doc in reportsSnapshot.docs) {
           var data = doc.data() as Map<String, dynamic>;
-          if (data['under_review_timestamp'] != null) {
-            var responseTime = data['under_review_timestamp']
-                .toDate()
-                .difference(data['report_date'].toDate())
-                .inMinutes;
-            allReports.add(responseTime);
+          log('Report data: $data'); // Add logging here
+          if (data['under_review_timestamp'] != null &&
+              data['report_date'] != null) {
+            DateTime underReviewTimestamp =
+                data['under_review_timestamp'].toDate();
+            DateTime reportDate = data['report_date'].toDate();
+            int responseTime =
+                underReviewTimestamp.difference(reportDate).inMinutes;
+            log('Calculated response time: $responseTime minutes'); // Add logging here
+            allResponseTimes.add(responseTime);
           }
         }
       }
-      log(allReports.toString());
-      return allReports;
+
+      log('All response times: $allResponseTimes'); // Add logging here
+
+      if (allResponseTimes.isNotEmpty) {
+        double averageResponseTime =
+            allResponseTimes.reduce((a, b) => a + b) / allResponseTimes.length;
+        log('Average response time: $averageResponseTime minutes'); // Add logging here
+        return averageResponseTime;
+      } else {
+        return null;
+      }
     } catch (e) {
       log("Error fetching reports: $e");
       throw e;

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
@@ -202,7 +201,7 @@ class AdminStatsCard extends StatelessWidget {
             return Center(child: Text('Error fetching warnings'));
           } else {
             List<Map<String, dynamic>> warnings = snapshot.data ?? [];
-            return FutureBuilder<List<int>?>(
+            return FutureBuilder<double?>(
               future: controller.AllReportResponceTime(user_email),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -210,12 +209,7 @@ class AdminStatsCard extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error fetching response times'));
                 } else {
-                  List<int> responseTimes = snapshot.data ?? [];
-
-                  final averageResponseTime = responseTimes.isNotEmpty
-                      ? responseTimes.reduce((a, b) => a + b) /
-                          responseTimes.length
-                      : null;
+                  double? averageResponseTime = snapshot.data;
 
                   return Card(
                     elevation: 4,
