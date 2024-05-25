@@ -225,7 +225,6 @@ class _addReportState extends State<addReport> {
                         user_email: widget._authRepo.firebaseUser.value?.email,
                         incident_picture: _imageUrl,
                       );
-
                       if(!await controller.canSubmitSpam()){
                         Get.rawSnackbar(
                             title: "Warning",
@@ -240,7 +239,6 @@ class _addReportState extends State<addReport> {
                             return;
                       }
                       Get.back();
-                      await controller.createReport(report);
                       await notif.sendNotification('A new report', 'A new report has been sent', report);
                       
                       if(_imageUrl!=null){
@@ -252,7 +250,8 @@ class _addReportState extends State<addReport> {
                       ad.changeReportStatus('Rejected', rand, widget._authRepo.firebaseUser.value!.email!);
                       
                       }
-                  
+                    await controller.createReport(report);
+
                     },
                     child: const Text('Submit'),
                   ),

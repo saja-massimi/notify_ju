@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
@@ -265,69 +263,36 @@ class AdminStatsCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                // Pass warning data to PieChartCard
-                adminCard(
-                    // warningTypes: warningTypes,
+                Container(
+                  height: 200,
+                  child: PieChart(
+                    PieChartData(
+                      sections: warningTypes.entries.map((entry) {
+                        // Use distinct colors for each warning type
+                        final color = Colors.primaries[
+                            warningTypes.keys.toList().indexOf(entry.key)];
+
+                        return PieChartSectionData(
+                          color: color,
+                          value: entry.value.toDouble(),
+                          title: entry.key,
+                          titlePositionPercentageOffset: 1.2,
+                          badgeWidget: Text(
+                            '${entry.value}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }).toList(),
+                      sectionsSpace: 0,
+                      centerSpaceRadius: 40,
                     ),
+                  ),
+                ),
               ],
             ),
           ),
         );
       },
-    );
-  }
-}
-
-class adminCard extends StatelessWidget {
-  const adminCard({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Dummy Pie Chart',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              height: 250,
-              child: PieChart(
-                PieChartData(
-                  sections: [
-                    PieChartSectionData(
-                      color: Colors.red,
-                      value: 25,
-                      title: 'Red',
-                    ),
-                    PieChartSectionData(
-                      color: Colors.blue,
-                      value: 50,
-                      title: 'Blue',
-                    ),
-                    PieChartSectionData(
-                      color: Colors.green,
-                      value: 75,
-                      title: 'Green',
-                    ),
-                  ],
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 40,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

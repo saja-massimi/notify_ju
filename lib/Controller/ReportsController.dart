@@ -154,6 +154,7 @@ Future<List<Map<String, dynamic>>> viewCurrentReports() async {
     return [];
   }
 }
+
 Future<int> viewAllHistoryReportsCount() async {
       final documentId = await getDocumentIdByEmail(auth?.email ?? "");
 
@@ -267,7 +268,7 @@ Future<bool> canSubmitSpam() async {
   
       final documentId = await getDocumentIdByEmail(auth?.email ?? "");
 log(documentId.toString());
-   QuerySnapshot reportsSnapshot = await FirebaseFirestore.instance
+      QuerySnapshot reportsSnapshot = await FirebaseFirestore.instance
       .collection('users')
       .doc(documentId)
       .collection('reports')
