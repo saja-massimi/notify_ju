@@ -4,7 +4,6 @@ import 'package:notify_ju/Controller/AdminController.dart';
 import 'package:notify_ju/Screens/AdminScreens/AdminViewComment.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
 import 'package:notify_ju/Widgets/AdminNavBar.dart';
-import 'package:notify_ju/Widgets/drawer.dart';
 
 class AdminPostsScreen extends StatefulWidget {
   @override
