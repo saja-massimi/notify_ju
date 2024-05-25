@@ -309,7 +309,7 @@ class AdminStatsCard extends StatelessWidget {
           } else {
             List<Map<String, dynamic>> warnings = snapshot.data ?? [];
             return FutureBuilder<double?>(
-              future: controller.AllReportResponceTime(user_email),
+              future: controller.allReportResponseTime(user_email),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

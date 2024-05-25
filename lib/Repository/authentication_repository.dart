@@ -67,13 +67,13 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
       else {
       switch (user.email) {
       case 'ama0193677@ju.edu.jo':
-        Get.offAll(() =>  subAdminMain(reportTypes: const ['Infrastructural Damage'],adminName: 'Public Services')); 
+        Get.offAll(() =>  const subAdminMain(reportTypes: ['Infrastructural Damage'],adminName: 'Public Services')); 
         break;
       case 'hla0207934@ju.edu.jo':
-        Get.offAll(() =>  subAdminMain(reportTypes: const ['Fire','Injury'],adminName: 'Emergency Services')); 
+        Get.offAll(() =>  const subAdminMain(reportTypes: ['Fire','Injury'],adminName: 'Emergency Services')); 
         break;
       case 'gad0200681@ju.edu.jo':
-        Get.offAll(() =>  subAdminMain(reportTypes: const ['Fight','Stray Animals','Car Accident'], adminName: 'Security',)); 
+        Get.offAll(() =>  const subAdminMain(reportTypes: ['Fight','Stray Animals','Car Accident'], adminName: 'Security',)); 
         break;
       default:
       Get.offAll(() =>  HomePage()); break;
