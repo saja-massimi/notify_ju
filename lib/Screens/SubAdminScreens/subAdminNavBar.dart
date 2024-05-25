@@ -70,12 +70,15 @@ return subAdminMain(reportTypes: const ['Fight','Stray Animals','Car Accident'],
       print('User is currently signed out!');
     } else if(user.email == 'ama0193677@ju.edu.jo') {
       await SharedPrefController.setNotif('notifs', 0);
+      await SharedPrefController.setNotif('publicUnitNotif', 0);
       Get.to(subAdminNotifications( reportType:const ['Infrastructural Damage']));  
     }else if(user.email == 'hla0207934@ju.edu.jo'){
           await SharedPrefController.setNotif('notifs', 0);
+          await SharedPrefController.setNotif('emergencyUnitNotif', 0);
           Get.to(subAdminNotifications(reportType: const ['Fire','Injury']));
     }else if(user.email == 'gad0200681@ju.edu.jo'){
       await SharedPrefController.setNotif('notifs', 0);
+      await SharedPrefController.setNotif('securityUnitNotif', 0);
       Get.to(  subAdminNotifications(reportType: const ['Fight','Stray Animals','Car Accident']));
     
               } },

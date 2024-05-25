@@ -54,11 +54,33 @@ class WarningsController extends GetxController {
 
 }
 
-// Future<List<Map<String, dynamic>>?> getAllWarnings() async{ 
+Future<List<Map<String, dynamic>>?> getAllWarnings(String subAdminEmail) async {
+  try {
+    QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('role', isEqualTo: 'admin')
+        .get();
 
+    List<Map<String, dynamic>> allWarnings = [];
 
+    for (var userDoc in usersSnapshot.docs) {
+      QuerySnapshot reportsSnapshot = await userDoc.reference
+          .collection('warnings')
+          .where('subAdminEmail', isEqualTo: subAdminEmail)
+          .get();
 
-// }
+      for (var doc in reportsSnapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        allWarnings.add(data);
+      }
+    }
+    log(allWarnings.toString());
+    return allWarnings;
+  } catch (e) {
+    log("Error fetching reports: $e");
+    throw e;
+  }
+}
 
 //edit warning
 //delete warning

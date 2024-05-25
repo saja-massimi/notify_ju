@@ -18,7 +18,7 @@ class WarningModel {
       'id': id,
       'message': message,
       'timestamp': timestamp.toIso8601String(),
-      'AdminEmail': subAdminEmail
+      'subAdminEmail': subAdminEmail
     };
   }
   
@@ -28,7 +28,7 @@ class WarningModel {
       id: data!['id'],
       message: data['message'],
       timestamp: DateTime.parse(data['timestamp']),
-      subAdminEmail: data['AdminEmail'],
+      subAdminEmail: data['subAdminEmail'],
     );
   }
 
