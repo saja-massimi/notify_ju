@@ -1,3 +1,7 @@
+// ignore_for_file: camel_case_types, library_private_types_in_public_api
+
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -151,6 +155,7 @@ class _subAdminMainState extends State<subAdminMain> {
   }
 
   void _initialize() async {
+
     List<dynamic> reps = [];
     final currUser = FirebaseAuth.instance.currentUser!.email;
     switch (currUser) {
@@ -166,12 +171,12 @@ class _subAdminMainState extends State<subAdminMain> {
       default:
         break;
     }
-
+log('reps: $reps');
     final war = Get.put(WarningsController());
 
     for (var report in reps) {
-      DateTime reportDate = (report['report_date'] as Timestamp).toDate(); // Convert Firestore Timestamp to DateTime
-      if (DateTime.now().difference(reportDate) > const Duration(hours: 1)) {
+      DateTime reportDate = (report['report_date'] as Timestamp).toDate(); 
+      if (DateTime.now().difference(reportDate) > const Duration(hours: 5)) {
         final rand = randomAlphaNumeric(20);
         final model = WarningModel(
           id: rand,
@@ -179,6 +184,7 @@ class _subAdminMainState extends State<subAdminMain> {
           message: "You have not responded to the report for more than 5 hours",
           timestamp: DateTime.now(),
         );
+        ad.changeReportStatus('On Hold', report['report_id'], report['user_email']);
         war.createWarning(model);
       }
     }

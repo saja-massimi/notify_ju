@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, await_only_futures
 
 import 'dart:developer';
 
@@ -227,9 +227,7 @@ if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'C
 
         reportsSnapshot.docs.forEach((doc) {
           var data = doc.data() as Map<String, dynamic>;
-          if (data['report_status'] != 'Pending' &&
-              data['report_status'] != 'Rejected' &&
-              data['report_status'] != 'Resolved') {
+          if (data['report_status'] == 'Under Review') {
             allReports.add(data);
           }
         });

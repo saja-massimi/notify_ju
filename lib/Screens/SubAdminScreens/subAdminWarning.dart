@@ -65,7 +65,7 @@ drawer: subsAdminDrawerWidget(),
                             data['message'],
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 10,
                               color: Colors.black,
                             ),
                             maxLines: 3,
