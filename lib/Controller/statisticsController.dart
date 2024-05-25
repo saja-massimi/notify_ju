@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +7,25 @@ import 'package:get/get.dart';
 class statisticsController extends GetxController {
   final _db = FirebaseFirestore.instance;
   final User? auth = FirebaseAuth.instance.currentUser!;
+
+  Future<String?> getDocumentIdByEmail(String email) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('user_email', isEqualTo: email)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.id;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      log('Error getting document ID by email: $error');
+      return null;
+    }
+  }
 
   Future<List<Map<String, dynamic>>> getAllAdmins() async {
     try {
@@ -101,54 +119,6 @@ class statisticsController extends GetxController {
     }
   }
 
-  Future<String?> getDocumentIdByEmail(String email) async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where('user_email', isEqualTo: email)
-          .limit(1)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.first.id;
-      } else {
-        return null;
-      }
-    } catch (error) {
-      log('Error getting document ID by email: $error');
-      return null;
-    }
-  }
-
-  Future<void> getFeedback(int index) async {
-    String feedback = "";
-    switch (index) {
-      case 1:
-        feedback = "Very Bad";
-        break;
-      case 2:
-        feedback = "Bad";
-        break;
-      case 3:
-        feedback = "Good";
-        break;
-      case 4:
-        feedback = "Very Good";
-        break;
-      case 5:
-        feedback = "Excellent";
-        break;
-    }
-
-    final docID = await getDocumentIdByEmail(auth?.email ?? "");
-    try {
-      await _db.collection('users').doc(docID).update({'feedback': feedback});
-      log('Field added to user $docID');
-    } catch (e) {
-      log('Error updating user: $e');
-    }
-  }
-
   int totalFeedbacks(String feedback) {
     int totalFeedbacks = 0;
     try {
@@ -208,6 +178,35 @@ class statisticsController extends GetxController {
     } catch (e) {
       log("Error fetching reports: $e");
       throw e;
+    }
+  }
+
+  Future<void> getFeedback(int index) async {
+    String feedback = "";
+    switch (index) {
+      case 1:
+        feedback = "Very Bad";
+        break;
+      case 2:
+        feedback = "Bad";
+        break;
+      case 3:
+        feedback = "Good";
+        break;
+      case 4:
+        feedback = "Very Good";
+        break;
+      case 5:
+        feedback = "Excellent";
+        break;
+    }
+
+    final docID = await getDocumentIdByEmail(auth?.email ?? "");
+    try {
+      await _db.collection('users').doc(docID).update({'feedback': feedback});
+      log('Field added to user $docID');
+    } catch (e) {
+      log('Error updating user: $e');
     }
   }
 }

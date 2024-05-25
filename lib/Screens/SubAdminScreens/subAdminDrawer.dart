@@ -8,7 +8,6 @@ import 'package:notify_ju/Controller/profileController.dart';
 import 'package:notify_ju/Controller/SignupController.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminHistory.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminProfile.dart';
-import 'package:notify_ju/Screens/SubAdminScreens/subAdminStats.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminWarning.dart';
 
 class subsAdminDrawerWidget extends StatelessWidget {
@@ -105,11 +104,6 @@ class subsAdminDrawerWidget extends StatelessWidget {
             leading: const Icon(Icons.warning_rounded),
             title: const Text('Warnings'),
             onTap: () =>  Get.to( const subAdminWarnings()),
-          ),
-          ListTile(
-            leading: const Icon(Icons.bar_chart),
-            title: const Text('Statistics'),
-            onTap: () => Get.to(const subsAdminStats()),
           ),
           ListTile(
             leading: const Icon(Icons.logout),
