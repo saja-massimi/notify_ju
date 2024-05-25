@@ -135,7 +135,8 @@ Widget buildCategoryCard(BuildContext context, IncidentData data) {
 }
 
 class subAdminMain extends StatefulWidget {
-  const subAdminMain({super.key, required this.reportTypes, required this.adminName});
+  const subAdminMain(
+      {super.key, required this.reportTypes, required this.adminName});
   final List<String> reportTypes;
   final String adminName;
   @override
@@ -155,7 +156,6 @@ class _subAdminMainState extends State<subAdminMain> {
   }
 
   void _initialize() async {
-
     List<dynamic> reps = [];
     final currUser = FirebaseAuth.instance.currentUser!.email;
     switch (currUser) {
@@ -163,7 +163,8 @@ class _subAdminMainState extends State<subAdminMain> {
         reps = await ad.getReportStatus('Pending', ['Fire', 'Injury']);
         break;
       case 'gad0200681@ju.edu.jo':
-        reps = await ad.getReportStatus('Pending', ['Car Accident', 'Fight', 'Stray Animals']);
+        reps = await ad.getReportStatus(
+            'Pending', ['Car Accident', 'Fight', 'Stray Animals']);
         break;
       case 'ama0193677@ju.edu.jo':
         reps = await ad.getReportStatus('Pending', ['Infrastructural Damage']);
@@ -171,11 +172,11 @@ class _subAdminMainState extends State<subAdminMain> {
       default:
         break;
     }
-log('reps: $reps');
+    log('reps: $reps');
     final war = Get.put(WarningsController());
 
     for (var report in reps) {
-      DateTime reportDate = (report['report_date'] as Timestamp).toDate(); 
+      DateTime reportDate = (report['report_date'] as Timestamp).toDate();
       if (DateTime.now().difference(reportDate) > const Duration(hours: 5)) {
         final rand = randomAlphaNumeric(20);
         final model = WarningModel(
@@ -184,7 +185,8 @@ log('reps: $reps');
           message: "You have not responded to the report for more than 5 hours",
           timestamp: DateTime.now(),
         );
-        ad.changeReportStatus('On Hold', report['report_id'], report['user_email']);
+        ad.changeReportStatus(
+            'On Hold', report['report_id'], report['user_email']);
         war.createWarning(model);
       }
     }
@@ -200,7 +202,7 @@ log('reps: $reps');
         centerTitle: true,
         title: Text(
           '${widget.adminName} Admin Dashboard',
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white, fontSize: 15.0),
         ),
         backgroundColor: const Color(0xFF464A5E),
         iconTheme:

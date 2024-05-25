@@ -7,7 +7,6 @@ import 'package:notify_ju/Screens/SubAdminScreens/subAdminDetails.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminDrawer.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminNavBar.dart';
 
-
 class subAdminIncidents extends StatefulWidget {
   final String reportType;
 

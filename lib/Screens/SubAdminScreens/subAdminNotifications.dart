@@ -71,7 +71,8 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
                             items[index]['report_status'] = 'Under Review';
                           });
 
-                          Get.to(() => subAdminReportDetails(report: items[index]));
+                          Get.to(() =>
+                              subAdminReportDetails(report: items[index]));
                         },
                       ),
                     ),
@@ -94,10 +95,14 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
         centerTitle: true,
         title: const Text(
           'Notifications',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15.0,
+          ),
         ),
         backgroundColor: const Color(0xFF464A5E),
-        iconTheme: const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
       ),
       body: Column(
         children: [
@@ -109,7 +114,8 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  side: const BorderSide(color: Color.fromARGB(255, 212, 209, 214), width: 2),
+                  side: const BorderSide(
+                      color: Color.fromARGB(255, 212, 209, 214), width: 2),
                 ),
                 child: const Text(
                   'Pending Reports',
@@ -130,7 +136,8 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  side: const BorderSide(color: Color.fromARGB(255, 212, 209, 214), width: 2),
+                  side: const BorderSide(
+                      color: Color.fromARGB(255, 212, 209, 214), width: 2),
                 ),
                 child: const Text(
                   'On Hold Reports',
