@@ -188,7 +188,7 @@ class PieChartCard extends StatelessWidget {
 }
 
 class AllFeedbacks extends StatelessWidget {
-  final controller = Get.put(statisticsController());
+  final statisticsController controller = Get.put(statisticsController());
   final String title;
 
   AllFeedbacks({
@@ -213,145 +213,79 @@ class AllFeedbacks extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              height: 250,
-              child: PieChart(
-                PieChartData(
-                  sections: [
-                    PieChartSectionData(
-                      color: const Color.fromARGB(255, 75, 9, 92),
-                      value: controller.totalFeedbacks('Very Bad').toDouble(),
-                      title: 'Very Bad',
-                      titlePositionPercentageOffset: 1.8,
-                      badgeWidget: Text(
-                        'veryBadFeedback',
-                        style: const TextStyle(color: Colors.white),
-                      ),
+            GetBuilder<statisticsController>(
+              builder: (controller) {
+                return Container(
+                  width: double.infinity,
+                  height: 250,
+                  child: PieChart(
+                    PieChartData(
+                      sections: [
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 75, 9, 92),
+                          value:
+                              controller.totalFeedbacks('Very Bad').toDouble(),
+                          title: 'Very Bad',
+                          titlePositionPercentageOffset: 1.8,
+                          badgeWidget: Text(
+                            'veryBadFeedback',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 255, 154, 46),
+                          value: controller.totalFeedbacks('Bad').toDouble(),
+                          title: 'Bad',
+                          titlePositionPercentageOffset: 1.2,
+                          badgeWidget: const Text(
+                            'badFeedback',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 134, 129, 133),
+                          value: controller.totalFeedbacks('Good').toDouble(),
+                          title: 'Good',
+                          titlePositionPercentageOffset: 1.6,
+                          badgeWidget: Text(
+                            'goodFeedback',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 233, 35, 35),
+                          value:
+                              controller.totalFeedbacks('Very Good').toDouble(),
+                          title: 'Very Good',
+                          titlePositionPercentageOffset: 1.8,
+                          badgeWidget: Text(
+                            'veryGoodFeedback',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        PieChartSectionData(
+                          color: const Color.fromARGB(255, 41, 221, 62),
+                          value:
+                              controller.totalFeedbacks('Excellent').toDouble(),
+                          title: 'Excellent',
+                          titlePositionPercentageOffset: 1.8,
+                          badgeWidget: Text(
+                            'excellentFeedback',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                      sectionsSpace: 0,
+                      centerSpaceRadius: 40,
                     ),
-                    PieChartSectionData(
-                      color: const Color.fromARGB(255, 255, 154, 46),
-                      value: controller.totalFeedbacks('Bad').toDouble(),
-                      title: 'Bad',
-                      titlePositionPercentageOffset: 1.2,
-                      badgeWidget: Text(
-                        'badFeedback',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    PieChartSectionData(
-                      color: const Color.fromARGB(255, 134, 129, 133),
-                      value: controller.totalFeedbacks('Good').toDouble(),
-                      title: 'Good',
-                      titlePositionPercentageOffset: 1.6,
-                      badgeWidget: Text(
-                        'goodFeedback',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    PieChartSectionData(
-                      color: const Color.fromARGB(255, 233, 35, 35),
-                      value: controller.totalFeedbacks('Very Good').toDouble(),
-                      title: 'Very Good',
-                      titlePositionPercentageOffset: 1.8,
-                      badgeWidget: Text(
-                        'veryGoodFeedback',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    PieChartSectionData(
-                      color: const Color.fromARGB(255, 41, 221, 62),
-                      value: controller.totalFeedbacks('Excellent').toDouble(),
-                      title: 'Excellent',
-                      titlePositionPercentageOffset: 1.8,
-                      badgeWidget: Text(
-                        'excellentFeedback',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 40,
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           ],
         ),
       ),
     );
-  }
-}
-
-class feedbackPie extends StatelessWidget {
-  final String title;
-  final Map<String, int> feedbackData;
-
-  const feedbackPie({
-    Key? key,
-    required this.title,
-    required this.feedbackData,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              height: 250,
-              child: PieChart(
-                PieChartData(
-                  sections: feedbackData.entries.map((entry) {
-                    return PieChartSectionData(
-                      color: _getColor(entry.key),
-                      value: entry.value.toDouble(),
-                      title: entry.key,
-                      titlePositionPercentageOffset: 1.8,
-                      badgeWidget: Text(
-                        '${entry.value}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    );
-                  }).toList(),
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 40,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Color _getColor(String feedback) {
-    switch (feedback) {
-      case 'Very Bad':
-        return const Color.fromARGB(255, 75, 9, 92);
-      case 'Bad':
-        return const Color.fromARGB(255, 255, 154, 46);
-      case 'Good':
-        return const Color.fromARGB(255, 134, 129, 133);
-      case 'Very Good':
-        return const Color.fromARGB(255, 233, 35, 35);
-      case 'Excellent':
-        return const Color.fromARGB(255, 41, 221, 62);
-      default:
-        return Colors.grey;
-    }
   }
 }
 
