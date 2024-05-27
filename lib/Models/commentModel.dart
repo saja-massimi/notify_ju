@@ -32,7 +32,7 @@ class commentModel {
       comment_id: doc.id,
       commentDescription: data!['commentDescription'],
       email: data['email'],
-      time: data['TimeStamp'],
+      time: data['Timestamp'],
     );
   }
 }

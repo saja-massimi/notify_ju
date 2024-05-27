@@ -119,20 +119,25 @@ class statisticsController extends GetxController {
     }
   }
 
-  int totalFeedbacks(String feedback) {
+
+
+
+  Future<int> totalFeedbacks(String feedback) async {
     int totalFeedbacks = 0;
     try {
-      QuerySnapshot snapshot = _db
+      QuerySnapshot snapshot = await _db
           .collection('users')
           .where('feedback', isEqualTo: feedback)
-          .get() as QuerySnapshot<Object?>;
+          .get();
       totalFeedbacks = snapshot.docs.length;
       return totalFeedbacks;
     } catch (e) {
-      print('Error fetching admins: $e');
+    print('Error fetching feedbacks: $e');
       return 0;
     }
-  }
+  
+}
+
 
   Future<double?> allReportResponseTime(String subAdminEmail) async {
 
@@ -236,4 +241,46 @@ List<String> reportTypes = [];
       };
     }
   }
+
+
+Future<int> getUserFeedback(String email) async {
+  try {
+    var querySnapshot = await _db.collection('users')
+        .where('user_email', isEqualTo: email)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      var feedbackData = querySnapshot.docs[0].data()['feedback'];
+      int feedback = 5;
+      switch (feedbackData) {
+      case  "Very Bad":
+        feedback =1;
+        break;
+      case "Bad":
+        feedback = 2;
+        break;
+      case "Good":
+        feedback = 3;
+        break;
+      case "Very Good":
+        feedback = 4;
+        break;
+      case "Excellent":
+        feedback = 5;
+        break;
+      default:
+        throw ArgumentError("Invalid feedback index");
+    }
+      log(feedback.toString());
+      return feedback;
+    } else {
+      return 5; 
+    }
+  } catch (e) {
+    log('Error getting user feedback: $e');
+    return 5; 
+  }
+}
+
+
 }

@@ -176,7 +176,7 @@ log('reps: $reps');
 
     for (var report in reps) {
       DateTime reportDate = (report['report_date'] as Timestamp).toDate(); 
-      if (DateTime.now().difference(reportDate) > const Duration(hours: 5)) {
+      if (DateTime.now().difference(reportDate) > const Duration(minutes: 5)) {
         final rand = randomAlphaNumeric(20);
         final model = WarningModel(
           id: rand,

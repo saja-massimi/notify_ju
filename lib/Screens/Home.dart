@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/profileController.dart';
@@ -14,7 +16,7 @@ class EmojiFeedbackWidget extends StatefulWidget {
   final Function(int) onChanged;
   final int initialRating;
 
-  const EmojiFeedbackWidget({
+  EmojiFeedbackWidget({
     super.key,
     required this.onChanged,
     this.initialRating = 5,
@@ -70,6 +72,7 @@ class _EmojiFeedbackWidgetState extends State<EmojiFeedbackWidget> {
   }
 }
 
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -80,8 +83,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final controller = Get.put(ProfileController());
   final feedbackController = Get.put(statisticsController());
-  int _userSatisfaction = 5;
   final PageController _pageController = PageController();
+final user = FirebaseAuth.instance.currentUser?.email ?? '';
+  Future<int> getsatisfaction() async {
+    return await feedbackController.getUserFeedback(user);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,13 +180,24 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        EmojiFeedbackWidget(
-                          initialRating: _userSatisfaction,
-                          onChanged: (rating) {
-                            setState(() {
-                              feedbackController.getFeedback(rating);
-                              _userSatisfaction = rating;
-                            });
+                        FutureBuilder<int>(
+                          future: getsatisfaction(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return const Text('Error loading satisfaction');
+                            } else {
+                              var _userSatisfaction = snapshot.data ?? 5;
+                              return EmojiFeedbackWidget(
+                                initialRating: _userSatisfaction,
+                                onChanged: (rating) {
+                                  setState(() {
+                                    feedbackController.getFeedback(rating);
+                                  });
+                                },
+                              );
+                            }
                           },
                         ),
                         const SizedBox(height: 40),
@@ -196,18 +213,15 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       Container(
                                         decoration: const BoxDecoration(
-                                          color: Color.fromARGB(
-                                              255, 255, 255, 255),
+                                          color: Color.fromARGB(255, 255, 255, 255),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(20.0),
                                           ),
                                         ),
                                         padding: const EdgeInsets.all(25.0),
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             const SizedBox(height: 20),
                                             const Text(
@@ -215,29 +229,24 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color.fromARGB(
-                                                    255, 35, 33, 42),
+                                                color: Color.fromARGB(255, 35, 33, 42),
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
                                             const Spacer(),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 ElevatedButton(
                                                   onPressed: () {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const Categories(),
+                                                        builder: (context) => const Categories(),
                                                       ),
                                                     );
                                                   },
-                                                  child:
-                                                      const Text('Report Now'),
+                                                  child: const Text('Report Now'),
                                                 ),
                                                 const SizedBox(width: 8),
                                                 Image.asset(
@@ -252,18 +261,15 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       Container(
                                         decoration: const BoxDecoration(
-                                          color: Color.fromARGB(
-                                              255, 255, 255, 255),
+                                          color: Color.fromARGB(255, 255, 255, 255),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(20.0),
                                           ),
                                         ),
                                         padding: const EdgeInsets.all(25.0),
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             const SizedBox(height: 20),
                                             const Text(
@@ -271,24 +277,20 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color.fromARGB(
-                                                    255, 37, 33, 50),
+                                                color: Color.fromARGB(255, 37, 33, 50),
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
                                             const Spacer(),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 ElevatedButton(
                                                   onPressed: () {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const VotingPage1(),
+                                                        builder: (context) => const VotingPage1(),
                                                       ),
                                                     );
                                                   },
@@ -318,8 +320,7 @@ class _HomePageState extends State<HomePage> {
                                   dotWidth: 8,
                                   spacing: 16,
                                   dotColor: Colors.grey,
-                                  activeDotColor:
-                                      Color.fromARGB(255, 227, 200, 226),
+                                  activeDotColor: Color.fromARGB(255, 227, 200, 226),
                                 ),
                               ),
                             ],

@@ -17,7 +17,7 @@ class WarningModel {
     return {
       'id': id,
       'message': message,
-      'timestamp': timestamp.toIso8601String(),
+      'timestamp': timestamp,
       'subAdminEmail': subAdminEmail,
     };
   }

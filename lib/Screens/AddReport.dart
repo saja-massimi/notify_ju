@@ -62,38 +62,50 @@ class _addReportState extends State<addReport> {
     }
   }
 
-  getPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+ getPermission() async {
+  bool serviceEnabled;
+  LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
+  // Check if location services are enabled
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    Get.rawSnackbar(
+      title: "Warning",
+      messageText: const Text("You must enable location service "),
+    );
+    return;
+  }
+
+  // Check for existing location permissions
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
       Get.rawSnackbar(
-          title: "Warning",
-          messageText: const Text("you must enable location service "));
+        title: "Warning",
+        messageText: const Text("You must allow Location Permission to use this feature "),
+      );
       return;
     }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        Get.rawSnackbar(
-            title: "Warning",
-            messageText: const Text(
-                "You must allow Location Permission to use this feature "));
-        return;
-      } else if (permission == LocationPermission.whileInUse) {
-        await getPermission();
-      }
-    } else if (permission == LocationPermission.whileInUse) {
-      Position position = await Geolocator.getCurrentPosition();
-      setState(() {
-        _selectedLocation = LatLng(position.latitude, position.longitude);
-      });
-    }
-    setState(() {});
   }
+
+  // Check for denied forever status
+  if (permission == LocationPermission.deniedForever) {
+    Get.rawSnackbar(
+      title: "Warning",
+      messageText: const Text("Location permisssions are permanently denied, we cannot request permissions."),
+    );
+    return;
+  }
+
+  // Proceed to get the current location
+  if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+    Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _selectedLocation = LatLng(position.latitude, position.longitude);
+    });
+  }
+}
 
   @override
   Widget build(BuildContext context) {
