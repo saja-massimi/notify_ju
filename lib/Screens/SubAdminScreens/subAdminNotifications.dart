@@ -49,7 +49,8 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
                       child: ListTile(
                         title: Text(
                           items[index]['report_type'],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13.0),
                         ),
                         subtitle: Text(
                           items[index]['incident_description'],
