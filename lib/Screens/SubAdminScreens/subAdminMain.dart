@@ -146,7 +146,11 @@ class subAdminMain extends StatefulWidget {
 class _subAdminMainState extends State<subAdminMain> {
   final sub = Get.put(SubAdminsController());
   final ad = Get.put(AdminController());
+  final war = Get.put(WarningsController());
   late GlobalKey _myKey;
+
+  Color backgroundColor = Colors.white;
+  String imagePath = '';
 
   @override
   void initState() {
@@ -161,23 +165,38 @@ class _subAdminMainState extends State<subAdminMain> {
     switch (currUser) {
       case 'hla0207934@ju.edu.jo':
         reps = await ad.getReportStatus('Pending', ['Fire', 'Injury']);
+        setState(() {
+          backgroundColor = Colors.red;
+          imagePath = 'assets/images/amazing/image.png';
+        });
         break;
       case 'gad0200681@ju.edu.jo':
         reps = await ad.getReportStatus(
             'Pending', ['Car Accident', 'Fight', 'Stray Animals']);
+        setState(() {
+          backgroundColor = Colors.blue;
+          imagePath = 'assets/images/image2.png';
+        });
         break;
       case 'ama0193677@ju.edu.jo':
         reps = await ad.getReportStatus('Pending', ['Infrastructural Damage']);
+        setState(() {
+          backgroundColor = Colors.green;
+          imagePath = 'assets/images/image3.png';
+        });
         break;
       default:
+        setState(() {
+          backgroundColor = Colors.white;
+          imagePath = '';
+        });
         break;
     }
     log('reps: $reps');
-    final war = Get.put(WarningsController());
 
     for (var report in reps) {
       DateTime reportDate = (report['report_date'] as Timestamp).toDate();
-      if (DateTime.now().difference(reportDate) > const Duration(hours: 5)) {
+      if (DateTime.now().difference(reportDate) > const Duration(minutes: 5)) {
         final rand = randomAlphaNumeric(20);
         final model = WarningModel(
           id: rand,
@@ -197,12 +216,12 @@ class _subAdminMainState extends State<subAdminMain> {
     return Scaffold(
       key: _myKey,
       drawer: subsAdminDrawerWidget(),
-      backgroundColor: const Color.fromARGB(255, 233, 234, 238),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
           '${widget.adminName} Admin Dashboard',
-          style: const TextStyle(color: Colors.white, fontSize: 15.0),
+          style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF464A5E),
         iconTheme:
@@ -210,16 +229,29 @@ class _subAdminMainState extends State<subAdminMain> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: widget.reportTypes.length,
-          itemBuilder: (context, index) {
-            for (var i = 0; i < incidentsList.length; i++) {
-              if (incidentsList[i].titleTxt == widget.reportTypes[index]) {
-                return buildCategoryCard(context, incidentsList[i]);
-              }
-            }
-            return const SizedBox(); // Handle unmatched case
-          },
+        child: Column(
+          children: [
+            if (imagePath.isNotEmpty)
+              Image.asset(
+                imagePath,
+                width: 100,
+                height: 100,
+              ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.reportTypes.length,
+                itemBuilder: (context, index) {
+                  for (var i = 0; i < incidentsList.length; i++) {
+                    if (incidentsList[i].titleTxt ==
+                        widget.reportTypes[index]) {
+                      return buildCategoryCard(context, incidentsList[i]);
+                    }
+                  }
+                  return const SizedBox(); // Handle unmatched case
+                },
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: const subadminNavigationBarWidget(),

@@ -1,6 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:notify_ju/Controller/statisticsController.dart';
 import 'package:notify_ju/Widgets/AdminDrawer.dart';
@@ -12,81 +13,77 @@ class StatisticsScreen extends StatefulWidget {
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
   final controller = Get.put(statisticsController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: AdminDrawerWidget(),
-        appBar: AppBar(
-          title: const Text('Dashboard', style: TextStyle(color: Colors.white)),
-          centerTitle: true,
-          backgroundColor: const Color(0xFF464A5E),
-        ),
-        body: Column(children: [
-          Expanded(
-            child: FutureBuilder<Map<String, dynamic>>(
-              future: controller.ReportData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Error fetching data'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No data available'));
-                }
+      drawer: AdminDrawerWidget(),
+      appBar: AppBar(
+        title: const Text('Dashboard', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF464A5E),
+      ),
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: controller.ReportData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Error fetching data'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No data available'));
+          }
 
-                final data = snapshot.data!;
-                return Column(
-                  children: [
-                    Text(
-                      'Total Reports: ${data['allReports']}',
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+          final data = snapshot.data!;
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Total Reports: ${data['allReports']}',
+                    style: const TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold
                     ),
-                    PieChartCard(
-                      title: 'Report Distribution',
-                      data: data,
-                    ),
-                    AllFeedbacks(
-                      title: 'Feedback Distribution',
-                    ),
-                    const SizedBox(height: 16),
-                    Expanded(
-                      child: FutureBuilder<List<Map<String, dynamic>>>(
-                        future: controller.getAllAdmins(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return const Center(
-                                child: Text('Error fetching admins'));
-                          } else if (!snapshot.hasData ||
-                              snapshot.data!.isEmpty) {
-                            return const Center(child: Text('No admins found'));
-                          }
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  PieChartCard(
+                    title: 'Report Distribution',
+                    data: data,
+                  ),
+                  const SizedBox(height: 16),
+                  AllFeedbacks(
+                    title: 'Feedback',
+                  ),
+                  const SizedBox(height: 16),
+                  FutureBuilder<List<Map<String, dynamic>>>(
+                    future: controller.getAllAdmins(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(child: Text('Error fetching admins'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No admins found'));
+                      }
 
-                          final admins = snapshot.data!;
-                          return ListView.builder(
-                            itemCount: admins.length,
-                            itemBuilder: (context, index) {
-                              final data = admins[index];
-                              return AdminStatsCard(
-                                adminDetails: data,
-                              );
-                            },
+                      final admins = snapshot.data!;
+                      return Column(
+                        children: admins.map((adminData) {
+                          return AdminStatsCard(
+                            adminDetails: adminData,
                           );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
+                        }).toList(),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-        ]));
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -137,7 +134,7 @@ class PieChartCard extends StatelessWidget {
                       color: const Color.fromARGB(255, 255, 154, 46),
                       value: data['pendingReports'].toDouble(),
                       title: 'Pending',
-                      titlePositionPercentageOffset: 1.2,
+                      titlePositionPercentageOffset: 1.5,
                       badgeWidget: Text(
                         '${data['pendingReports']}',
                         style: const TextStyle(color: Colors.white),
@@ -186,8 +183,9 @@ class PieChartCard extends StatelessWidget {
   }
 }
 
+
 class AllFeedbacks extends StatelessWidget {
-  final statisticsController controller = Get.put(statisticsController());
+  final controller = Get.put(statisticsController());
   final String title;
 
   AllFeedbacks({
@@ -212,74 +210,137 @@ class AllFeedbacks extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            GetBuilder<statisticsController>(
-              builder: (controller) {
-                return Container(
-                  width: double.infinity,
-                  height: 250,
-                  child: PieChart(
-                    PieChartData(
-                      sections: [
-                        PieChartSectionData(
-                          color: const Color.fromARGB(255, 75, 9, 92),
-                          value:
-                              controller.totalFeedbacks('Very Bad').toDouble(),
-                          title: 'Very Bad',
-                          titlePositionPercentageOffset: 1.8,
-                          badgeWidget: Text(
-                            'veryBadFeedback',
-                            style: const TextStyle(color: Colors.white),
-                          ),
+            Container(
+              width: double.infinity,
+              height: 250,
+              child: FutureBuilder(
+                future: Future.wait([
+                  controller.totalFeedbacks('Very Bad'),
+                  controller.totalFeedbacks('Bad'),
+                  controller.totalFeedbacks('Good'),
+                  controller.totalFeedbacks('Very Good'),
+                  controller.totalFeedbacks('Excellent'),
+                ]),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Error fetching data'));
+                  } else if (!snapshot.hasData) {
+                    return const Center(child: Text('No data available'));
+                  }
+
+                  List<int> feedbackCounts = snapshot.data as List<int>;
+
+                  return BarChart(
+                    BarChartData(
+                      alignment: BarChartAlignment.spaceAround,
+                      barGroups: [
+                        BarChartGroupData(
+                          x: 0,
+                          barRods: [
+                            BarChartRodData(
+                              fromY: 0,
+                              toY: feedbackCounts[0].toDouble(),
+                              color: const Color.fromARGB(255, 75, 9, 92),
+                              width: 16,
+                            ),
+                          ],
+                          showingTooltipIndicators: [0],
                         ),
-                        PieChartSectionData(
-                          color: const Color.fromARGB(255, 255, 154, 46),
-                          value: controller.totalFeedbacks('Bad').toDouble(),
-                          title: 'Bad',
-                          titlePositionPercentageOffset: 1.2,
-                          badgeWidget: const Text(
-                            'badFeedback',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                        BarChartGroupData(
+                          x: 1,
+                          barRods: [
+                            BarChartRodData(
+                              toY: feedbackCounts[1].toDouble(),
+                              color: const Color.fromARGB(255, 255, 154, 46),
+                              width: 16,
+                            ),
+                          ],
+                          showingTooltipIndicators: [0],
                         ),
-                        PieChartSectionData(
-                          color: const Color.fromARGB(255, 134, 129, 133),
-                          value: controller.totalFeedbacks('Good').toDouble(),
-                          title: 'Good',
-                          titlePositionPercentageOffset: 1.6,
-                          badgeWidget: Text(
-                            'goodFeedback',
-                            style: const TextStyle(color: Colors.white),
-                          ),
+                        BarChartGroupData(
+                          x: 2,
+                          barRods: [
+                            BarChartRodData(
+                              toY: feedbackCounts[2].toDouble(),
+                              color: const Color.fromARGB(255, 134, 129, 133),
+                              width: 16,
+                            ),
+                          ],
+                          showingTooltipIndicators: [0],
                         ),
-                        PieChartSectionData(
-                          color: const Color.fromARGB(255, 233, 35, 35),
-                          value:
-                              controller.totalFeedbacks('Very Good').toDouble(),
-                          title: 'Very Good',
-                          titlePositionPercentageOffset: 1.8,
-                          badgeWidget: Text(
-                            'veryGoodFeedback',
-                            style: const TextStyle(color: Colors.white),
-                          ),
+                        BarChartGroupData(
+                          x: 3,
+                          barRods: [
+                            BarChartRodData(
+                              toY: feedbackCounts[3].toDouble(),
+                              color: const Color.fromARGB(255, 233, 35, 35),
+                              width: 16,
+                            ),
+                          ],
+                          showingTooltipIndicators: [0],
                         ),
-                        PieChartSectionData(
-                          color: const Color.fromARGB(255, 41, 221, 62),
-                          value:
-                              controller.totalFeedbacks('Excellent').toDouble(),
-                          title: 'Excellent',
-                          titlePositionPercentageOffset: 1.8,
-                          badgeWidget: Text(
-                            'excellentFeedback',
-                            style: const TextStyle(color: Colors.white),
-                          ),
+                        BarChartGroupData(
+                          x: 4,
+                          barRods: [
+                            BarChartRodData(
+                              toY: feedbackCounts[4].toDouble(),
+                              color: const Color.fromARGB(255, 41, 221, 62),
+                              width: 16,
+                            ),
+                          ],
+                          showingTooltipIndicators: [0],
                         ),
                       ],
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
+                      borderData: FlBorderData(
+                        show: true,
+                        border: const Border(
+                          top: BorderSide.none,
+                          right: BorderSide.none,
+                          left: BorderSide(width: 1),
+                          bottom: BorderSide(width: 1),
+                        ),
+                      ),
+                      titlesData: FlTitlesData(
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (double value, TitleMeta meta) {
+                              switch (value.toInt()) {
+                                case 0:
+                                  return const Text('Very Bad',style: TextStyle(fontSize: 10),);
+                                case 1:
+                                  return const Text('Bad',style: TextStyle(fontSize: 10));
+                                case 2:
+                                  return const Text('Good',style: TextStyle(fontSize: 10));
+                                case 3:
+                                  return const Text('Very Good',style: TextStyle(fontSize: 10));
+                                case 4:
+                                  return const Text('Excellent',style: TextStyle(fontSize: 10));
+                                default:
+                                  return const Text('');
+                              }
+                            },
+                          ),
+                        ),
+                        leftTitles: const AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            interval: 1 ,
+                          ),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -292,9 +353,9 @@ class AdminStatsCard extends StatelessWidget {
   final Map<String, dynamic> adminDetails;
 
   const AdminStatsCard({
-    Key? key,
+    super.key,
     required this.adminDetails,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -325,14 +386,29 @@ class AdminStatsCard extends StatelessWidget {
                 } else {
                   double? averageResponseTime = snapshot.data;
 
-                  return Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    width: double.infinity,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      //color: const Color.fromARGB(255, 230, 221, 235),
+                      color: Color.fromARGB(255, 238, 232, 243),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 2,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
                     ),
+                    
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
+                      
                       child: Column(
+                        
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -373,10 +449,11 @@ class AdminStatsCard extends StatelessWidget {
                               color: Colors.black,
                             ),
                           ),
-                          const SizedBox(height: 8),
                         ],
                       ),
+                      
                     ),
+                    
                   );
                 }
               },

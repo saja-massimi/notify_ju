@@ -23,12 +23,11 @@ class CommentCard extends StatefulWidget {
 
 class _CommentCardState extends State<CommentCard> {
   final controller1 = Get.put(commentController());
-  final AuthenticationRepository _authRepo =
-      Get.put(AuthenticationRepository());
+  final AuthenticationRepository _authRepo = Get.put(AuthenticationRepository());
   final TextEditingController textController = TextEditingController();
   final TextEditingController editTextController = TextEditingController();
   List<Map<String, dynamic>> comments = [];
-  final bool isAdmin = true; // Set this according to your admin check logic
+  final bool isAdmin = true; 
 
   @override
   void initState() {
@@ -196,22 +195,13 @@ class _CommentCardState extends State<CommentCard> {
                         return;
                       }
 
-                      final newComment = {
-                        'commentDescription': commentText,
-                        'email': userEmail,
-                        'comment_id': randomAlphaNumeric(20),
-                        'Timestamp': DateTime.now().toIso8601String(),
-                        'post_id': widget.post_id,
-                      };
-
-                      comments.add(newComment);
-                      setState(() {});
+                      
 
                       await controller1.addacomment(
                         commentModel(
                           commentDescription: commentText,
                           email: userEmail,
-                          comment_id: newComment['comment_id'],
+                          comment_id: randomAlphaNumeric(20),
                           time: DateTime.now(),
                           post_id: widget.post_id,
                         ),

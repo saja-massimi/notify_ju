@@ -15,20 +15,17 @@ class subsAdminDrawerWidget extends StatelessWidget {
 
   Future<String> getName() async {
     final profileData = Get.put(ProfileController());
-      return await profileData.getAdminName();
-    
-    
+    return await profileData.getAdminName();
   }
 
   final controller = Get.put(SignupController());
-
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-          children: [
+        children: [
           DrawerHeader(
             decoration: const BoxDecoration(
               color: Color(0xFF464A5E),
@@ -82,20 +79,26 @@ class subsAdminDrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-        leading: const Icon(Icons.list_rounded),
+            leading: const Icon(Icons.list_rounded),
             title: const Text('History Reports'),
             onTap: () {
-                final user = FirebaseAuth.instance.currentUser;
-              
+              final user = FirebaseAuth.instance.currentUser;
+
               switch (user!.email) {
                 case 'ama0193677@ju.edu.jo':
-                  Get.to(subAdminHistory(report_type: const ['Infrastructural Damage']));
+                  Get.to(subAdminHistory(
+                      report_type: const ['Infrastructural Damage']));
                   break;
-                  case 'hla0207934@ju.edu.jo' :
-                  Get.to(subAdminHistory(report_type: const ['Fire','Injury']));
+                case 'hla0207934@ju.edu.jo':
+                  Get.to(
+                      subAdminHistory(report_type: const ['Fire', 'Injury']));
                   break;
-                  case 'gad0200681@ju.edu.jo' :
-                  Get.to(subAdminHistory(report_type: const ['Fight','Stray Animals','Car Accident']));
+                case 'gad0200681@ju.edu.jo':
+                  Get.to(subAdminHistory(report_type: const [
+                    'Fight',
+                    'Stray Animals',
+                    'Car Accident'
+                  ]));
                   break;
               }
             },
@@ -103,7 +106,7 @@ class subsAdminDrawerWidget extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.warning_rounded),
             title: const Text('Warnings'),
-            onTap: () =>  Get.to( const subAdminWarnings()),
+            onTap: () => Get.to(const subAdminWarnings()),
           ),
           ListTile(
             leading: const Icon(Icons.logout),
@@ -111,7 +114,6 @@ class subsAdminDrawerWidget extends StatelessWidget {
             onTap: () => controller.logout(),
           ),
         ],
-        
       ),
     );
   }

@@ -68,8 +68,7 @@ class AdminController extends GetxController {
 
       int notif = await SharedPrefController.getNotif('notifs');
       await SharedPrefController.setNotif('notifs', notif + 1);
-      if (message.data['type'] == 'Infrastructural Damage' ||
-          message.data['type'] == 'Car Accident') {
+      if (message.data['type'] == 'Infrastructural Damage' ) {
         int publicUnitNotif =
             await SharedPrefController.getNotif('publicUnitNotif');
         await SharedPrefController.setNotif(
@@ -80,8 +79,7 @@ class AdminController extends GetxController {
             await SharedPrefController.getNotif('emergencyUnitNotif');
         await SharedPrefController.setNotif(
             'emergencyUnitNotif', emergencyUnitNotif + 1);
-      } else if (message.data['type'] == 'Fight' ||
-          message.data['type'] == 'Stray Animals') {
+      } else if (message.data['type'] == 'Fight' || message.data['type'] == 'Stray Animals'|| message.data['type'] == 'Car Accident') {
         int securityUnitNotif =
             await SharedPrefController.getNotif('securityUnitNotif');
         await SharedPrefController.setNotif(

@@ -94,7 +94,7 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
                 height: 100.2,
               ),
               TextField(
-                enabled: false,
+                enabled: true,
                 readOnly: true,
                 decoration: const InputDecoration(
                     hintText: 'Report Type : ', filled: true),

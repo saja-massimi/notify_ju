@@ -27,14 +27,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await SharedPrefController.setNotif('notifs', s + 1);
   log("A message is received in the background");
 
-if(message.data['type'] == 'Infrastructural Damage'|| message.data['type'] == 'Car Accident'){
+if(message.data['type'] == 'Infrastructural Damage'){
   int publicUnitNotif = await SharedPrefController.getNotif('publicUnitNotif');
   await SharedPrefController.setNotif('publicUnitNotif', publicUnitNotif + 1);
   }
   else if(message.data['type'] == 'Fire' || message.data['type'] == 'Injury'){
   int emergencyUnitNotif = await SharedPrefController.getNotif('emergencyUnitNotif');
   await SharedPrefController.setNotif('emergencyUnitNotif', emergencyUnitNotif + 1);}
-  else if(message.data['type'] == 'Fight' || message.data['type'] == 'Stray Animals' ){
+  else if(message.data['type'] == 'Fight' || message.data['type'] == 'Stray Animals'|| message.data['type'] == 'Car Accident' ){
   int securityUnitNotif = await SharedPrefController.getNotif('securityUnitNotif');
   await SharedPrefController.setNotif('securityUnitNotif', securityUnitNotif + 1);
 }

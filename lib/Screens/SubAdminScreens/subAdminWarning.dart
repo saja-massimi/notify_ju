@@ -87,8 +87,10 @@ drawer: subsAdminDrawerWidget(),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              DateFormat.yMMMd().add_jm().format(data['timestamp'].toDate()),
-                              style: const TextStyle(
+                                DateFormat.yMMMd()
+                                  .add_jm()
+                                  .format(data['timestamp'].toDate()),                                
+                                  style: const TextStyle(
                                 fontSize: 14,
                                 color: Color(0xFF464A5E),
                               ),
