@@ -79,7 +79,7 @@ class _subAdminIncidentsState extends State<subAdminIncidents> {
               }
             }
           }),
-      bottomNavigationBar: const subadminNavigationBarWidget(),
+      bottomNavigationBar: const SubadminNavigationBarWidget(),
     );
   }
 }

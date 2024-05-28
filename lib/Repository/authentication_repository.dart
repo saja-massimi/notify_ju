@@ -29,8 +29,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 if(message.data['type'] == 'Infrastructural Damage'){
   int publicUnitNotif = await SharedPrefController.getNotif('publicUnitNotif');
-  await SharedPrefController.setNotif('publicUnitNotif', publicUnitNotif + 1);
-  }
+  await SharedPrefController.setNotif('publicUnitNotif', publicUnitNotif + 1);}
   else if(message.data['type'] == 'Fire' || message.data['type'] == 'Injury'){
   int emergencyUnitNotif = await SharedPrefController.getNotif('emergencyUnitNotif');
   await SharedPrefController.setNotif('emergencyUnitNotif', emergencyUnitNotif + 1);}
@@ -76,7 +75,7 @@ if(message.data['type'] == 'Infrastructural Damage'){
         Get.offAll(() =>  const subAdminMain(reportTypes: ['Fight','Stray Animals','Car Accident'], adminName: 'Security',)); 
         break;
       default:
-      Get.offAll(() =>  HomePage()); break;
+      Get.offAll(() =>  const HomePage()); break;
     }
     }
   } else {

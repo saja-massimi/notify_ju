@@ -89,7 +89,6 @@ class _addReportState extends State<addReport> {
     }
   }
 
-  // Check for denied forever status
   if (permission == LocationPermission.deniedForever) {
     Get.rawSnackbar(
       title: "Warning",
@@ -98,7 +97,6 @@ class _addReportState extends State<addReport> {
     return;
   }
 
-  // Proceed to get the current location
   if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
     Position position = await Geolocator.getCurrentPosition();
     setState(() {

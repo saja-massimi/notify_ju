@@ -78,7 +78,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                 height: 100.2,
               ),
               TextField(
-                enabled: false,
+                enabled: true,
                 readOnly: true,
                 decoration: const InputDecoration(
                     hintText: 'Report Type : ', filled: true),
@@ -93,7 +93,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                   Expanded(
                     child: TextField(
                       keyboardType: TextInputType.multiline,
-                      enabled: false,
+                      enabled: true,
                       decoration: const InputDecoration(
                           hintText: 'Address :', filled: true),
                       controller: TextEditingController(text: _locationMessage),
@@ -122,7 +122,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                 keyboardType: TextInputType.multiline,
                 readOnly: true,
                 maxLines: 5,
-                enabled: false,
+                enabled: true,
                 controller: TextEditingController(
                     text: widget.report['incident_description']),
                 decoration: const InputDecoration(
@@ -135,7 +135,7 @@ class _ReportDetailsState extends State<ReportDetails> {
               ),
               TextField(
                 keyboardType: TextInputType.datetime,
-                enabled: false,
+                enabled: true,
                 readOnly: true,
                 decoration: const InputDecoration(
                   hintText: 'date : ',

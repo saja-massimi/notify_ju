@@ -109,7 +109,7 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
                   Expanded(
                     child: TextField(
                       keyboardType: TextInputType.multiline,
-                      enabled: false,
+                      enabled:true,
                       decoration: const InputDecoration(
                           hintText: 'Address :', filled: true),
                       controller: TextEditingController(text: _locationMessage),
@@ -138,7 +138,7 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
                 keyboardType: TextInputType.multiline,
                 readOnly: true,
                 maxLines: 5,
-                enabled: false,
+                enabled: true,
                 controller: TextEditingController(
                     text: widget.report['incident_description']),
                 decoration: const InputDecoration(
@@ -151,7 +151,7 @@ class _AdminReportDetailsState extends State<AdminReportDetails> {
               ),
               TextField(
                 keyboardType: TextInputType.datetime,
-                enabled: false,
+                enabled: true,
                 readOnly: true,
                 decoration: const InputDecoration(
                   hintText: 'date : ',

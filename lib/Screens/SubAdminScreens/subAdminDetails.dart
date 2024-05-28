@@ -94,7 +94,7 @@ class _subAdminReportDetailsState extends State<subAdminReportDetails> {
                 height: 100.2,
               ),
               TextField(
-                enabled: false,
+                enabled: true,
                 readOnly: true,
                 decoration: const InputDecoration(
                     hintText: 'Report Type : ', filled: true),
@@ -109,7 +109,7 @@ class _subAdminReportDetailsState extends State<subAdminReportDetails> {
                   Expanded(
                     child: TextField(
                       keyboardType: TextInputType.multiline,
-                      enabled: false,
+                      enabled: true,
                       decoration: const InputDecoration(
                           hintText: 'Address :', filled: true),
                       controller: TextEditingController(text: _locationMessage),
@@ -151,7 +151,7 @@ class _subAdminReportDetailsState extends State<subAdminReportDetails> {
               ),
               TextField(
                 keyboardType: TextInputType.datetime,
-                enabled: false,
+                enabled: true,
                 readOnly: true,
                 decoration: const InputDecoration(
                   hintText: 'date : ',
@@ -232,7 +232,7 @@ class _subAdminReportDetailsState extends State<subAdminReportDetails> {
           ),
         ),
       ),
-      bottomNavigationBar:const  subadminNavigationBarWidget(),
+      bottomNavigationBar:const  SubadminNavigationBarWidget(),
     );
   }
 }

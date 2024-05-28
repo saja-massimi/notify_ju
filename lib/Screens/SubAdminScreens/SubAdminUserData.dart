@@ -70,7 +70,7 @@ class SubAdminUserData extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const subadminNavigationBarWidget(),
+      bottomNavigationBar: const SubadminNavigationBarWidget(),
     );
   }
 }
