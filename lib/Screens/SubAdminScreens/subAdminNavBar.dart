@@ -1,7 +1,4 @@
-// ignore_for_file: camel_case_types
-
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,26 +6,18 @@ import 'package:notify_ju/Controller/sharedPref.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminMain.dart';
 import 'package:notify_ju/Screens/SubAdminScreens/subAdminNotifications.dart';
 
-class subadminNavigationBarWidget extends StatefulWidget {
-  const subadminNavigationBarWidget({super.key});
+class SubadminNavigationBarWidget extends StatefulWidget {
+  const SubadminNavigationBarWidget({super.key});
 
   @override
-  State<subadminNavigationBarWidget> createState() =>
-      _subadminNavigationBarWidgetState();
+  State<SubadminNavigationBarWidget> createState() =>
+      _SubadminNavigationBarWidgetState();
 }
 
-class _subadminNavigationBarWidgetState extends State<subadminNavigationBarWidget> {
-
+class _SubadminNavigationBarWidgetState extends State<SubadminNavigationBarWidget> {
   int notifCount = 0;
- Future<void> _fetchNotifCount() async {
-    int notif = SharedPrefController.getNotif('notifs');
-    setState(() {
-      log('notif: $notif');
-      notifCount = notif;
-    });
-  }
-  
-@override
+
+  @override
   void initState() {
     super.initState();
     _fetchNotifCount();
@@ -39,49 +28,61 @@ class _subadminNavigationBarWidgetState extends State<subadminNavigationBarWidge
     });
   }
 
- getCurrentUser(){
-  final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      print('User is currently signed out!');
-    } else if(user.email == 'ama0193677@ju.edu.jo') {
-      return subAdminMain(reportTypes: const ['Infrastructural Damage'],adminName: 'Public Services');  
-    }else if(user.email == 'hla0207934@ju.edu.jo'){
-return subAdminMain(reportTypes: const ['Fire','Injury'],adminName: 'Emergency Services');
-    }else if(user.email == 'gad0200681@ju.edu.jo'){
-return subAdminMain(reportTypes: const ['Fight','Stray Animals','Car Accident'],adminName: 'Security Services');
+  Future<void> _fetchNotifCount() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      if (user.email == 'ama0193677@ju.edu.jo') {
+        notifCount = SharedPrefController.getNotif('publicUnitNotif');
+      } else if (user.email == 'hla0207934@ju.edu.jo') {
+        notifCount = SharedPrefController.getNotif('emergencyUnitNotif');
+      } else if (user.email == 'gad0200681@ju.edu.jo') {
+        notifCount = SharedPrefController.getNotif('securityUnitNotif');
+      }
     }
-
+    setState(() {});
   }
 
-
+  Widget getCurrentUser() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      log('User is currently signed out!');
+      return const Center(child: Text('User is signed out'));
+    } else if (user.email == 'ama0193677@ju.edu.jo') {
+      return const subAdminMain(reportTypes: ['Infrastructural Damage'], adminName: 'Public Services');  
+    } else if (user.email == 'hla0207934@ju.edu.jo') {
+      return const subAdminMain(reportTypes: ['Fire', 'Injury'], adminName: 'Emergency Services');
+    } else if (user.email == 'gad0200681@ju.edu.jo') {
+      return const subAdminMain(reportTypes: ['Fight', 'Stray Animals', 'Car Accident'], adminName: 'Security Services');
+    } else {
+      return const Center(child: Text('Unknown user'));
+    }
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {              
     return BottomAppBar(
-        color: const Color(0xFF464A5E),
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 50,
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () async{
+      color: const Color(0xFF464A5E),
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 50,
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () async {
               final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      print('User is currently signed out!');
-    } else if(user.email == 'ama0193677@ju.edu.jo') {
-      await SharedPrefController.setNotif('notifs', 0);
-      await SharedPrefController.setNotif('publicUnitNotif', 0);
-      Get.to(subAdminNotifications( reportType:const ['Infrastructural Damage']));  
-    }else if(user.email == 'hla0207934@ju.edu.jo'){
-          await SharedPrefController.setNotif('notifs', 0);
-          await SharedPrefController.setNotif('emergencyUnitNotif', 0);
-          Get.to(subAdminNotifications(reportType: const ['Fire','Injury']));
-    }else if(user.email == 'gad0200681@ju.edu.jo'){
-      await SharedPrefController.setNotif('notifs', 0);
-      await SharedPrefController.setNotif('securityUnitNotif', 0);
-      Get.to(  subAdminNotifications(reportType: const ['Fight','Stray Animals','Car Accident']));
-    
-              } },
+              if (user != null) {
+                if (user.email == 'ama0193677@ju.edu.jo') {
+                  await SharedPrefController.setNotif('publicUnitNotif', 0);
+                  Get.to(const subAdminNotifications(reportType: ['Infrastructural Damage']));
+                } else if (user.email == 'hla0207934@ju.edu.jo') {
+                  await SharedPrefController.setNotif('emergencyUnitNotif', 0);
+                  Get.to(const subAdminNotifications(reportType: ['Fire', 'Injury']));
+                } else if (user.email == 'gad0200681@ju.edu.jo') {
+                  await SharedPrefController.setNotif('securityUnitNotif', 0);
+                  Get.to(const subAdminNotifications(reportType: ['Fight', 'Stray Animals', 'Car Accident']));
+                }
+              }
+              await SharedPrefController.setNotif('notifs', 0);
+            },
             icon: Stack(
               children: [
                 const Icon(
@@ -114,18 +115,20 @@ return subAdminMain(reportTypes: const ['Fight','Stray Animals','Car Accident'],
               ],
             ),
           ),
-            const Spacer(),
-            IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>  getCurrentUser()));
-                },
-                icon: const Icon(Icons.home, color: Colors.white)),
-          
-          
-          ],
-        ));
+          const Spacer(),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => getCurrentUser(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.home, color: Colors.white),
+          ),
+        ],
+      ),
+    );
   }
 }

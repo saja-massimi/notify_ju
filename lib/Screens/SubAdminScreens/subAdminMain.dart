@@ -158,16 +158,15 @@ class _subAdminMainState extends State<subAdminMain> {
   void _initialize() async {
     List<dynamic> reps = [];
     final currUser = FirebaseAuth.instance.currentUser!.email;
-    switch (currUser) {
-      case 'hla0207934@ju.edu.jo':
-        reps = await ad.getReportStatus('Pending', ['Fire', 'Injury']);
+    switch (widget.adminName) {
+      case 'Emergency Services':
+        reps = await ad.getReportStatus('Pending', widget.reportTypes);
         break;
-      case 'gad0200681@ju.edu.jo':
-        reps = await ad.getReportStatus(
-            'Pending', ['Car Accident', 'Fight', 'Stray Animals']);
+      case 'Security':
+        reps = await ad.getReportStatus('Pending', widget.reportTypes);
         break;
-      case 'ama0193677@ju.edu.jo':
-        reps = await ad.getReportStatus('Pending', ['Infrastructural Damage']);
+      case 'Public Services':
+        reps = await ad.getReportStatus('Pending', widget.reportTypes);
         break;
       default:
         break;
@@ -241,7 +240,7 @@ class _subAdminMainState extends State<subAdminMain> {
           ],
         ),
       ),
-      bottomNavigationBar: const subadminNavigationBarWidget(),
+      bottomNavigationBar: const SubadminNavigationBarWidget(),
     );
   }
 }

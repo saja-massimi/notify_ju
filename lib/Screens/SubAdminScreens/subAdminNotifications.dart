@@ -161,7 +161,7 @@ class _subAdminNotificationsState extends State<subAdminNotifications> {
           ),
         ],
       ),
-      bottomNavigationBar: const subadminNavigationBarWidget(),
+      bottomNavigationBar: const SubadminNavigationBarWidget(),
     );
   }
 }

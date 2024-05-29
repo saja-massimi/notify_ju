@@ -109,7 +109,7 @@ drawer: subsAdminDrawerWidget(),
         },
       ),
 
-      bottomNavigationBar: const subadminNavigationBarWidget(),
+      bottomNavigationBar: const SubadminNavigationBarWidget(),
 
     );
   }

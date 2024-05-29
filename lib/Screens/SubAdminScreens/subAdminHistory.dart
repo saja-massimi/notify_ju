@@ -84,7 +84,7 @@ class _subAdminHistoryAdminState extends State<subAdminHistory> {
           }
         },
       ),
-      bottomNavigationBar: const subadminNavigationBarWidget(),
+      bottomNavigationBar: const SubadminNavigationBarWidget(),
     );
   }
 }

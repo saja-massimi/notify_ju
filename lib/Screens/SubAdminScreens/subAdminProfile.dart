@@ -52,7 +52,7 @@ class subsAdminProfile extends StatelessWidget {
         padding: EdgeInsets.all(16),
   child: AdminPage(),
       ),
-      bottomNavigationBar: const subadminNavigationBarWidget(),
+      bottomNavigationBar: const SubadminNavigationBarWidget(),
     );
   }
 }
