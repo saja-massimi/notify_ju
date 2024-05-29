@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +20,17 @@ class subsAdminDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currUser = FirebaseAuth.instance.currentUser!.email;
+
+    String avatarImage = 'assets/images/default_avatar.png';
+    if (currUser == 'hla0207934@ju.edu.jo') {
+      avatarImage = 'images/amanzimgs/sos.png';
+    } else if (currUser == 'gad0200681@ju.edu.jo') {
+      avatarImage = 'images/amanzimgs/sec.png';
+    } else if (currUser == 'ama0193677@ju.edu.jo') {
+      avatarImage = 'images/amanzimgs/publicser.png';
+    }
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -32,14 +41,15 @@ class subsAdminDrawerWidget extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 40,
-                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  backgroundColor: Colors.white,
                   child: ClipOval(
-                    child: Icon(
-                      Icons.person,
-                      size: 70,
-                      color: Color.fromARGB(255, 215, 212, 212),
+                    child: Image.asset(
+                      avatarImage,
+                      fit: BoxFit.cover,
+                      width: 80,
+                      height: 80,
                     ),
                   ),
                 ),
